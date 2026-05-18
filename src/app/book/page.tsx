@@ -1,0 +1,315 @@
+"use client";
+
+import { useState } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { Check, MapPin, Calendar, Users, User, CreditCard, ChevronRight } from "lucide-react";
+
+const STEPS = [
+  { id: 1, title: "Select Tour", icon: MapPin },
+  { id: 2, title: "Choose Dates", icon: Calendar },
+  { id: 3, title: "Travelers", icon: Users },
+  { id: 4, title: "Your Details", icon: User },
+  { id: 5, title: "Payment", icon: CreditCard },
+];
+
+const SAMPLE_TOUR = {
+  title: "Hunza Valley Autumn Blossom Tour",
+  duration: 7,
+  location: "Hunza, Gilgit",
+  price: 150000,
+  image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=400",
+};
+
+export default function BookingPage() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [form, setForm] = useState({
+    tourId: "1",
+    startDate: "",
+    travelers: 1,
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    specialRequests: "",
+    paymentMethod: "stripe",
+  });
+
+  const totalPrice = SAMPLE_TOUR.price * form.travelers;
+
+  const nextStep = () => setCurrentStep((s) => Math.min(s + 1, 5));
+  const prevStep = () => setCurrentStep((s) => Math.max(s - 1, 1));
+
+  return (
+    <>
+      <Navbar />
+      <main className="flex-grow pt-24 pb-20 bg-shamaal-cream dark:bg-[var(--background)]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-shamaal-navy dark:text-white mb-10">
+            Complete Your <span className="text-shamaal-gold">Booking</span>
+          </h1>
+
+          {/* Step Progress Bar */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between relative">
+              {/* Progress Line */}
+              <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 dark:bg-white/10 z-0">
+                <div
+                  className="h-full bg-shamaal-gold transition-all duration-500"
+                  style={{ width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
+                />
+              </div>
+              {STEPS.map((step) => (
+                <div key={step.id} className="flex flex-col items-center relative z-10">
+                  <button
+                    onClick={() => step.id < currentStep && setCurrentStep(step.id)}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 border-2 ${
+                      step.id < currentStep
+                        ? "bg-shamaal-gold border-shamaal-gold text-shamaal-navy cursor-pointer"
+                        : step.id === currentStep
+                        ? "bg-shamaal-navy border-shamaal-gold text-white dark:bg-shamaal-gold dark:text-shamaal-navy"
+                        : "bg-white dark:bg-shamaal-navy/50 border-gray-200 dark:border-white/20 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    }`}
+                  >
+                    {step.id < currentStep ? <Check className="w-5 h-5" /> : <step.icon className="w-4 h-4" />}
+                  </button>
+                  <span className={`mt-2 text-xs font-semibold hidden sm:block ${step.id === currentStep ? "text-shamaal-navy dark:text-shamaal-gold" : "text-gray-400"}`}>
+                    {step.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Form Area */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-shamaal-navy/30 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-white/10">
+
+                {/* Step 1: Tour Selection */}
+                {currentStep === 1 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Selected Tour</h2>
+                    <div className="flex items-start space-x-4 p-4 border-2 border-shamaal-gold/50 rounded-xl bg-shamaal-gold/5">
+                      <div className="w-24 h-20 rounded-lg overflow-hidden shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={SAMPLE_TOUR.image} alt={SAMPLE_TOUR.title} className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-shamaal-navy dark:text-white mb-1">{SAMPLE_TOUR.title}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{SAMPLE_TOUR.location} · {SAMPLE_TOUR.duration} Days</p>
+                        <p className="text-shamaal-gold font-bold">PKR {SAMPLE_TOUR.price.toLocaleString()} <span className="text-gray-400 font-normal text-xs">/ person</span></p>
+                      </div>
+                      <Check className="text-shamaal-gold w-6 h-6 ml-auto shrink-0" />
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-6 text-center">
+                      Want a different tour?{" "}
+                      <a href="/tours" className="text-shamaal-sky hover:text-shamaal-gold font-semibold underline">Browse all tours</a>
+                    </p>
+                  </div>
+                )}
+
+                {/* Step 2: Dates */}
+                {currentStep === 2 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Choose Your Dates</h2>
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Start Date</label>
+                        <input
+                          type="date"
+                          value={form.startDate}
+                          onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold"
+                        />
+                      </div>
+                      {form.startDate && (
+                        <div className="p-4 bg-shamaal-gold/10 rounded-xl border border-shamaal-gold/30">
+                          <p className="text-sm font-medium text-shamaal-navy dark:text-white">
+                            Your tour will run from <strong>{form.startDate}</strong> for <strong>{SAMPLE_TOUR.duration} days</strong>.
+                          </p>
+                        </div>
+                      )}
+                      <div className="grid grid-cols-3 gap-3">
+                        {["2026-07-05", "2026-08-02", "2026-09-06", "2026-10-04", "2026-10-18", "2026-11-01"].map((date) => (
+                          <button
+                            key={date}
+                            onClick={() => setForm({ ...form, startDate: date })}
+                            className={`py-3 px-4 rounded-xl text-sm font-semibold border-2 transition-all ${form.startDate === date ? "border-shamaal-gold bg-shamaal-gold text-shamaal-navy" : "border-gray-200 dark:border-white/20 text-gray-600 dark:text-gray-300 hover:border-shamaal-gold"}`}
+                          >
+                            {new Date(date).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" })}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Travelers */}
+                {currentStep === 3 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Number of Travelers</h2>
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between p-6 border border-gray-200 dark:border-white/20 rounded-xl">
+                        <div>
+                          <p className="font-bold text-shamaal-navy dark:text-white">Adults</p>
+                          <p className="text-sm text-gray-500">PKR {SAMPLE_TOUR.price.toLocaleString()} per person</p>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <button onClick={() => setForm({ ...form, travelers: Math.max(1, form.travelers - 1) })} className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-white/20 flex items-center justify-center font-bold text-lg hover:border-shamaal-gold hover:text-shamaal-gold transition-colors text-gray-600 dark:text-gray-300">−</button>
+                          <span className="text-2xl font-bold text-shamaal-navy dark:text-white w-8 text-center">{form.travelers}</span>
+                          <button onClick={() => setForm({ ...form, travelers: Math.min(15, form.travelers + 1) })} className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-white/20 flex items-center justify-center font-bold text-lg hover:border-shamaal-gold hover:text-shamaal-gold transition-colors text-gray-600 dark:text-gray-300">+</button>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-shamaal-gold/10 rounded-xl border border-shamaal-gold/30">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Groups of 10+ receive a <strong className="text-shamaal-gold">10% group discount</strong>. Contact us for corporate rates.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 4: Personal Details */}
+                {currentStep === 4 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Your Details</h2>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">First Name</label>
+                          <input type="text" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} placeholder="Ali" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Last Name</label>
+                          <input type="text" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} placeholder="Khan" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Email Address</label>
+                        <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="ali@example.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Phone Number</label>
+                        <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+92 300 0000000" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Special Requests (optional)</label>
+                        <textarea value={form.specialRequests} onChange={(e) => setForm({ ...form, specialRequests: e.target.value })} rows={3} placeholder="Dietary requirements, accessibility needs, anniversary setup..." className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold resize-none" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 5: Payment */}
+                {currentStep === 5 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Payment Method</h2>
+                    <div className="space-y-4 mb-8">
+                      {[
+                        { id: "stripe", label: "Credit / Debit Card", sub: "Visa, Mastercard, AMEX — Powered by Stripe" },
+                        { id: "jazzcash", label: "JazzCash", sub: "Pay via JazzCash mobile wallet or MPIN" },
+                        { id: "easypaisa", label: "Easypaisa", sub: "Pay via Easypaisa mobile account" },
+                        { id: "bank", label: "Bank Transfer", sub: "Manual bank transfer — we'll confirm within 24 hours" },
+                      ].map((method) => (
+                        <button
+                          key={method.id}
+                          onClick={() => setForm({ ...form, paymentMethod: method.id })}
+                          className={`w-full flex items-center justify-between p-5 rounded-xl border-2 transition-all text-left ${form.paymentMethod === method.id ? "border-shamaal-gold bg-shamaal-gold/10" : "border-gray-200 dark:border-white/20 hover:border-shamaal-gold/50"}`}
+                        >
+                          <div>
+                            <p className="font-bold text-shamaal-navy dark:text-white">{method.label}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">{method.sub}</p>
+                          </div>
+                          {form.paymentMethod === method.id && <Check className="text-shamaal-gold w-6 h-6 shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                    {form.paymentMethod === "stripe" && (
+                      <div className="space-y-4 p-6 bg-gray-50 dark:bg-shamaal-navy/50 rounded-xl border border-gray-200 dark:border-white/10">
+                        <div>
+                          <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Card Number</label>
+                          <input type="text" placeholder="1234 5678 9012 3456" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Expiry Date</label>
+                            <input type="text" placeholder="MM / YY" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">CVV</label>
+                            <input type="text" placeholder="123" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Navigation Buttons */}
+                <div className="mt-10 flex justify-between">
+                  {currentStep > 1 ? (
+                    <button onClick={prevStep} className="px-6 py-3 border-2 border-gray-200 dark:border-white/20 rounded-xl font-semibold text-gray-600 dark:text-gray-300 hover:border-shamaal-navy dark:hover:border-white transition-colors">
+                      ← Back
+                    </button>
+                  ) : <div />}
+
+                  {currentStep < 5 ? (
+                    <button onClick={nextStep} className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all flex items-center space-x-2">
+                      <span>Continue</span>
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  ) : (
+                    <button className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all flex items-center space-x-2 shadow-md shadow-shamaal-gold/30">
+                      <CreditCard className="w-5 h-5" />
+                      <span>Confirm & Pay PKR {totalPrice.toLocaleString()}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Summary Sidebar */}
+            <div>
+              <div className="sticky top-28 bg-white dark:bg-shamaal-navy/30 rounded-2xl p-6 shadow-md border border-gray-100 dark:border-white/10">
+                <h3 className="text-lg font-bold text-shamaal-navy dark:text-white mb-6 pb-4 border-b border-gray-100 dark:border-white/10">Booking Summary</h3>
+                <div className="space-y-4 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">Tour</span>
+                    <span className="font-semibold text-shamaal-navy dark:text-white text-right max-w-[60%]">{SAMPLE_TOUR.title}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">Duration</span>
+                    <span className="font-semibold text-shamaal-navy dark:text-white">{SAMPLE_TOUR.duration} Days</span>
+                  </div>
+                  {form.startDate && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Start Date</span>
+                      <span className="font-semibold text-shamaal-navy dark:text-white">{form.startDate}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">Travelers</span>
+                    <span className="font-semibold text-shamaal-navy dark:text-white">{form.travelers}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500 dark:text-gray-400">Price/person</span>
+                    <span className="font-semibold text-shamaal-navy dark:text-white">PKR {SAMPLE_TOUR.price.toLocaleString()}</span>
+                  </div>
+                  <div className="pt-4 border-t border-gray-100 dark:border-white/10 flex justify-between text-base">
+                    <span className="font-bold text-shamaal-navy dark:text-white">Total</span>
+                    <span className="font-bold text-shamaal-gold text-lg">PKR {totalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-500/20">
+                  <p className="text-green-700 dark:text-green-400 text-xs font-semibold flex items-center">
+                    <Check className="w-4 h-4 mr-2" /> Free cancellation up to 14 days before departure
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}
