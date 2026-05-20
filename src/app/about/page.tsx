@@ -53,7 +53,7 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
               {STATS.map((stat) => (
-                <div key={stat.label} className="py-10 px-8 text-center">
+                <div key={stat.label} className="py-10 px-8 text-center hover:bg-white/5 transition-colors duration-300">
                   <p className="text-4xl font-bold text-shamaal-gold mb-2">{stat.value}</p>
                   <p className="text-gray-300 text-sm uppercase tracking-widest font-semibold">{stat.label}</p>
                 </div>
@@ -124,7 +124,7 @@ export default function AboutPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {VALUES.map((val) => (
-                <div key={val.title} className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:border-shamaal-gold/50 hover:bg-white/10 transition-all duration-300 group">
+                <div key={val.title} className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:border-shamaal-gold/50 hover:bg-white/10 hover:-translate-y-1.5 transition-all duration-500 group shadow-md hover:shadow-xl">
                   <div className="bg-shamaal-gold/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-shamaal-gold/30 transition-colors">
                     <val.icon className="w-8 h-8 text-shamaal-gold" />
                   </div>

@@ -27,7 +27,7 @@ export default function TourCard({
   reviews
 }: TourCardProps) {
   return (
-    <Link href={`/tours/${slug}`} className="group flex flex-col bg-white dark:bg-shamaal-navy/30 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-shamaal-gold/50">
+    <Link href={`/tours/${slug}`} className="group flex flex-col bg-white dark:bg-shamaal-navy/30 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-shamaal-gold/50">
       <div className="relative h-64 w-full overflow-hidden">
         <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 animate-pulse" /> {/* Placeholder background */}
         {/* Replace with actual next/image when images are available */}

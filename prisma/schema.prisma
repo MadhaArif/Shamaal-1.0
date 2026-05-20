@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,12 +14,12 @@ model Account {
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
+  refresh_token      String?
+  access_token       String?
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?  @db.Text
+  id_token           String?
   session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -45,7 +45,7 @@ model User {
   sessions      Session[]
   bookings      Booking[]
   reviews       Review[]
-  role          Role      @default(USER)
+  role          String    @default("USER")
 }
 
 model VerificationToken {
@@ -56,23 +56,18 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 // Shamaal Tourism Models
 model Tour {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  description String   @db.Text
+  description String
   price       Float
   duration    Int      // in days
   location    String
   difficulty  String   // e.g., Easy, Moderate, Hard
   featured    Boolean  @default(false)
-  images      String[] // Array of URLs
+  images      String   // Comma-separated list of URLs
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -87,7 +82,7 @@ model Booking {
   startDate   DateTime
   travelers   Int
   totalPrice  Float
-  status      BookingStatus @default(PENDING)
+  status      String   @default("PENDING")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -95,19 +90,12 @@ model Booking {
   tour        Tour     @relation(fields: [tourId], references: [id])
 }
 
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
-  COMPLETED
-}
-
 model Review {
   id          String   @id @default(cuid())
   userId      String
   tourId      String
   rating      Int      // 1-5
-  comment     String?  @db.Text
+  comment     String?
   createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])

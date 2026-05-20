@@ -4,7 +4,10 @@ import HeroSection from "@/components/home/HeroSection";
 import TourCard from "@/components/tours/TourCard";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Star, Shield, Globe, Award, Users, MessageCircle } from "lucide-react";
+import { ArrowRight, Star, Shield, Globe, Award, Users, MessageCircle, Quote } from "lucide-react";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const FEATURED_TOURS = [
   {
@@ -79,7 +82,34 @@ const WHY_US = [
   { icon: Users, title: "Personalised Journeys", desc: "Small groups and custom itineraries tailored exactly to your pace, interests, and budget." },
 ];
 
-export default function Home() {
+export default async function Home() {
+  let featuredTours = [];
+  try {
+    const dbFeatured = await prisma.tour.findMany({
+      where: { featured: true },
+      take: 3
+    });
+    if (dbFeatured.length > 0) {
+      featuredTours = dbFeatured.map((t) => ({
+        id: t.id,
+        title: t.title,
+        slug: t.slug,
+        price: t.price,
+        duration: t.duration,
+        location: t.location,
+        difficulty: t.difficulty,
+        image: t.images.split(",")[0] || "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+        rating: 4.9,
+        reviews: 124
+      }));
+    } else {
+      featuredTours = FEATURED_TOURS;
+    }
+  } catch (error) {
+    console.error("Failed to fetch featured tours from database:", error);
+    featuredTours = FEATURED_TOURS;
+  }
+
   return (
     <>
       <Navbar />
@@ -106,11 +136,11 @@ export default function Home() {
                 <Link
                   key={dest.slug}
                   href={`/destinations/${dest.slug}`}
-                  className={`group relative rounded-2xl overflow-hidden shadow-lg cursor-pointer ${i === 1 ? "md:mt-8" : ""} ${i === 2 ? "md:mt-16" : ""}`}
+                  className={`group relative rounded-2xl overflow-hidden border border-transparent hover:border-shamaal-gold/45 shadow-lg hover:shadow-2xl hover:-translate-y-2 cursor-pointer transition-all duration-500 ${i === 1 ? "md:mt-8" : ""} ${i === 2 ? "md:mt-16" : ""}`}
                   style={{ height: "380px" }}
                 >
-                  <div className="absolute inset-0 bg-shamaal-navy/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-shamaal-navy/90 via-shamaal-navy/30 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-shamaal-navy/30 group-hover:bg-shamaal-navy/10 transition-colors duration-500 z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-shamaal-navy/90 via-shamaal-navy/20 to-transparent z-10" />
                   <Image src={dest.img} alt={dest.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />
                   <div className="absolute bottom-0 left-0 p-8 z-20 translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                     <h3 className="text-3xl font-bold text-white mb-2">{dest.name}</h3>
@@ -158,7 +188,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {FEATURED_TOURS.map((tour) => (
+              {featuredTours.map((tour) => (
                 <TourCard key={tour.id} {...tour} />
               ))}
             </div>
@@ -178,7 +208,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl order-2 lg:order-1">
                 <Image
-                  src="https://images.unsplash.com/photo-1623862283088-e9f0d1a49f57?auto=format&fit=crop&q=80&w=900"
+                  src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=900"
                   alt="Why choose Shamaal Tourism"
                   fill
                   className="object-cover"
@@ -202,11 +232,11 @@ export default function Home() {
                 <div className="space-y-8">
                   {WHY_US.map((item) => (
                     <div key={item.title} className="flex items-start space-x-5 group">
-                      <div className="bg-shamaal-cream dark:bg-white/10 group-hover:bg-shamaal-gold p-4 rounded-xl transition-colors shrink-0">
-                        <item.icon className="w-6 h-6 text-shamaal-navy dark:text-white group-hover:text-white" />
+                      <div className="bg-shamaal-cream dark:bg-white/10 group-hover:bg-shamaal-gold group-hover:scale-110 group-hover:rotate-6 p-4 rounded-xl transition-all duration-300 shrink-0 shadow-sm group-hover:shadow-md">
+                        <item.icon className="w-6 h-6 text-shamaal-navy dark:text-white group-hover:text-shamaal-navy transition-colors duration-300" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-shamaal-navy dark:text-white mb-2">{item.title}</h3>
+                        <h3 className="text-xl font-bold text-shamaal-navy dark:text-white mb-2 group-hover:text-shamaal-gold transition-colors duration-300">{item.title}</h3>
                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
@@ -228,13 +258,14 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} className="bg-white dark:bg-shamaal-navy/40 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/30 transition-all duration-300 group hover:shadow-xl">
-                  <div className="flex items-center space-x-1 mb-6">
+                <div key={t.name} className="relative bg-white dark:bg-shamaal-navy/40 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/30 hover:-translate-y-2 transition-all duration-500 group hover:shadow-2xl overflow-hidden">
+                  <Quote className="absolute right-6 top-6 w-12 h-12 text-gray-100 dark:text-white/5 group-hover:text-shamaal-gold/10 group-hover:scale-110 transition-all duration-500 pointer-events-none" />
+                  <div className="flex items-center space-x-1 mb-6 relative z-10">
                     {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-5 h-5 text-shamaal-gold fill-current" />)}
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 italic leading-relaxed mb-8">&ldquo;{t.text}&rdquo;</p>
-                  <div className="flex items-center space-x-4">
-                    <Image src={t.avatar} alt={t.name} width={48} height={48} className="rounded-full border-2 border-shamaal-gold" unoptimized />
+                  <p className="text-gray-600 dark:text-gray-300 italic leading-relaxed mb-8 relative z-10">&ldquo;{t.text}&rdquo;</p>
+                  <div className="flex items-center space-x-4 relative z-10">
+                    <Image src={t.avatar} alt={t.name} width={48} height={48} className="rounded-full border-2 border-shamaal-gold group-hover:scale-105 transition-transform duration-300" unoptimized />
                     <div>
                       <p className="font-bold text-shamaal-navy dark:text-white">{t.name}</p>
                       <p className="text-xs text-shamaal-gold">{t.location} · {t.tour}</p>

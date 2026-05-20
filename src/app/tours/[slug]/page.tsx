@@ -3,6 +3,9 @@ import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import { MapPin, Calendar, Clock, Star, Users, Check, X, ChevronDown, Share2, Heart, Download } from "lucide-react";
 import Link from "next/link";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 // In a real app, this would be fetched from the database/CMS
 const MOCK_TOUR_DETAIL = {
@@ -20,7 +23,7 @@ const MOCK_TOUR_DETAIL = {
   images: [
     "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=2000",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1623862283088-e9f0d1a49f57?auto=format&fit=crop&q=80&w=800"
+    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800"
   ],
   description: "Experience the magic of Hunza Valley during the autumn season. Watch the entire valley transform into a spectacular canvas of gold, orange, and red hues. This easy-paced tour is perfect for families and photography enthusiasts, taking you through ancient forts, crystal clear lakes, and offering majestic views of Rakaposhi and Ladyfinger Peak.",
   itinerary: [
@@ -50,14 +53,47 @@ const MOCK_TOUR_DETAIL = {
 };
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  // In a real app, fetch the tour title based on params.slug
-  return {
-    title: MOCK_TOUR_DETAIL.title,
-  };
+  const { slug } = params;
+  try {
+    const dbTour = await prisma.tour.findUnique({
+      where: { slug }
+    });
+    return {
+      title: dbTour ? dbTour.title : MOCK_TOUR_DETAIL.title,
+    };
+  } catch (error) {
+    return {
+      title: MOCK_TOUR_DETAIL.title,
+    };
+  }
 }
 
-export default function TourDetailPage({ params }: { params: { slug: string } }) {
-  const tour = MOCK_TOUR_DETAIL;
+export default async function TourDetailPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  let tour = MOCK_TOUR_DETAIL;
+
+  try {
+    const dbTour = await prisma.tour.findUnique({
+      where: { slug }
+    });
+
+    if (dbTour) {
+      tour = {
+        ...MOCK_TOUR_DETAIL,
+        id: dbTour.id,
+        title: dbTour.title,
+        slug: dbTour.slug,
+        price: dbTour.price,
+        duration: dbTour.duration,
+        location: dbTour.location,
+        difficulty: dbTour.difficulty,
+        images: dbTour.images.split(","),
+        description: dbTour.description,
+      };
+    }
+  } catch (error) {
+    console.error("Failed to query tour detail by slug, using mock:", error);
+  }
 
   return (
     <>

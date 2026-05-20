@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
@@ -42,7 +42,7 @@ const MOCK_BOOKINGS = [
     travelers: 3,
     totalPrice: 255000,
     status: "COMPLETED",
-    image: "https://images.unsplash.com/photo-1601614532158-b6481cc1c6cc?auto=format&fit=crop&q=80&w=400",
+    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=400",
   },
 ];
 
@@ -62,9 +62,28 @@ const NAV_ITEMS = [
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("bookings");
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const upcoming = MOCK_BOOKINGS.filter((b) => b.status === "CONFIRMED");
-  const past = MOCK_BOOKINGS.filter((b) => b.status === "COMPLETED");
+  useEffect(() => {
+    fetch("/api/bookings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setBookings(data);
+        } else {
+          setBookings(MOCK_BOOKINGS);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch bookings:", err);
+        setBookings(MOCK_BOOKINGS);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const upcoming = bookings.filter((b) => b.status === "CONFIRMED");
+  const past = bookings.filter((b) => b.status === "COMPLETED");
 
   return (
     <>
@@ -89,7 +108,7 @@ export default function DashboardPage() {
             </div>
             <div className="grid grid-cols-3 gap-8 text-center">
               <div>
-                <p className="text-3xl font-bold text-shamaal-gold">{MOCK_BOOKINGS.length}</p>
+                <p className="text-3xl font-bold text-shamaal-gold">{bookings.length}</p>
                 <p className="text-gray-400 text-xs uppercase tracking-wider mt-1">Total Trips</p>
               </div>
               <div>
@@ -157,7 +176,7 @@ export default function DashboardPage() {
                     <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white">All Bookings</h2>
                     <Link href="/tours" className="text-sm font-semibold text-shamaal-sky hover:text-shamaal-gold transition-colors">+ Book New Tour</Link>
                   </div>
-                  {MOCK_BOOKINGS.map((booking) => {
+                  {bookings.map((booking) => {
                     const status = STATUS_STYLES[booking.status];
                     return (
                       <div key={booking.id} className="bg-white dark:bg-shamaal-navy/30 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/30 transition-all flex flex-col md:flex-row gap-6">

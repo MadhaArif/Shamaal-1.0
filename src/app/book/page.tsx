@@ -37,8 +37,41 @@ export default function BookingPage() {
 
   const totalPrice = SAMPLE_TOUR.price * form.travelers;
 
+  const [loading, setLoading] = useState(false);
+
   const nextStep = () => setCurrentStep((s) => Math.min(s + 1, 5));
   const prevStep = () => setCurrentStep((s) => Math.max(s - 1, 1));
+
+  const handleBookingSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tourId: "cmpd9li7d0000qtkse8pad17e", // Seeded Hunza Valley Tour ID
+          startDate: form.startDate || "2026-10-04",
+          travelers: form.travelers,
+          totalPrice: totalPrice,
+          firstName: form.firstName || "Ali",
+          lastName: form.lastName || "Ahmed",
+          email: form.email || "ali.ahmed@example.com",
+          phone: form.phone || "+92 300 1234567"
+        })
+      });
+
+      if (response.ok) {
+        window.location.href = "/dashboard";
+      } else {
+        alert("Booking submission failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Booking submission failed:", error);
+      alert("An error occurred during booking. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -258,9 +291,13 @@ export default function BookingPage() {
                       <ChevronRight className="w-5 h-5" />
                     </button>
                   ) : (
-                    <button className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all flex items-center space-x-2 shadow-md shadow-shamaal-gold/30">
+                    <button
+                      onClick={handleBookingSubmit}
+                      disabled={loading}
+                      className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all flex items-center space-x-2 shadow-md shadow-shamaal-gold/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                       <CreditCard className="w-5 h-5" />
-                      <span>Confirm & Pay PKR {totalPrice.toLocaleString()}</span>
+                      <span>{loading ? "Processing..." : `Confirm & Pay PKR ${totalPrice.toLocaleString()}`}</span>
                     </button>
                   )}
                 </div>

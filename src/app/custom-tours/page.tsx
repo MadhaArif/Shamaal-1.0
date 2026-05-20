@@ -41,7 +41,7 @@ const PACKAGES = [
     desc: "Have a specific dream in mind? Tell us and our travel designers will craft a bespoke tour just for you — any destination, any budget.",
     features: ["Any destination", "Any duration", "Any group size", "Full personalisation"],
     color: "navy",
-    image: "https://images.unsplash.com/photo-1601614532158-b6481cc1c6cc?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=600",
   },
 ];
 
@@ -75,7 +75,7 @@ export default function CustomToursPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {PACKAGES.map((pkg) => (
-              <div key={pkg.title} className="group bg-white dark:bg-shamaal-navy/30 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/40 hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row">
+              <div key={pkg.title} className="group bg-white dark:bg-shamaal-navy/35 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/50 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col md:flex-row">
                 <div className="relative w-full md:w-48 h-48 md:h-auto shrink-0 overflow-hidden">
                   <Image src={pkg.image} alt={pkg.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
                 </div>

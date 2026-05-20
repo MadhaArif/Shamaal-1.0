@@ -48,7 +48,7 @@ const POSTS = [
     category: "Travel Tips",
     readTime: "10 min read",
     date: "28 Apr 2026",
-    image: "https://images.unsplash.com/photo-1601614532158-b6481cc1c6cc?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
     featured: false,
   },
   {
@@ -58,7 +58,7 @@ const POSTS = [
     category: "Culture",
     readTime: "7 min read",
     date: "20 Apr 2026",
-    image: "https://images.unsplash.com/photo-1560249826-a070ccb53f65?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
     featured: false,
   },
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, Stars } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,35 +9,51 @@ function Mountains() {
   const geomRef = useRef<THREE.PlaneGeometry>(null);
   const meshRef = useRef<THREE.Mesh>(null);
 
-  // Programmatically generate beautiful mountain ridges on the plane
-  useEffect(() => {
+  // Dynamic mountain wave morphing & mouse parallax control
+  useFrame((state) => {
     if (!geomRef.current) return;
+
+    const time = state.clock.getElapsedTime();
     const pos = geomRef.current.attributes.position;
+    
+    // Mouse pointer coords (-1 to 1)
+    const mx = state.pointer.x;
+    const my = state.pointer.y;
+
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const y = pos.getY(i);
       
-      // Multi-frequency sine/cosine waves for organic looking peaks
-      const peak1 = Math.sin(x * 0.15) * Math.cos(y * 0.15) * 4.5;
-      const peak2 = Math.cos(x * 0.3) * Math.sin(y * 0.3) * 2.0;
-      const peak3 = Math.sin(x * 0.6) * Math.cos(y * 0.6) * 0.8;
+      // Beautiful, layered, slow-morphing sine waves for organic peaks
+      // We incorporate mouse coordinates (mx, my) to gently warp the heights based on mouse movement!
+      const peak1 = Math.sin(x * 0.15 + time * 0.05 + mx * 0.15) * Math.cos(y * 0.15 + time * 0.03 + my * 0.15) * 4.8;
+      const peak2 = Math.cos(x * 0.3 - time * 0.04) * Math.sin(y * 0.3 + time * 0.05) * 2.0;
+      const peak3 = Math.sin(x * 0.6 + time * 0.08) * Math.cos(y * 0.6 - time * 0.07) * 0.6;
       
-      // Calculate distance from center to fade edges
+      // Distance fade from center to keep the edges neat
       const dist = Math.sqrt(x * x + y * y);
-      const fade = Math.max(0, 1 - dist / 25);
+      const fade = Math.max(0, 1 - dist / 28);
       
-      // Displace Z coordinate (height)
       pos.setZ(i, (peak1 + peak2 + peak3) * fade);
     }
+    
     pos.needsUpdate = true;
     geomRef.current.computeVertexNormals();
-  }, []);
 
-  // Rotate slowly and smoothly
-  useFrame((state) => {
+    // Slow rotation of the mountain plane
     if (meshRef.current) {
-      meshRef.current.rotation.z = state.clock.getElapsedTime() * 0.015;
+      meshRef.current.rotation.z = time * 0.012;
     }
+
+    // Camera mouse parallax: smoothly transition camera position based on cursor movement
+    const targetX = mx * 1.8;
+    const targetY = my * 0.8 + 2.0; // keep camera elevated at around y=2.0
+    
+    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, targetX, 0.05);
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, targetY, 0.05);
+    
+    // Lock the camera to point towards the valley center
+    state.camera.lookAt(0, -1.2, -4);
   });
 
   return (
@@ -47,7 +63,7 @@ function Mountains() {
         color="#0D2B5E"
         wireframe={true}
         emissive="#1A4FA0"
-        emissiveIntensity={0.25}
+        emissiveIntensity={0.3}
         roughness={0.8}
         metalness={0.2}
       />

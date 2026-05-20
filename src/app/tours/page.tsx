@@ -2,9 +2,12 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import TourCard from "@/components/tours/TourCard";
 import { Filter, SlidersHorizontal } from "lucide-react";
+import { PrismaClient } from "@prisma/client";
 
-// Mock Data for Tours Catalog
-const MOCK_TOURS = [
+const prisma = new PrismaClient();
+
+// Mock Data for fallback if database query fails or is empty
+const FALLBACK_TOURS = [
   {
     id: "1",
     title: "Hunza Valley Autumn Blossom Tour",
@@ -16,66 +19,6 @@ const MOCK_TOURS = [
     image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
     rating: 4.9,
     reviews: 124
-  },
-  {
-    id: "2",
-    title: "K2 Base Camp Trek",
-    slug: "k2-base-camp",
-    price: 350000,
-    duration: 21,
-    location: "Skardu",
-    difficulty: "Extreme",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
-    rating: 4.8,
-    reviews: 86
-  },
-  {
-    id: "3",
-    title: "Fairy Meadows & Nanga Parbat Expedition",
-    slug: "fairy-meadows",
-    price: 95000,
-    duration: 5,
-    location: "Diamer",
-    difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
-    rating: 5.0,
-    reviews: 215
-  },
-  {
-    id: "4",
-    title: "Swat Valley Winter Retreat",
-    slug: "swat-winter",
-    price: 85000,
-    duration: 4,
-    location: "Swat",
-    difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1601614532158-b6481cc1c6cc?auto=format&fit=crop&q=80&w=800",
-    rating: 4.7,
-    reviews: 92
-  },
-  {
-    id: "5",
-    title: "Chitral & Kalash Festival Tour",
-    slug: "chitral-kalash",
-    price: 120000,
-    duration: 6,
-    location: "Chitral",
-    difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1560249826-a070ccb53f65?auto=format&fit=crop&q=80&w=800",
-    rating: 4.9,
-    reviews: 156
-  },
-  {
-    id: "6",
-    title: "Skardu Cold Desert Safari",
-    slug: "skardu-safari",
-    price: 110000,
-    duration: 5,
-    location: "Skardu",
-    difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1623862283088-e9f0d1a49f57?auto=format&fit=crop&q=80&w=800",
-    rating: 4.6,
-    reviews: 78
   }
 ];
 
@@ -84,7 +27,34 @@ export const metadata = {
   description: "Browse our premium selection of tours across Northern Pakistan.",
 };
 
-export default function ToursCatalog() {
+export default async function ToursCatalog() {
+  let tours = [];
+  try {
+    const dbTours = await prisma.tour.findMany({
+      orderBy: { createdAt: "desc" }
+    });
+
+    if (dbTours.length > 0) {
+      tours = dbTours.map((t) => ({
+        id: t.id,
+        title: t.title,
+        slug: t.slug,
+        price: t.price,
+        duration: t.duration,
+        location: t.location,
+        difficulty: t.difficulty,
+        image: t.images.split(",")[0] || "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+        rating: 4.9,
+        reviews: 124
+      }));
+    } else {
+      tours = FALLBACK_TOURS;
+    }
+  } catch (error) {
+    console.error("Failed to fetch tours from database, falling back to mock:", error);
+    tours = FALLBACK_TOURS;
+  }
+
   return (
     <>
       <Navbar />
@@ -162,7 +132,7 @@ export default function ToursCatalog() {
             <div className="w-full lg:w-3/4">
               <div className="flex justify-between items-center mb-6">
                 <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                  Showing <span className="font-bold text-shamaal-navy dark:text-white">{MOCK_TOURS.length}</span> tours
+                  Showing <span className="font-bold text-shamaal-navy dark:text-white">{tours.length}</span> tours
                 </p>
                 <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                   <SlidersHorizontal className="w-4 h-4" />
@@ -178,7 +148,7 @@ export default function ToursCatalog() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
-                {MOCK_TOURS.map((tour) => (
+                {tours.map((tour) => (
                   <TourCard key={tour.id} {...tour} />
                 ))}
               </div>

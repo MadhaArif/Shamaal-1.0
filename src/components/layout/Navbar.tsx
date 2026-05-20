@@ -24,13 +24,13 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-        showBackground
-          ? "bg-shamaal-navy/90 backdrop-blur-md border-white/10 shadow-lg py-4"
-          : "bg-transparent border-transparent py-6"
+      className={`fixed z-50 transition-all duration-500 left-0 right-0 ${
+        isScrolled
+          ? "top-4 mx-auto max-w-5xl rounded-full bg-shamaal-navy/85 backdrop-blur-xl border border-white/10 shadow-2xl py-3 px-6"
+          : "top-0 max-w-full bg-transparent border-b border-transparent py-6 px-4 sm:px-6 lg:px-8"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
@@ -45,24 +45,29 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/tours" className="text-white hover:text-shamaal-gold transition-colors text-sm font-medium tracking-wide">
+            <Link href="/tours" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
               TOURS
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
             </Link>
-            <Link href="/destinations" className="text-white hover:text-shamaal-gold transition-colors text-sm font-medium tracking-wide">
+            <Link href="/destinations" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
               DESTINATIONS
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
             </Link>
-            <Link href="/custom-tours" className="text-white hover:text-shamaal-gold transition-colors text-sm font-medium tracking-wide">
+            <Link href="/custom-tours" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
               CUSTOM
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
             </Link>
-            <Link href="/blog" className="text-white hover:text-shamaal-gold transition-colors text-sm font-medium tracking-wide">
+            <Link href="/blog" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
               BLOG
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
             </Link>
-            <Link href="/about" className="text-white hover:text-shamaal-gold transition-colors text-sm font-medium tracking-wide">
+            <Link href="/about" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
               ABOUT
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
             </Link>
             <Link
               href="/login"
-              className="px-5 py-2 rounded-full border border-shamaal-gold/50 text-white hover:bg-shamaal-gold hover:text-shamaal-navy transition-all duration-300 text-sm font-medium"
+              className="px-6 py-2.5 rounded-full border border-shamaal-gold/50 text-white bg-white/5 hover:bg-shamaal-gold hover:text-shamaal-navy transition-all duration-300 text-xs font-semibold tracking-wider uppercase"
             >
               Sign In
             </Link>
