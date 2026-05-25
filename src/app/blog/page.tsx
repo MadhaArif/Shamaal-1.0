@@ -72,7 +72,7 @@ export default function BlogPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow pt-24 pb-20 bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="flex-grow pt-32 md:pt-40 pb-20 bg-shamaal-cream dark:bg-[var(--background)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -95,7 +95,7 @@ export default function BlogPage() {
           {featured && (
             <Link href={`/blog/${featured.slug}`} className="group block mb-16 rounded-2xl overflow-hidden shadow-xl relative h-[480px]">
               <div className="absolute inset-0 bg-gradient-to-r from-shamaal-navy/90 via-shamaal-navy/50 to-transparent z-10" />
-              <Image src={featured.image} alt={featured.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
+              <Image src={featured.image} alt={featured.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" priority sizes="100vw" />
               <div className="absolute inset-0 z-20 flex items-center">
                 <div className="p-12 max-w-2xl">
                   <div className="flex items-center space-x-3 mb-4">
@@ -118,7 +118,7 @@ export default function BlogPage() {
             {rest.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group bg-white dark:bg-shamaal-navy/30 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/40 hover:shadow-xl transition-all duration-300 flex flex-col">
                 <div className="relative h-52 overflow-hidden">
-                  <Image src={post.image} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />
+                  <Image src={post.image} alt={post.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 50vw" />
                   <div className="absolute top-4 left-4">
                     <span className="bg-shamaal-gold/90 backdrop-blur-sm text-shamaal-navy text-xs font-bold px-3 py-1 rounded-full flex items-center">
                       <Tag className="w-3 h-3 mr-1" /> {post.category}

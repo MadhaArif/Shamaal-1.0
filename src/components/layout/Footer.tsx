@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Compass, MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -8,13 +9,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <Link href="/" className="flex items-center space-x-2">
-              <Compass className="h-8 w-8 text-shamaal-gold" />
-              <div className="flex flex-col">
-                <span className="font-bold text-xl leading-none tracking-wider text-white">
-                  SHAMAAL<span className="text-shamaal-gold">®</span>
-                </span>
-                <span className="text-[10px] tracking-widest text-gray-300">THE GREAT NORTH</span>
+            <Link href="/" className="flex items-center">
+              <div className="relative h-20 w-48 md:h-28 md:w-64">
+                <Image 
+                  src="/logo.png" 
+                  alt="Shamaal Tourism Logo" 
+                  fill 
+                  className="object-contain" 
+                  sizes="256px"
+                />
               </div>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -56,15 +59,32 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-gray-400">
               <li className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-shamaal-gold shrink-0 mt-0.5" />
-                <span>124 Blue Area, Jinnah Avenue<br />Islamabad, Pakistan</span>
+                <span>UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-shamaal-gold shrink-0" />
-                <span>+92 300 1234567</span>
+                <div className="flex flex-col">
+                  <a href="tel:03180425044" className="hover:text-shamaal-gold transition-colors">0318-0425044</a>
+                  <a href="tel:03180425025" className="hover:text-shamaal-gold transition-colors">0318-0425025</a>
+                </div>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-shamaal-gold shrink-0" />
-                <span>info@shamaaltourism.com</span>
+                <a href="mailto:Shamaaltours@gmail.com" className="hover:text-shamaal-gold transition-colors">Shamaaltours@gmail.com</a>
+              </li>
+              <li className="flex items-center space-x-3 pt-2">
+                <a 
+                  href="https://wa.me/923180425044" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 bg-green-500/10 hover:bg-green-500 hover:text-white text-green-500 px-4 py-2 rounded-full border border-green-500/20 transition-all duration-300 font-bold text-[10px] uppercase tracking-wider"
+                >
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span>WhatsApp Online</span>
+                </a>
+              </li>
+              <li className="pt-2 text-[10px] uppercase tracking-widest font-bold text-gray-500">
+                DTS # 10475
               </li>
             </ul>
           </div>

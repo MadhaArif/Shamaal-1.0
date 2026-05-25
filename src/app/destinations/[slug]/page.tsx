@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import TourCard from "@/components/tours/TourCard";
+import DestinationHero from "@/components/destinations/DestinationHero";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Sun, Thermometer, Clock, ArrowLeft, Camera, CheckCircle } from "lucide-react";
@@ -39,8 +40,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Attabad Lake", "Baltit Fort", "Altit Fort", "Eagle's Nest", "Rakaposhi View", "Cherry Blossom Season", "Passu Cones", "Khunjerab Pass"],
     tours: [
-      { id: "1", title: "Hunza Valley Autumn Blossom Tour", slug: "hunza-valley-autumn", price: 150000, duration: 7, location: "Hunza, Gilgit", difficulty: "Easy", image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 124 },
-      { id: "5", title: "Hunza to Khunjerab Pass Adventure", slug: "hunza-khunjerab", price: 180000, duration: 10, location: "Hunza", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800", rating: 4.8, reviews: 67 },
+      { id: "3", title: "Hunza Valley Tour", slug: "hunza-valley", price: 30000, duration: 5, location: "Hunza", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800", rating: 4.8, reviews: 86 },
     ],
   },
   skardu: {
@@ -68,8 +68,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Shangrila Lake", "Deosai National Park", "K2 Base Camp", "Cold Desert", "Satpara Lake", "Katchura Lake", "Skardu Fort", "Concordia"],
     tours: [
-      { id: "2", title: "K2 Base Camp Trek", slug: "k2-base-camp", price: 350000, duration: 21, location: "Skardu", difficulty: "Extreme", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800", rating: 4.8, reviews: 86 },
-      { id: "6", title: "Skardu Cold Desert Safari", slug: "skardu-safari", price: 110000, duration: 5, location: "Skardu", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800", rating: 4.6, reviews: 78 },
+      { id: "5", title: "Skardu Tour", slug: "skardu-tour", price: 32000, duration: 6, location: "Skardu", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800", rating: 5.0, reviews: 215 },
     ],
   },
   "fairy-meadows": {
@@ -97,7 +96,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Nanga Parbat View", "Beyal Camp", "Raikot Glacier", "Lush Green Meadows", "Tato Village", "Pine Forests", "Moonrise Views", "Fairy Lake"],
     tours: [
-      { id: "3", title: "Fairy Meadows & Nanga Parbat Expedition", slug: "fairy-meadows", price: 95000, duration: 5, location: "Diamer", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800", rating: 5.0, reviews: 215 },
+      { id: "4", title: "Fairy Meadows Tour", slug: "fairy-meadows-tour", price: 30000, duration: 5, location: "Diamer", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800", rating: 5.0, reviews: 215 },
     ],
   },
   swat: {
@@ -125,7 +124,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Malam Jabba Ski Resort", "Mahodand Lake", "Ushu Forest", "Kalam Valley", "Swat Museum", "Mingora Bazaar", "Fizagat Park", "Bahrain"],
     tours: [
-      { id: "4", title: "Swat Valley Winter Retreat", slug: "swat-winter", price: 85000, duration: 4, location: "Swat", difficulty: "Easy", image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800", rating: 4.7, reviews: 92 },
+      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 124 },
     ],
   },
   chitral: {
@@ -153,7 +152,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Kalash Valleys", "Tirich Mir View", "Chitral Fort", "Shandur Polo Festival", "Shahi Mosque", "Chitral Museum", "Bumburet Valley", "Mastuj"],
     tours: [
-      { id: "5", title: "Chitral & Kalash Festival Tour", slug: "chitral-kalash", price: 120000, duration: 6, location: "Chitral", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 156 },
+      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 124 },
     ],
   },
   naran: {
@@ -181,7 +180,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Saif-ul-Malook Lake", "Babusar Pass", "Ansoo Lake", "Lulusar Lake", "Kaghan Valley", "Kunhar River", "Batakundi Meadows", "Shogran"],
     tours: [
-      { id: "7", title: "Naran & Saif-ul-Malook Lake Tour", slug: "naran-saiful-malook", price: 75000, duration: 4, location: "Naran, KPK", difficulty: "Easy", image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80&w=800", rating: 4.7, reviews: 189 },
+      { id: "2", title: "Naran Valley Tour", slug: "naran-valley", price: 18000, duration: 3, location: "Naran", difficulty: "Easy", image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800", rating: 4.7, reviews: 189 },
     ],
   },
   gilgit: {
@@ -238,26 +237,13 @@ export default async function DestinationDetailPage({ params }: { params: Promis
       <Navbar />
       <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
 
-        {/* Hero */}
-        <section className="relative h-[65vh] flex items-end overflow-hidden">
-          <div className="absolute inset-0 bg-shamaal-navy/50 z-10" />
-          <Image
-            src={dest.heroImage}
-            alt={dest.name}
-            fill className="object-cover"
-            unoptimized priority
-          />
-          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
-            <Link href="/destinations" className="inline-flex items-center text-white/70 hover:text-white text-sm mb-6 transition-colors">
-              <ArrowLeft className="w-4 h-4 mr-1" /> All Destinations
-            </Link>
-            <div className="flex items-center text-shamaal-gold text-sm font-bold tracking-widest uppercase mb-3">
-              <MapPin className="w-4 h-4 mr-1" /> {dest.region}
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-3">{dest.name}</h1>
-            <p className="text-xl text-gray-200 italic">&ldquo;{dest.tagline}&rdquo;</p>
-          </div>
-        </section>
+        {/* Hero Section - Seamless integration */}
+        <DestinationHero 
+          name={dest.name} 
+          region={dest.region} 
+          tagline={dest.tagline} 
+          heroImage={dest.heroImage} 
+        />
 
         {/* Quick Info Bar */}
         <section className="bg-shamaal-navy">
@@ -302,7 +288,7 @@ export default async function DestinationDetailPage({ params }: { params: Promis
                 <div className="grid grid-cols-3 gap-4">
                   {dest.galleryImages.map((img, i) => (
                     <div key={i} className="relative rounded-xl overflow-hidden h-48 group">
-                      <Image src={img} alt={`${dest.name} ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
+                      <Image src={img} alt={`${dest.name} ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" sizes="(max-width: 768px) 33vw, 256px" />
                     </div>
                   ))}
                 </div>

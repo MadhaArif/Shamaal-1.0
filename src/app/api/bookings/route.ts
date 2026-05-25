@@ -1,12 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 
 const prisma = new PrismaClient();
 
-// GET all bookings from the database
+// GET bookings from the database (filtered by user if logged in)
 export async function GET() {
   try {
+    const session = await auth();
+    
+    const whereClause = session?.user?.email 
+      ? { user: { email: session.user.email } } 
+      : {};
+
     const bookings = await prisma.booking.findMany({
+      where: whereClause,
       include: {
         tour: true,
         user: true
@@ -31,9 +39,9 @@ export async function GET() {
     }));
 
     return NextResponse.json(mappedBookings);
-  } catch (error: any) {
+  } catch (error) {
     console.error("GET Bookings Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
   }
 }
 
@@ -41,7 +49,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { tourId, startDate, travelers, totalPrice, firstName, lastName, email, phone } = body;
+    const { tourId, startDate, travelers, totalPrice, firstName, lastName, email } = body;
 
     if (!tourId || !startDate || !travelers || !totalPrice || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -76,8 +84,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, booking });
-  } catch (error: any) {
+  } catch (error) {
     console.error("POST Booking Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Unknown error" }, { status: 500 });
   }
 }

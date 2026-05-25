@@ -41,6 +41,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   accounts      Account[]
   sessions      Session[]
   bookings      Booking[]
@@ -100,4 +101,18 @@ model Review {
 
   user        User     @relation(fields: [userId], references: [id])
   tour        Tour     @relation(fields: [tourId], references: [id])
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  firstName   String?
+  lastName    String?
+  email       String   @unique
+  phone       String?
+  tourId      String?
+  startDate   String?
+  travelers   Int      @default(1)
+  status      String   @default("DRAFT")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

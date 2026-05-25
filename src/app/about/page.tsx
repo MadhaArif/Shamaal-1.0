@@ -28,7 +28,7 @@ export default function AboutPage() {
     <>
       <Navbar />
 
-      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="flex-grow pt-32 md:pt-40 bg-shamaal-cream dark:bg-[var(--background)]">
         {/* Hero */}
         <section className="relative h-[60vh] flex items-end overflow-hidden">
           <div className="absolute inset-0 bg-shamaal-navy/60 z-10" />
@@ -37,8 +37,8 @@ export default function AboutPage() {
             alt="Shamaal Tourism Team"
             fill
             className="object-cover"
-            unoptimized
             priority
+            sizes="100vw"
           />
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 w-full">
             <span className="text-shamaal-gold font-bold tracking-widest uppercase text-sm block mb-2">Our Story</span>
@@ -76,10 +76,10 @@ export default function AboutPage() {
                     Shamaal Tourism was founded in 2012 by a group of passionate mountaineers and travel enthusiasts who wanted to share the raw, breathtaking beauty of Northern Pakistan with the world — authentically and responsibly.
                   </p>
                   <p>
-                    The name <strong className="text-shamaal-navy dark:text-white">Shamaal</strong> (شمال) — meaning <em>North</em> in Urdu — embodies our soul. We are a brand built entirely around the magnificent landscapes, rich cultures, and legendary hospitality of Pakistan's north.
+                    The name <strong className="text-shamaal-navy dark:text-white">Shamaal</strong> (شمال) — meaning <em>North</em> in Urdu — embodies our soul. We are a brand built entirely around the magnificent landscapes, rich cultures, and legendary hospitality of Pakistan&apos;s north.
                   </p>
                   <p>
-                    Today, we are Pakistan's most trusted premium tour operator, having taken over 50,000 travellers on life-changing journeys through Hunza, Skardu, Fairy Meadows, and beyond.
+                    Today, we are Pakistan&apos;s most trusted premium tour operator, having taken over 50,000 travellers on life-changing journeys through Hunza, Skardu, Fairy Meadows, and beyond.
                   </p>
                 </div>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -100,7 +100,7 @@ export default function AboutPage() {
                   alt="Northern Pakistan mountains"
                   fill
                   className="object-cover"
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-shamaal-navy/90 backdrop-blur-md rounded-xl p-4 shadow-lg">
                   <div className="flex items-center space-x-1 text-shamaal-gold mb-1">

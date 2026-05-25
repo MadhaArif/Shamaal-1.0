@@ -5,20 +5,38 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Compass, Mail, Lock, ArrowRight, ChevronLeft } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Smooth transition simulation
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 1200);
+    setError("");
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Invalid email or password");
+        setIsLoading(false);
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,7 +49,7 @@ export default function LoginPage() {
           fill
           className="object-cover opacity-30"
           priority
-          unoptimized
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-shamaal-navy via-shamaal-navy/80 to-transparent" />
       </div>
@@ -60,6 +78,12 @@ export default function LoginPage() {
           <h2 className="text-2xl font-bold text-white mb-2">Welcome Back</h2>
           <p className="text-gray-400 text-sm">Sign in to manage your bookings and rewards</p>
         </div>
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/35 text-red-200 text-sm rounded-xl p-3 mb-6 text-center animate-pulse">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -113,7 +137,7 @@ export default function LoginPage() {
         </div>
 
         <button
-          onClick={handleSubmit}
+          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
           className="w-full flex items-center justify-center space-x-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-2xl py-3.5 transition-all duration-300"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

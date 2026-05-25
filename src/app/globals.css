@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-shamaal-navy: #0D2B5E;
-  --color-shamaal-gold: #D4860A;
-  --color-shamaal-sky: #1A4FA0;
+  --color-shamaal-navy: #1b2f5a;
+  --color-shamaal-gold: #ffb604;
+  --color-shamaal-sky: #2b4b8c;
   --color-shamaal-cream: #F9F6F0;
   
   --color-background: var(--background);
@@ -13,12 +13,12 @@
 
 :root {
   --background: #F9F6F0; /* Cream */
-  --foreground: #0D2B5E; /* Navy */
+  --foreground: #1b2f5a; /* Navy */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #051024; /* Deep Navy */
+    --background: #0a1529; /* Darker Navy */
     --foreground: #F9F6F0; /* Cream */
   }
 }
@@ -28,4 +28,42 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Default cursor remains visible */
+@media (min-width: 1024px) {
+  html, body {
+    cursor: auto;
+  }
+  
+  a, button, [role="button"] {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  @keyframes cinematic-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+
+  @keyframes mist {
+    0% { transform: translateX(-100%) skewX(12deg); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateX(100%) skewX(12deg); opacity: 0; }
+  }
+
+  @keyframes mist-slow {
+    0% { transform: translateX(100%) skewX(-12deg); opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { transform: translateX(-100%) skewX(-12deg); opacity: 0; }
+  }
+
+  .animate-mist {
+    animation: mist 20s infinite linear;
+  }
+
+  .animate-mist-slow {
+    animation: mist-slow 25s infinite linear;
+  }
 }

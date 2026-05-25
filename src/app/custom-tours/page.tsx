@@ -1,7 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
-import Link from "next/link";
 import { Users, Heart, Building2, Compass, Send } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -49,12 +48,12 @@ export default function CustomToursPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="flex-grow pb-20 bg-shamaal-cream dark:bg-[var(--background)]">
 
         {/* Hero */}
-        <section className="relative pt-32 pb-24 bg-shamaal-navy overflow-hidden">
+        <section className="relative pt-32 md:pt-40 pb-24 bg-shamaal-navy overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <Image src="https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=2000" alt="Custom Tours Background" fill className="object-cover" unoptimized />
+            <Image src="https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=2000" alt="Custom Tours Background" fill className="object-cover" priority sizes="100vw" />
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span className="text-shamaal-gold font-bold tracking-widest uppercase text-sm block mb-4">Tailored For You</span>
@@ -77,7 +76,7 @@ export default function CustomToursPage() {
             {PACKAGES.map((pkg) => (
               <div key={pkg.title} className="group bg-white dark:bg-shamaal-navy/35 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/50 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col md:flex-row">
                 <div className="relative w-full md:w-48 h-48 md:h-auto shrink-0 overflow-hidden">
-                  <Image src={pkg.image} alt={pkg.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
+                  <Image src={pkg.image} alt={pkg.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" sizes="(max-width: 768px) 100vw, 192px" />
                 </div>
                 <div className="p-8">
                   <div className="flex items-center space-x-3 mb-4">

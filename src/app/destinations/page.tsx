@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import DestinationsHero from "@/components/destinations/DestinationsHero";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Sun, Thermometer, Camera, ArrowRight } from "lucide-react";
@@ -20,7 +21,7 @@ const DESTINATIONS = [
     temp: "15–25°C",
     image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
     highlights: ["Attabad Lake", "Baltit Fort", "Rakaposhi View", "Cherry Blossoms"],
-    tours: 18,
+    tours: 5,
   },
   {
     slug: "skardu",
@@ -31,7 +32,7 @@ const DESTINATIONS = [
     temp: "10–22°C",
     image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
     highlights: ["Shangrila Lake", "Deosai Plains", "K2 Base Camp", "Cold Desert"],
-    tours: 14,
+    tours: 4,
   },
   {
     slug: "fairy-meadows",
@@ -42,7 +43,7 @@ const DESTINATIONS = [
     temp: "8–18°C",
     image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
     highlights: ["Nanga Parbat View", "Beyal Camp", "Raikot Glacier", "Lush Meadows"],
-    tours: 8,
+    tours: 3,
   },
   {
     slug: "swat",
@@ -53,7 +54,7 @@ const DESTINATIONS = [
     temp: "18–28°C",
     image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
     highlights: ["Malam Jabba", "Mahodand Lake", "Ushu Forest", "Mingora Bazaar"],
-    tours: 11,
+    tours: 6,
   },
   {
     slug: "chitral",
@@ -64,7 +65,7 @@ const DESTINATIONS = [
     temp: "12–25°C",
     image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
     highlights: ["Kalash Valleys", "Tirich Mir View", "Chitral Fort", "Shandur Polo Festival"],
-    tours: 9,
+    tours: 4,
   },
   {
     slug: "naran",
@@ -75,7 +76,7 @@ const DESTINATIONS = [
     temp: "10–22°C",
     image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80&w=800",
     highlights: ["Saif-ul-Malook Lake", "Babusar Pass", "Ansoo Lake", "Lulusar Lake"],
-    tours: 12,
+    tours: 5,
   },
   {
     slug: "gilgit",
@@ -86,7 +87,7 @@ const DESTINATIONS = [
     temp: "15–28°C",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
     highlights: ["Kargah Buddha", "Naltar Valley", "Gilgit Bazaar", "KKH Junction"],
-    tours: 7,
+    tours: 3,
   },
 ];
 
@@ -96,26 +97,12 @@ export default function DestinationsPage() {
       <Navbar />
 
       <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
-        {/* Hero Banner */}
-        <section className="relative h-80 flex items-end justify-start overflow-hidden">
-          <div className="absolute inset-0 bg-shamaal-navy/70 z-10" />
-          <Image
-            src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=2000"
-            alt="Pakistan Northern Areas"
-            fill
-            className="object-cover"
-            unoptimized
-            priority
-          />
-          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
-            <span className="text-shamaal-gold font-bold tracking-widest uppercase text-sm block mb-2">Explore Pakistan</span>
-            <h1 className="text-5xl md:text-6xl font-bold text-white">Our Destinations</h1>
-          </div>
-        </section>
+        {/* Hero Banner - No gap from navbar */}
+        <DestinationsHero />
 
         {/* Destinations Grid */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-3xl mb-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+          <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg max-w-3xl mb-12 md:mb-16">
             From the lush valleys of Swat to the rugged high-altitude deserts of Skardu, our curated destinations cover the most spectacular corners of the Great North.
           </p>
 
@@ -133,7 +120,7 @@ export default function DestinationsPage() {
                     alt={dest.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    unoptimized
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">

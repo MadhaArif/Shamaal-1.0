@@ -1,7 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Image from "next/image";
-import { MapPin, Phone, Mail, MessageCircle, Clock } from "lucide-react";
+import ContactHero from "@/components/contact/ContactHero";
+import { Mail, Phone, MapPin, MessageCircle, Clock } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,17 +14,14 @@ export default function ContactPage() {
     <>
       <Navbar />
 
-      <main className="flex-grow pt-24 pb-20 bg-shamaal-cream dark:bg-[var(--background)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
+        {/* Cinematic Header for Contact */}
+        <ContactHero />
 
-          {/* Header */}
-          <div className="mb-16 text-center">
-            <span className="text-shamaal-gold font-bold tracking-widest uppercase text-sm block mb-2">Get In Touch</span>
-            <h1 className="text-5xl font-bold text-shamaal-navy dark:text-white mb-4">Contact <span className="text-shamaal-gold">Shamaal</span></h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-xl mx-auto">
-              Have questions about a tour? Ready to plan your dream trip? Our team is here to help you every step of the way.
-            </p>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-xl mx-auto text-center mb-16">
+            Have questions about a tour? Ready to plan your dream trip? Our team is here to help you every step of the way.
+          </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
@@ -110,7 +107,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-sm mb-1">Our Office</p>
-                      <p className="text-gray-300 text-sm">124 Blue Area, Jinnah Avenue<br />Islamabad, Pakistan</p>
+                      <p className="text-gray-300 text-sm">UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</p>
+                      <p className="text-gray-400 text-[10px] mt-2 font-bold uppercase tracking-widest">DTS # 10475</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -119,8 +117,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-sm mb-1">Phone</p>
-                      <p className="text-gray-300 text-sm">+92 300 1234567</p>
-                      <p className="text-gray-300 text-sm">+92 51 1234567</p>
+                      <p className="text-gray-300 text-sm">0318-0425044</p>
+                      <p className="text-gray-300 text-sm">0318-0425025</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -129,8 +127,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-sm mb-1">Email</p>
-                      <p className="text-gray-300 text-sm">info@shamaaltourism.com</p>
-                      <p className="text-gray-300 text-sm">bookings@shamaaltourism.com</p>
+                      <p className="text-gray-300 text-sm">Shamaaltours@gmail.com</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
@@ -148,7 +145,7 @@ export default function ContactPage() {
 
               {/* WhatsApp CTA */}
               <a
-                href="https://wa.me/923001234567"
+                href="https://wa.me/923180425044"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center space-x-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl p-6 transition-colors shadow-md shadow-green-500/30"
@@ -166,17 +163,6 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-
-      {/* Floating WhatsApp Button */}
-      <a
-        href="https://wa.me/923001234567"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl shadow-green-500/50 transition-all hover:scale-110"
-        title="Chat on WhatsApp"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </a>
 
       <Footer />
     </>

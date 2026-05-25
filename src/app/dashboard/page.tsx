@@ -5,46 +5,26 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import {
-  User, MapPin, Calendar, Star, Settings, LogOut,
-  Clock, CheckCircle, XCircle, ChevronRight, Bell
+  MapPin, Calendar, Star, Settings, LogOut,
+  Clock, CheckCircle, XCircle, ChevronRight, Bell, Users
 } from "lucide-react";
 
-const MOCK_BOOKINGS = [
-  {
-    id: "BK-2026-001",
-    tour: "Hunza Valley Autumn Blossom Tour",
-    location: "Hunza, Gilgit",
-    startDate: "2026-10-04",
-    duration: 7,
-    travelers: 2,
-    totalPrice: 300000,
-    status: "CONFIRMED",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=400",
-  },
-  {
-    id: "BK-2026-002",
-    tour: "Fairy Meadows & Nanga Parbat Expedition",
-    location: "Diamer",
-    startDate: "2026-08-15",
-    duration: 5,
-    travelers: 1,
-    totalPrice: 95000,
-    status: "COMPLETED",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=400",
-  },
-  {
-    id: "BK-2025-089",
-    tour: "Swat Valley Winter Retreat",
-    location: "Swat",
-    startDate: "2025-12-20",
-    duration: 4,
-    travelers: 3,
-    totalPrice: 255000,
-    status: "COMPLETED",
-    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=400",
-  },
-];
+interface Booking {
+  id: string;
+  tour: string;
+  location: string;
+  startDate: string;
+  duration: number;
+  travelers: number;
+  totalPrice: number;
+  status: string;
+  image: string;
+  userName?: string;
+  userEmail?: string;
+}
 
 const STATUS_STYLES: Record<string, { label: string; className: string; Icon: React.ComponentType<{ className?: string }> }> = {
   CONFIRMED: { label: "Confirmed", className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400", Icon: CheckCircle },
@@ -61,29 +41,48 @@ const NAV_ITEMS = [
 ];
 
 export default function DashboardPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("bookings");
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/bookings")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setBookings(data);
-        } else {
-          setBookings(MOCK_BOOKINGS);
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch bookings:", err);
-        setBookings(MOCK_BOOKINGS);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
-  const upcoming = bookings.filter((b) => b.status === "CONFIRMED");
-  const past = bookings.filter((b) => b.status === "COMPLETED");
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetch("/api/bookings")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setBookings(data);
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to fetch bookings:", err);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [status]);
+
+  if (status === "loading" || (status === "authenticated" && loading)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-shamaal-cream">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-shamaal-gold"></div>
+      </div>
+    );
+  }
+
+  if (!session) return null;
+
+  const user = session.user;
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U";
+
+  const upcoming = bookings.filter(b => b.status === "CONFIRMED");
 
   return (
     <>
@@ -94,15 +93,17 @@ export default function DashboardPage() {
           {/* Profile Header */}
           <div className="bg-shamaal-navy rounded-2xl p-8 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center space-x-5">
-              <div className="w-16 h-16 rounded-full bg-shamaal-gold flex items-center justify-center text-shamaal-navy font-bold text-2xl shrink-0">
-                A
+              <div className="w-16 h-16 rounded-full bg-shamaal-gold flex items-center justify-center text-shamaal-navy font-bold text-2xl shrink-0 overflow-hidden">
+                {user?.image ? (
+                  <Image src={user.image} alt={user.name || "User"} width={64} height={64} className="object-cover" />
+                ) : userInitial}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Ali Ahmed</h1>
-                <p className="text-gray-400 text-sm">ali.ahmed@example.com</p>
+                <h1 className="text-2xl font-bold text-white">{user?.name || "User"}</h1>
+                <p className="text-gray-400 text-sm">{user?.email}</p>
                 <div className="flex items-center space-x-2 mt-2">
                   <span className="bg-shamaal-gold/20 text-shamaal-gold text-xs font-bold px-3 py-1 rounded-full">⭐ Premium Member</span>
-                  <span className="text-gray-400 text-xs">Member since 2023</span>
+                  <span className="text-gray-400 text-xs">Member since 2024</span>
                 </div>
               </div>
             </div>
@@ -145,7 +146,10 @@ export default function DashboardPage() {
                     </button>
                   ))}
                   <div className="pt-4 mt-4 border-t border-gray-100 dark:border-white/10">
-                    <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all">
+                    <button 
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                    >
                       <LogOut className="w-5 h-5" />
                       <span>Sign Out</span>
                     </button>
@@ -181,7 +185,7 @@ export default function DashboardPage() {
                     return (
                       <div key={booking.id} className="bg-white dark:bg-shamaal-navy/30 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-white/10 hover:border-shamaal-gold/30 transition-all flex flex-col md:flex-row gap-6">
                         <div className="relative w-full md:w-32 h-32 rounded-xl overflow-hidden shrink-0">
-                          <Image src={booking.image} alt={booking.tour} fill className="object-cover" unoptimized />
+                          <Image src={booking.image} alt={booking.tour} fill className="object-cover" sizes="128px" />
                         </div>
                         <div className="flex-grow">
                           <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
@@ -195,7 +199,7 @@ export default function DashboardPage() {
                             <span className="flex items-center"><MapPin className="w-4 h-4 mr-1 text-shamaal-gold" />{booking.location}</span>
                             <span className="flex items-center"><Calendar className="w-4 h-4 mr-1 text-shamaal-gold" />{booking.startDate}</span>
                             <span className="flex items-center"><Clock className="w-4 h-4 mr-1 text-shamaal-gold" />{booking.duration} days</span>
-                            <span className="flex items-center"><User className="w-4 h-4 mr-1 text-shamaal-gold" />{booking.travelers} travelers</span>
+                            <span className="flex items-center"><Users className="w-4 h-4 mr-1 text-shamaal-gold" />{booking.travelers} travelers</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <div>

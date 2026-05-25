@@ -4,9 +4,8 @@ const BASE_URL = "https://www.shamaaltourism.com";
 
 const DESTINATION_SLUGS = ["hunza", "skardu", "fairy-meadows", "swat", "chitral", "naran", "gilgit"];
 const TOUR_SLUGS = [
-  "hunza-valley-autumn", "k2-base-camp", "fairy-meadows",
-  "swat-winter", "chitral-kalash", "skardu-safari",
-  "hunza-khunjerab", "naran-saiful-malook", "gilgit-naltar",
+  "kashmir-neelum-valley", "naran-valley", "hunza-valley",
+  "fairy-meadows-tour", "skardu-tour"
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

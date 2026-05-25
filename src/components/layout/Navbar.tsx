@@ -3,10 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Compass } from "lucide-react";
+import { Menu, X, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function Navbar() {
+  const { data: session } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -20,56 +23,73 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
-  const showBackground = !isHome || isScrolled;
 
   return (
     <nav
-      className={`fixed z-50 transition-all duration-500 left-0 right-0 ${
+      className={`fixed z-50 transition-all duration-700 left-0 right-0 ${
         isScrolled
-          ? "top-4 mx-auto max-w-5xl rounded-full bg-shamaal-navy/85 backdrop-blur-xl border border-white/10 shadow-2xl py-3 px-6"
-          : "top-0 max-w-full bg-transparent border-b border-transparent py-6 px-4 sm:px-6 lg:px-8"
+          ? "top-4 mx-4 md:mx-auto max-w-5xl rounded-2xl bg-shamaal-navy/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] py-3 px-6 md:px-10"
+          : isHome
+          ? "top-0 max-w-full bg-transparent border-b border-transparent py-8 px-6 sm:px-12 lg:px-20"
+          : "top-0 max-w-full bg-shamaal-navy/95 backdrop-blur-md border-b border-white/5 py-5 px-6 sm:px-12 lg:px-20"
       }`}
     >
       <div className="w-full">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <Compass className={`h-8 w-8 ${showBackground ? "text-shamaal-gold" : "text-white"} transition-colors duration-300 group-hover:rotate-45`} />
-            <div className="flex flex-col">
-              <span className="font-bold text-xl leading-none tracking-wider text-white">
-                SHAMAAL<span className="text-shamaal-gold">®</span>
-              </span>
-              <span className={`text-[10px] tracking-widest ${showBackground ? "text-gray-300" : "text-gray-200"}`}>THE GREAT NORTH</span>
+          <Link href="/" className="flex items-center group">
+            <div className={`relative transition-all duration-700 group-hover:brightness-110 ${
+              isScrolled 
+                ? "h-10 w-32 md:h-12 md:w-40" 
+                : "h-12 w-36 md:h-16 md:w-52"
+            }`}>
+              <Image 
+                src="/logo.png" 
+                alt="Shamaal Tourism Logo" 
+                fill 
+                className="object-contain" 
+                priority
+                sizes="(max-width: 768px) 160px, 208px"
+              />
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/tours" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
-              TOURS
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/destinations" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
-              DESTINATIONS
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/custom-tours" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
-              CUSTOM
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/blog" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
-              BLOG
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/about" className="relative group text-white hover:text-shamaal-gold transition-colors text-xs font-semibold tracking-widest py-1.5">
-              ABOUT
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-shamaal-gold transition-all duration-300 group-hover:w-full" />
-            </Link>
+          <div className="hidden md:flex items-center space-x-12">
+            {[
+              { name: "HOME", path: "/" },
+              { name: "TOURS", path: "/tours" },
+              { name: "DESTINATIONS", path: "/destinations" },
+              { name: "CUSTOM", path: "/custom-tours" },
+              { name: "MEMORIES", path: "/memories" }
+            ].map((link) => (
+              <Link 
+                key={link.name}
+                href={link.path} 
+                className={`relative text-xs font-bold tracking-[0.2em] transition-all duration-300 hover:text-shamaal-gold ${
+                  (link.path === "/" ? pathname === "/" : pathname.startsWith(link.path)) 
+                    ? "text-shamaal-gold" 
+                    : "text-white/90"
+                }`}
+              >
+                {link.name}
+                <motion.span 
+                  layoutId="nav-underline"
+                  className={`absolute -bottom-2 left-0 h-[2px] bg-shamaal-gold rounded-full ${
+                    (link.path === "/" ? pathname === "/" : pathname.startsWith(link.path)) ? "w-full" : "w-0"
+                  }`}
+                />
+              </Link>
+            ))}
+            
             <Link
-              href="/login"
-              className="px-6 py-2.5 rounded-full border border-shamaal-gold/50 text-white bg-white/5 hover:bg-shamaal-gold hover:text-shamaal-navy transition-all duration-300 text-xs font-semibold tracking-wider uppercase"
+              href="/tours"
+              className={`flex items-center space-x-2 px-8 py-3 rounded-full border border-shamaal-gold/50 text-white transition-all duration-500 hover:bg-shamaal-gold hover:text-shamaal-navy hover:border-shamaal-gold text-xs font-black tracking-widest uppercase group ${
+                isScrolled ? "bg-shamaal-gold/10" : "bg-white/10"
+              }`}
             >
-              Sign In
+              <Camera className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              <span>BOOK NOW</span>
             </Link>
           </div>
 
@@ -93,47 +113,42 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-shamaal-navy/95 backdrop-blur-xl border-t border-white/10"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden absolute top-full left-0 right-0 bg-shamaal-navy/98 backdrop-blur-2xl border-t border-white/10 overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-6 space-y-1 flex flex-col">
-              <Link
-                href="/tours"
-                className="block px-3 py-4 text-white hover:bg-white/5 rounded-md text-base font-medium border-b border-white/5"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Tours
-              </Link>
-              <Link
-                href="/destinations"
-                className="block px-3 py-4 text-white hover:bg-white/5 rounded-md text-base font-medium border-b border-white/5"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Destinations
-              </Link>
-              <Link
-                href="/about"
-                className="block px-3 py-4 text-white hover:bg-white/5 rounded-md text-base font-medium border-b border-white/5"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="block px-3 py-4 text-white hover:bg-white/5 rounded-md text-base font-medium border-b border-white/5"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-              <div className="pt-4 px-3">
+            <div className="px-6 py-8 space-y-4 flex flex-col text-center">
+              {[
+                { name: "HOME", path: "/" },
+                { name: "TOURS", path: "/tours" },
+                { name: "DESTINATIONS", path: "/destinations" },
+                { name: "CUSTOM", path: "/custom-tours" },
+                { name: "MEMORIES", path: "/memories" },
+                { name: "CONTACT", path: "/contact" }
+              ].map((link) => (
                 <Link
-                  href="/login"
-                  className="block w-full text-center px-5 py-3 rounded-md bg-shamaal-gold text-shamaal-navy font-bold hover:bg-yellow-500 transition-colors"
+                  key={link.name}
+                  href={link.path}
+                  className={`block py-3 text-lg font-bold tracking-[0.2em] transition-all ${
+                    (link.path === "/" ? pathname === "/" : pathname.startsWith(link.path)) 
+                      ? "text-shamaal-gold" 
+                      : "text-white/90"
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Sign In
+                  {link.name}
+                </Link>
+              ))}
+              
+              <div className="pt-6">
+                <Link
+                  href="/tours"
+                  className="inline-flex items-center justify-center space-x-2 w-full px-8 py-4 rounded-full bg-shamaal-gold text-shamaal-navy font-black tracking-widest uppercase hover:bg-yellow-500 transition-all shadow-lg shadow-shamaal-gold/20"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Camera className="w-5 h-5" />
+                  <span>BOOK NOW</span>
                 </Link>
               </div>
             </div>

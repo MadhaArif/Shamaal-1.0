@@ -10,50 +10,43 @@ const prisma = new PrismaClient();
 // In a real app, this would be fetched from the database/CMS
 const MOCK_TOUR_DETAIL = {
   id: "1",
-  title: "Hunza Valley Autumn Blossom Tour",
-  slug: "hunza-valley-autumn",
-  price: 150000,
-  duration: 7,
-  location: "Hunza, Gilgit",
+  title: "Kashmir • Neelum Valley Tour",
+  slug: "kashmir-neelum-valley",
+  price: 18000,
+  duration: 3,
+  location: "Kashmir",
   difficulty: "Easy",
   groupSize: "12 - 15",
-  season: "Autumn (Oct - Nov)",
+  season: "Spring/Summer",
   rating: 4.9,
   reviews: 124,
   images: [
-    "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=2000",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
     "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800"
   ],
-  description: "Experience the magic of Hunza Valley during the autumn season. Watch the entire valley transform into a spectacular canvas of gold, orange, and red hues. This easy-paced tour is perfect for families and photography enthusiasts, taking you through ancient forts, crystal clear lakes, and offering majestic views of Rakaposhi and Ladyfinger Peak.",
+  description: "Explore the breathtaking Neelum Valley. Solo: PKR 18,000 | Couple: PKR 50,000. Package includes premium hotel accommodation, luxury transport, delicious meals, and a professional guide.",
   itinerary: [
-    { day: 1, title: "Arrival in Islamabad & Drive to Naran", desc: "Welcome to Islamabad! We begin our journey early morning via the scenic Hazara Motorway and Karakoram Highway to Naran." },
-    { day: 2, title: "Babusar Pass & Chilas", desc: "Crossing the majestic Babusar Pass (4,173m) offering panoramic views. Descend to Chilas for overnight stay." },
-    { day: 3, title: "Arrival in Hunza (Karimabad)", desc: "Drive alongside the mighty Indus River with view point stops at Nanga Parbat and Rakaposhi. Arrive in Karimabad, Hunza." },
-    { day: 4, title: "Exploring Altit & Baltit Forts", desc: "A day dedicated to history and culture. Visit the 800-year-old Baltit Fort and the 1000-year-old Altit Fort. Evening at Eagle's Nest for sunset." },
-    { day: 5, title: "Attabad Lake & Passu Cones", desc: "Drive to the mesmerizing turquoise waters of Attabad Lake. Continue to Passu to witness the magnificent Cathedral Peaks." },
-    { day: 6, title: "Drive back to Besham", desc: "Begin our journey back via the Karakoram Highway, staying overnight in Besham." },
-    { day: 7, title: "Return to Islamabad", desc: "Final leg of the journey back to the capital. Farewell dinner and drop-off." }
+    { day: 1, title: "Arrival in Muzaffarabad", desc: "Travel from Islamabad to Muzaffarabad. Visit the capital of AJK and enjoy the scenic Neelum River." },
+    { day: 2, title: "Keran & Sharda", desc: "Drive deep into the valley to Keran and Sharda. Explore ancient ruins and lush landscapes." },
+    { day: 3, title: "Return to Islamabad", desc: "Last moments in the valley before heading back to the capital via the Murree Expressway." }
   ],
   included: [
-    "Luxury transportation (Prado/Coaster)",
-    "Accommodation in premium hotels",
-    "Daily breakfast and dinner",
-    "Professional tour guide",
-    "First aid kit and basic medical supplies",
-    "Entry tickets to forts and national parks"
+    "Hotel Accommodation",
+    "Luxury Transportation",
+    "All Meals (Breakfast, Dinner)",
+    "Professional Tour Guide",
+    "Entry Tickets"
   ],
   excluded: [
-    "Domestic/International flights",
-    "Lunch and snacks",
-    "Personal expenses (laundry, phone calls)",
-    "Tips for guide and driver",
-    "Travel insurance"
+    "Personal Expenses",
+    "Tips for Driver",
+    "Travel Insurance"
   ]
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   try {
     const dbTour = await prisma.tour.findUnique({
       where: { slug }
@@ -61,15 +54,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
       title: dbTour ? dbTour.title : MOCK_TOUR_DETAIL.title,
     };
-  } catch (error) {
+  } catch {
     return {
       title: MOCK_TOUR_DETAIL.title,
     };
   }
 }
 
-export default async function TourDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function TourDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let tour = MOCK_TOUR_DETAIL;
 
   try {
@@ -91,15 +84,15 @@ export default async function TourDetailPage({ params }: { params: { slug: strin
         description: dbTour.description,
       };
     }
-  } catch (error) {
-    console.error("Failed to query tour detail by slug, using mock:", error);
+  } catch {
+    console.error("Failed to query tour detail by slug, using mock:");
   }
 
   return (
     <>
       <Navbar />
       
-      <main className="flex-grow pt-20 bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="flex-grow pt-32 md:pt-40 bg-shamaal-cream dark:bg-[var(--background)]">
         
         {/* Image Gallery Hero */}
         <div className="relative h-[60vh] min-h-[500px] w-full group overflow-hidden">
@@ -110,7 +103,7 @@ export default async function TourDetailPage({ params }: { params: { slug: strin
             fill
             className="object-cover"
             priority
-            unoptimized
+            sizes="100vw"
           />
           
           <div className="absolute bottom-0 left-0 right-0 z-20 p-8 bg-gradient-to-t from-shamaal-navy to-transparent">
@@ -220,7 +213,7 @@ export default async function TourDetailPage({ params }: { params: { slug: strin
               <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-white dark:bg-shamaal-navy/30 rounded-xl p-8 shadow-sm border border-gray-100 dark:border-white/10">
                   <h3 className="text-xl font-bold text-shamaal-navy dark:text-white mb-6 flex items-center">
-                    <Check className="w-5 h-5 text-green-500 mr-2" /> What's Included
+                    <Check className="w-5 h-5 text-green-500 mr-2" /> What&apos;s Included
                   </h3>
                   <ul className="space-y-3">
                     {tour.included.map((item, i) => (
@@ -234,7 +227,7 @@ export default async function TourDetailPage({ params }: { params: { slug: strin
                 
                 <div className="bg-white dark:bg-shamaal-navy/30 rounded-xl p-8 shadow-sm border border-gray-100 dark:border-white/10">
                   <h3 className="text-xl font-bold text-shamaal-navy dark:text-white mb-6 flex items-center">
-                    <X className="w-5 h-5 text-red-500 mr-2" /> What's Excluded
+                    <X className="w-5 h-5 text-red-500 mr-2" /> What&apos;s Excluded
                   </h3>
                   <ul className="space-y-3">
                     {tour.excluded.map((item, i) => (
@@ -284,14 +277,17 @@ export default async function TourDetailPage({ params }: { params: { slug: strin
                   </div>
                   
                   <div className="pt-4">
-                    <Link href="/book" className="block text-center w-full bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold text-lg rounded-xl py-4 transition-all duration-300 shadow-md shadow-shamaal-gold/30">
+                    <Link 
+                      href={`/book?tourId=${tour.id}`} 
+                      className="block text-center w-full bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold text-lg rounded-xl py-4 transition-all duration-300 shadow-md shadow-shamaal-gold/30"
+                    >
                       Book Now
                     </Link>
                   </div>
                 </form>
                 
                 <div className="mt-6 text-center">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">You won't be charged yet</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">You won&apos;t be charged yet</p>
                   <Link href="/contact" className="text-sm text-shamaal-sky font-semibold hover:text-shamaal-gold transition-colors">
                     Have a question? Contact us
                   </Link>

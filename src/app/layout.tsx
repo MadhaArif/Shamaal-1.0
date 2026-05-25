@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { Providers } from "@/components/Providers";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import CustomCursor from "@/components/layout/CustomCursor";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -83,14 +86,14 @@ const LOCAL_BUSINESS_SCHEMA = {
   url: BASE_URL,
   logo: `${BASE_URL}/logo.png`,
   image: `${BASE_URL}/og-image.jpg`,
-  telephone: "+92-300-1234567",
-  email: "info@shamaaltourism.com",
+  telephone: "0318-0425044",
+  email: "Shamaaltours@gmail.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "124 Blue Area, Jinnah Avenue",
-    addressLocality: "Islamabad",
-    addressRegion: "Islamabad Capital Territory",
-    postalCode: "44000",
+    streetAddress: "UG-18 Big City Plaza, Liberty Roundabout",
+    addressLocality: "Lahore",
+    addressRegion: "Punjab",
+    postalCode: "54000",
     addressCountry: "PK",
   },
   geo: {
@@ -129,8 +132,15 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="min-h-full flex flex-col bg-shamaal-cream text-shamaal-navy dark:bg-[var(--background)] dark:text-[var(--foreground)]">
-        {children}
+      <body 
+        className="min-h-full flex flex-col bg-shamaal-cream text-shamaal-navy dark:bg-[var(--background)] dark:text-[var(--foreground)] overflow-x-hidden"
+        suppressHydrationWarning
+      >
+        <CustomCursor />
+        <Providers>
+          {children}
+          <WhatsAppButton />
+        </Providers>
         <Script
           id="local-business-schema"
           type="application/ld+json"
