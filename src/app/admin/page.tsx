@@ -19,15 +19,16 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 interface AdminData {
-  stats: {
+  error?: string;
+  stats?: {
     totalBookings: number;
     totalLeads: number;
     totalMemories: number;
     revenue: number;
   };
-  bookings: any[];
-  leads: any[];
-  memories: any[];
+  bookings?: any[];
+  leads?: any[];
+  memories?: any[];
 }
 
 export default function AdminDashboard() {
@@ -68,7 +69,10 @@ export default function AdminDashboard() {
     );
   }
 
-  const { stats, bookings, leads, memories } = data;
+  const stats = data?.stats || { totalBookings: 0, totalLeads: 0, totalMemories: 0, revenue: 0 };
+  const bookings = data?.bookings || [];
+  const leads = data?.leads || [];
+  const memories = data?.memories || [];
 
   return (
     <>
