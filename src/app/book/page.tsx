@@ -22,12 +22,14 @@ const FALLBACK_TOUR = {
   duration: 3,
   location: "Kashmir",
   price: 18000,
-  image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=400",
+  image: "/images/destinations/saiful-malook.jpeg",
 };
 
 function BookingContent() {
   const searchParams = useSearchParams();
   const tourIdFromUrl = searchParams.get("tourId");
+  const dateFromUrl = searchParams.get("date");
+  const travelersFromUrl = searchParams.get("travelers");
   
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedTour, setSelectedTour] = useState(FALLBACK_TOUR);
@@ -35,8 +37,8 @@ function BookingContent() {
   
   const [form, setForm] = useState({
     tourId: tourIdFromUrl || "",
-    startDate: "",
-    travelers: 1,
+    startDate: dateFromUrl || "",
+    travelers: travelersFromUrl ? parseInt(travelersFromUrl) : 1,
     firstName: "",
     lastName: "",
     email: "",

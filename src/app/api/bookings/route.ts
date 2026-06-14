@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-
-const prisma = new PrismaClient();
 
 // GET bookings from the database (filtered by user if logged in)
 export async function GET() {

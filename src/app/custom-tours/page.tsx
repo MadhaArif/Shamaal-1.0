@@ -16,7 +16,7 @@ const PACKAGES = [
     desc: "Romantic getaways to the world's most stunning landscapes. Private jeep, luxury camps, candle-lit dinners under the stars.",
     features: ["Private transport", "Luxury accommodation", "Romantic setups", "Personalised experiences"],
     color: "rose",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=900",
   },
   {
     icon: Building2,
@@ -24,7 +24,7 @@ const PACKAGES = [
     desc: "Strengthen team bonds through adventure. We organise everything from transport to team-building activities for groups of 10–100.",
     features: ["Group transport & logistics", "Team-building activities", "Flexible itineraries", "Conference facilities"],
     color: "sky",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=900",
   },
   {
     icon: Users,
@@ -32,7 +32,7 @@ const PACKAGES = [
     desc: "Kid-friendly paced itineraries with safe activities, comfortable stays, and memories the whole family will treasure forever.",
     features: ["Child-safe activities", "Comfortable pacing", "Family rooms", "Flexible schedule"],
     color: "amber",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=900",
   },
   {
     icon: Compass,
@@ -40,7 +40,7 @@ const PACKAGES = [
     desc: "Have a specific dream in mind? Tell us and our travel designers will craft a bespoke tour just for you — any destination, any budget.",
     features: ["Any destination", "Any duration", "Any group size", "Full personalisation"],
     color: "navy",
-    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=600",
+    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=900",
   },
 ];
 
@@ -53,7 +53,7 @@ export default function CustomToursPage() {
         {/* Hero */}
         <section className="relative pt-32 md:pt-40 pb-24 bg-shamaal-navy overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <Image src="https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=2000" alt="Custom Tours Background" fill className="object-cover" priority sizes="100vw" />
+            <Image src="/images/destinations/nanga-parbat.jpeg" alt="Custom Tours Background" fill className="object-cover" priority sizes="100vw" />
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span className="text-shamaal-gold font-bold tracking-widest uppercase text-sm block mb-4">Tailored For You</span>

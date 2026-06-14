@@ -18,7 +18,7 @@ const POSTS = [
     category: "Destination Guide",
     readTime: "8 min read",
     date: "15 May 2026",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/baldi-viewpoint.jpeg",
     featured: true,
   },
   {
@@ -28,7 +28,7 @@ const POSTS = [
     category: "Packing Guide",
     readTime: "6 min read",
     date: "10 May 2026",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/k2-concordia.jpeg",
     featured: false,
   },
   {
@@ -38,7 +38,7 @@ const POSTS = [
     category: "Photography",
     readTime: "5 min read",
     date: "5 May 2026",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/nanga-parbat.jpeg",
     featured: false,
   },
   {
@@ -48,7 +48,7 @@ const POSTS = [
     category: "Travel Tips",
     readTime: "10 min read",
     date: "28 Apr 2026",
-    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/deosai-plains.jpeg",
     featured: false,
   },
   {
@@ -58,7 +58,7 @@ const POSTS = [
     category: "Culture",
     readTime: "7 min read",
     date: "20 Apr 2026",
-    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/khaplu-fort.jpeg",
     featured: false,
   },
 ];

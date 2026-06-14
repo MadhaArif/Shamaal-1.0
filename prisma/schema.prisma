@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // NextAuth Models
@@ -110,9 +111,21 @@ model Lead {
   email       String   @unique
   phone       String?
   tourId      String?
+  message     String?  // Added for contact form
   startDate   String?
   travelers   Int      @default(1)
   status      String   @default("DRAFT")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  title     String
+  location  String
+  image     String   // URL or path
+  author    String
+  likes     Int      @default(0)
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

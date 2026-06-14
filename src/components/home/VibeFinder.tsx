@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trees, Mountain, Tent, Waves, ArrowRight, Camera } from "lucide-react";
+import { Trees, Mountain, Tent, ArrowRight, Camera } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ const VIBES = [
     icon: Mountain,
     title: "Adventure",
     desc: "For the adrenaline seekers. High peaks and rough tracks.",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/k2-concordia.jpeg",
     link: "/tours?query=adventure"
   },
   {
@@ -20,7 +20,7 @@ const VIBES = [
     icon: Trees,
     title: "Peace",
     desc: "Quiet valleys, lush forests, and serene landscapes.",
-    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/deosai-plains.jpeg",
     link: "/tours?query=peace"
   },
   {
@@ -28,7 +28,7 @@ const VIBES = [
     icon: Camera,
     title: "Culture",
     desc: "Ancient forts, local traditions, and rich history.",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/khaplu-fort.jpeg",
     link: "/tours?query=culture"
   },
   {
@@ -36,7 +36,7 @@ const VIBES = [
     icon: Tent,
     title: "Wild Life",
     desc: "Sleeping under the stars and wildlife exploration.",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/nanga-parbat.jpeg",
     link: "/tours?query=wildlife"
   }
 ];

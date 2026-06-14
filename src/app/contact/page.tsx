@@ -1,15 +1,61 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactHero from "@/components/contact/ContactHero";
-import { Mail, Phone, MapPin, MessageCircle, Clock } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description: "Get in touch with Shamaal Tourism. Book a custom tour, ask about destinations, or plan your dream trip to Northern Pakistan.",
-};
+import { Mail, Phone, MapPin, MessageCircle, Clock, Loader2, CheckCircle } from "lucide-react";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    interestedIn: "General Inquiry",
+    message: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          name: `${formData.firstName} ${formData.lastName}`.trim()
+        })
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          interestedIn: "General Inquiry",
+          message: ""
+        });
+      } else {
+        const data = await res.json();
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Failed to connect to the server. Please check your internet.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -28,71 +74,114 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="lg:col-span-2 bg-white dark:bg-shamaal-navy/30 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-white/10">
               <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-8">Send us a Message</h2>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {success ? (
+                <div className="py-12 text-center">
+                  <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle className="w-10 h-10 text-green-500" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-4">Message Sent!</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8">Thank you for reaching out. We will get back to you within 24 hours.</p>
+                  <button 
+                    onClick={() => setSuccess(false)}
+                    className="bg-shamaal-navy text-white px-8 py-3 rounded-full font-bold"
+                  >
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl text-sm font-medium">
+                      {error}
+                    </div>
+                  )}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">First Name</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                        placeholder="Ali"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Last Name</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                        placeholder="Ahmed"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">First Name</label>
+                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Email Address</label>
                     <input
-                      type="text"
-                      placeholder="Ali"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      placeholder="ali@example.com"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Last Name</label>
+                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Phone Number</label>
                     <input
-                      type="text"
-                      placeholder="Ahmed"
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      placeholder="+92 300 0000000"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    placeholder="ali@example.com"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Interested In</label>
+                    <select 
+                      value={formData.interestedIn}
+                      onChange={(e) => setFormData({...formData, interestedIn: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
+                    >
+                      <option>General Inquiry</option>
+                      <option>Tour Booking</option>
+                      <option>Custom Itinerary</option>
+                      <option>Group / Corporate Tour</option>
+                      <option>Honeymoon Package</option>
+                    </select>
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    placeholder="+92 300 0000000"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Message</label>
+                    <textarea
+                      rows={5}
+                      required
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      placeholder="Tell us about your dream trip..."
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition resize-none"
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Interested In</label>
-                  <select className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition">
-                    <option>General Inquiry</option>
-                    <option>Tour Booking</option>
-                    <option>Custom Itinerary</option>
-                    <option>Group / Corporate Tour</option>
-                    <option>Honeymoon Package</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Message</label>
-                  <textarea
-                    rows={5}
-                    placeholder="Tell us about your dream trip..."
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold text-lg rounded-xl py-4 transition-all duration-300 shadow-md shadow-shamaal-gold/30"
-                >
-                  Send Message
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold text-lg rounded-xl py-4 transition-all duration-300 shadow-md shadow-shamaal-gold/30 flex items-center justify-center space-x-2 disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Send Message"}
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Contact Info Sidebar */}

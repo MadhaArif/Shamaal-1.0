@@ -4,7 +4,7 @@ import TourCard from "@/components/tours/TourCard";
 import DestinationHero from "@/components/destinations/DestinationHero";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Sun, Thermometer, Clock, ArrowLeft, Camera, CheckCircle } from "lucide-react";
+import { MapPin, Sun, Thermometer, Clock, Camera, CheckCircle } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -24,11 +24,11 @@ const DESTINATIONS: Record<string, {
     temp: "15–25°C",
     altitude: "2,438m",
     language: "Burushaski, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/attabad-lake.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/baldi-viewpoint.jpeg",
+      "/images/destinations/babusar-top.jpeg",
+      "/images/destinations/deosai-plains.jpeg",
     ],
     description: "Hunza Valley is a mountainous valley in the Gilgit-Baltistan region of Pakistan, often called 'Heaven on Earth'. Enclosed by some of the world's highest peaks including Rakaposhi, Ultar Sar and Ladyfinger Peak, the valley is famous for its spectacular autumn colours, ancient forts, and the legendary longevity of its people — the Hunzakuts.",
     localTips: [
@@ -40,7 +40,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Attabad Lake", "Baltit Fort", "Altit Fort", "Eagle's Nest", "Rakaposhi View", "Cherry Blossom Season", "Passu Cones", "Khunjerab Pass"],
     tours: [
-      { id: "3", title: "Hunza Valley Tour", slug: "hunza-valley", price: 30000, duration: 5, location: "Hunza", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800", rating: 4.8, reviews: 86 },
+      { id: "3", title: "Hunza Valley Tour", slug: "hunza-valley", price: 30000, duration: 5, location: "Hunza", difficulty: "Moderate", image: "/images/destinations/attabad-lake.jpeg", rating: 4.8, reviews: 86 },
     ],
   },
   skardu: {
@@ -52,11 +52,11 @@ const DESTINATIONS: Record<string, {
     temp: "10–22°C",
     altitude: "2,228m",
     language: "Balti, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/skardu-viewpoint.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/shangrilla-lake.jpeg",
+      "/images/destinations/k2-concordia.jpeg",
+      "/images/destinations/khaplu-fort.jpeg",
     ],
     description: "Skardu is a city and the capital of Skardu District in Gilgit-Baltistan, Pakistan. At an elevation of 2,228m, it serves as the base for expeditions to K2 — the world's second highest mountain. With the Shangri-La resort, Deosai National Park, and Satpara Lake, Skardu is a paradise for adventure seekers and nature lovers.",
     localTips: [
@@ -68,7 +68,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Shangrila Lake", "Deosai National Park", "K2 Base Camp", "Cold Desert", "Satpara Lake", "Katchura Lake", "Skardu Fort", "Concordia"],
     tours: [
-      { id: "5", title: "Skardu Tour", slug: "skardu-tour", price: 32000, duration: 6, location: "Skardu", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800", rating: 5.0, reviews: 215 },
+      { id: "5", title: "Skardu Tour", slug: "skardu-tour", price: 32000, duration: 6, location: "Skardu", difficulty: "Moderate", image: "/images/destinations/skardu-viewpoint.jpeg", rating: 5.0, reviews: 215 },
     ],
   },
   "fairy-meadows": {
@@ -80,11 +80,11 @@ const DESTINATIONS: Record<string, {
     temp: "8–18°C",
     altitude: "3,300m",
     language: "Shina, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/nanga-parbat.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/saiful-malook.jpeg",
+      "/images/destinations/rainbow-lake.jpeg",
+      "/images/destinations/malam-jabba.jpeg",
     ],
     description: "Fairy Meadows (Joot) is a lush green plateau at 3,300m, offering some of the most dramatic views of Nanga Parbat (8,126m) — the world's ninth-highest mountain. The journey itself is an adventure: a 4WD jeep ride on a cliff-hugging road followed by a 3-hour hike through pine forests to the meadows.",
     localTips: [
@@ -96,7 +96,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Nanga Parbat View", "Beyal Camp", "Raikot Glacier", "Lush Green Meadows", "Tato Village", "Pine Forests", "Moonrise Views", "Fairy Lake"],
     tours: [
-      { id: "4", title: "Fairy Meadows Tour", slug: "fairy-meadows-tour", price: 30000, duration: 5, location: "Diamer", difficulty: "Moderate", image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800", rating: 5.0, reviews: 215 },
+      { id: "4", title: "Fairy Meadows Tour", slug: "fairy-meadows-tour", price: 30000, duration: 5, location: "Diamer", difficulty: "Moderate", image: "/images/destinations/nanga-parbat.jpeg", rating: 5.0, reviews: 215 },
     ],
   },
   swat: {
@@ -108,11 +108,11 @@ const DESTINATIONS: Record<string, {
     temp: "18–28°C",
     altitude: "980m",
     language: "Pashto, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/malam-jabba.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/saiful-malook.jpeg",
+      "/images/destinations/rainbow-lake.jpeg",
+      "/images/destinations/shangrilla-resort.jpeg",
     ],
     description: "Swat Valley — once called the Switzerland of the East — is a breathtakingly green valley in Khyber Pakhtunkhwa, Pakistan. With pine-forested mountains, gushing rivers, ancient Buddhist ruins, and the ski resort of Malam Jabba, Swat offers something for every type of traveller.",
     localTips: [
@@ -124,7 +124,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Malam Jabba Ski Resort", "Mahodand Lake", "Ushu Forest", "Kalam Valley", "Swat Museum", "Mingora Bazaar", "Fizagat Park", "Bahrain"],
     tours: [
-      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 124 },
+      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "/images/destinations/malam-jabba.jpeg", rating: 4.9, reviews: 124 },
     ],
   },
   chitral: {
@@ -136,11 +136,11 @@ const DESTINATIONS: Record<string, {
     temp: "12–25°C",
     altitude: "1,497m",
     language: "Khowar, Kalasha, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/khaplu-fort.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/kharphocho-fort.jpeg",
+      "/images/destinations/skardu-viewpoint.jpeg",
+      "/images/destinations/deosai-plains.jpeg",
     ],
     description: "Chitral is one of Pakistan's most culturally unique destinations — home to the ancient Kalash people, the world's only surviving pre-Islamic indigenous culture in the region. Visit the three Kalash valleys (Bumburet, Rumbur, Birir) and the legendary Shandur Polo Festival at the world's highest polo ground.",
     localTips: [
@@ -152,7 +152,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Kalash Valleys", "Tirich Mir View", "Chitral Fort", "Shandur Polo Festival", "Shahi Mosque", "Chitral Museum", "Bumburet Valley", "Mastuj"],
     tours: [
-      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800", rating: 4.9, reviews: 124 },
+      { id: "1", title: "Kashmir • Neelum Valley Tour", slug: "kashmir-neelum-valley", price: 18000, duration: 3, location: "Kashmir", difficulty: "Easy", image: "/images/destinations/khaplu-fort.jpeg", rating: 4.9, reviews: 124 },
     ],
   },
   naran: {
@@ -164,11 +164,11 @@ const DESTINATIONS: Record<string, {
     temp: "10–22°C",
     altitude: "2,409m",
     language: "Gojri, Hindko, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/saiful-malook.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/babusar-top.jpeg",
+      "/images/destinations/nanga-parbat.jpeg",
+      "/images/destinations/attabad-lake.jpeg",
     ],
     description: "Naran and the Kaghan Valley is one of Pakistan's most popular tourist destinations — a 155km long valley filled with emerald lakes, roaring rivers, glaciers, and alpine meadows. The highlight is the legendary Saif-ul-Malook Lake, set against the backdrop of glaciers and surrounded by local folklore.",
     localTips: [
@@ -180,7 +180,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Saif-ul-Malook Lake", "Babusar Pass", "Ansoo Lake", "Lulusar Lake", "Kaghan Valley", "Kunhar River", "Batakundi Meadows", "Shogran"],
     tours: [
-      { id: "2", title: "Naran Valley Tour", slug: "naran-valley", price: 18000, duration: 3, location: "Naran", difficulty: "Easy", image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800", rating: 4.7, reviews: 189 },
+      { id: "2", title: "Naran Valley Tour", slug: "naran-valley", price: 18000, duration: 3, location: "Naran", difficulty: "Easy", image: "/images/destinations/saiful-malook.jpeg", rating: 4.7, reviews: 189 },
     ],
   },
   gilgit: {
@@ -192,11 +192,11 @@ const DESTINATIONS: Record<string, {
     temp: "15–28°C",
     altitude: "1,500m",
     language: "Shina, Urdu",
-    heroImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=2000",
+    heroImage: "/images/destinations/rainbow-lake.jpeg",
     galleryImages: [
-      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+      "/images/destinations/baldi-viewpoint.jpeg",
+      "/images/destinations/cold-desert.jpeg",
+      "/images/destinations/shangrilla-lake.jpeg",
     ],
     description: "Gilgit is the capital of Gilgit-Baltistan and the historic gateway to the ancient Silk Road. It sits at the convergence of three of the world's greatest mountain ranges — the Karakoram, Hindu Kush, and the Himalayas. The city is a vibrant hub for mountaineering, trekking, and cultural exploration.",
     localTips: [
@@ -208,7 +208,7 @@ const DESTINATIONS: Record<string, {
     ],
     highlights: ["Kargah Buddha", "Naltar Valley", "Gilgit Bazaar", "KKH Junction", "Polo Ground", "Nomal Valley", "Bar Valley", "Haramosh Peak View"],
     tours: [
-      { id: "8", title: "Gilgit & Naltar Valley Tour", slug: "gilgit-naltar", price: 90000, duration: 5, location: "Gilgit", difficulty: "Easy", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800", rating: 4.6, reviews: 54 },
+      { id: "8", title: "Gilgit & Naltar Valley Tour", slug: "gilgit-naltar", price: 90000, duration: 5, location: "Gilgit", difficulty: "Easy", image: "/images/destinations/rainbow-lake.jpeg", rating: 4.6, reviews: 54 },
     ],
   },
 };

@@ -10,6 +10,7 @@ import Image from "next/image";
 
 export default function Navbar() {
   const { data: session } = useSession();
+  console.log("Navbar session check:", !!session);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();

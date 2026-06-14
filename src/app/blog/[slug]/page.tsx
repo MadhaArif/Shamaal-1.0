@@ -14,7 +14,7 @@ const POSTS = [
     readTime: "8 min read",
     date: "15 May 2026",
     author: "Shamaal Team",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=1920",
+    image: "/images/destinations/baldi-viewpoint.jpeg",
   },
   {
     slug: "k2-base-camp-packing-list",
@@ -24,7 +24,7 @@ const POSTS = [
     readTime: "6 min read",
     date: "10 May 2026",
     author: "Zahid Khan",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=1920",
+    image: "/images/destinations/k2-concordia.jpeg",
   },
   {
     slug: "fairy-meadows-sunrise",
@@ -34,7 +34,7 @@ const POSTS = [
     readTime: "5 min read",
     date: "5 May 2026",
     author: "Irfan Ali",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=1920",
+    image: "/images/destinations/nanga-parbat.jpeg",
   },
   {
     slug: "pakistan-north-budget-travel",
@@ -44,7 +44,7 @@ const POSTS = [
     readTime: "10 min read",
     date: "28 Apr 2026",
     author: "Shamaal Team",
-    image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=1920",
+    image: "/images/destinations/deosai-plains.jpeg",
   },
   {
     slug: "chitral-kalash-festivals",
@@ -54,7 +54,7 @@ const POSTS = [
     readTime: "7 min read",
     date: "20 Apr 2026",
     author: "Ayesha Bibi",
-    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=1920",
+    image: "/images/destinations/khaplu-fort.jpeg",
   },
 ];
 

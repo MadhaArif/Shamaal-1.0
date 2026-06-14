@@ -11,7 +11,7 @@ const TOURS = [
     difficulty: "Easy",
     featured: true,
     description: "Explore the breathtaking Neelum Valley. Solo: PKR 18,000 | Couple: PKR 50,000. Package includes premium hotel accommodation, luxury transport, delicious meals, and a professional guide.",
-    images: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800"
+    images: "/images/destinations/saiful-malook.jpeg"
   },
   {
     title: "Naran Valley Tour",
@@ -22,7 +22,7 @@ const TOURS = [
     difficulty: "Easy",
     featured: true,
     description: "Journey to the heart of the Himalayas. Solo: PKR 18,000 | Couple: PKR 55,000. Package includes premium hotel stay, luxury transport, all meals, and a professional guide.",
-    images: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800"
+    images: "/images/destinations/babusar-top.jpeg"
   },
   {
     title: "Hunza Valley Tour",
@@ -33,7 +33,7 @@ const TOURS = [
     difficulty: "Moderate",
     featured: true,
     description: "Experience the magic of Hunza. Solo: PKR 30,000 | Couple: PKR 85,000. Package includes luxury hotel accommodation, premium transport, all meals, and an expert guide.",
-    images: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800"
+    images: "/images/destinations/attabad-lake.jpeg"
   },
   {
     title: "Fairy Meadows Tour",
@@ -44,7 +44,7 @@ const TOURS = [
     difficulty: "Moderate",
     featured: true,
     description: "A dream trip to the base of Nanga Parbat. Solo: PKR 30,000 | Couple: PKR 75,000. Package includes camping/hotel stay, transport, meals, and a professional guide.",
-    images: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800"
+    images: "/images/destinations/nanga-parbat.jpeg"
   },
   {
     title: "Skardu Tour",
@@ -55,7 +55,7 @@ const TOURS = [
     difficulty: "Moderate",
     featured: true,
     description: "Explore the throne of mountains. Solo: PKR 32,000 | Couple: PKR 85,000. Package includes premium hotel stay, luxury transport, all meals, and a professional guide.",
-    images: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800"
+    images: "/images/destinations/shangrilla-lake.jpeg"
   }
 ];
 

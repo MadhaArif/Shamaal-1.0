@@ -18,7 +18,7 @@ export default function ToursHero({ title }: ToursHeroProps) {
           className="relative w-full h-full"
         >
           <Image
-            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=2000"
+            src="/images/destinations/babusar-top.jpeg"
             alt="Explore Tours"
             fill
             className="object-cover"

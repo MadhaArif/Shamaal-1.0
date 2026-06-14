@@ -15,7 +15,7 @@ export default function DestinationsHero() {
           className="relative w-full h-full"
         >
           <Image
-            src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=2400"
+            src="/images/destinations/deosai-plains.jpeg"
             alt="Pakistan Northern Areas"
             fill
             className="object-cover"

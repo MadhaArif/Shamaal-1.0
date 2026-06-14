@@ -30,6 +30,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Shamaal Tourism", url: BASE_URL }],
   creator: "Shamaal Tourism",
   publisher: "Shamaal Tourism",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

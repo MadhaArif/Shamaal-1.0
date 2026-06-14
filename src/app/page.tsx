@@ -8,9 +8,7 @@ import TourCard from "@/components/tours/TourCard";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Star, Shield, Globe, Award, Users, MessageCircle, Quote } from "lucide-react";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 const FEATURED_TOURS = [
   {
@@ -21,19 +19,19 @@ const FEATURED_TOURS = [
     duration: 3,
     location: "Kashmir",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/saiful-malook.jpeg",
     rating: 4.9,
     reviews: 124,
   },
   {
     id: "2",
-    title: "Hunza Valley Tour",
-    slug: "hunza-valley",
-    price: 30000,
-    duration: 5,
-    location: "Hunza",
-    difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+    title: "Naran Valley Tour",
+    slug: "naran-valley",
+    price: 18000,
+    duration: 3,
+    location: "Naran",
+    difficulty: "Easy",
+    image: "/images/destinations/babusar-top.jpeg",
     rating: 4.8,
     reviews: 86,
   },
@@ -45,7 +43,7 @@ const FEATURED_TOURS = [
     duration: 6,
     location: "Skardu",
     difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/shangrilla-lake.jpeg",
     rating: 5.0,
     reviews: 215,
   },
@@ -79,7 +77,7 @@ const TESTIMONIALS = [
 ];
 
 const WHY_US = [
-  { icon: Shield, title: "100% Safe & Certified", desc: "PTDC certified guides with full insurance coverage and 24/7 emergency support on all tours." },
+  { icon: Shield, title: "100% Safe & Certified", desc: "24/7 emergency support on all tours." },
   { icon: Globe, title: "Local Expertise", desc: "Born and raised in the north, our team offers authentic insights you won't find in guidebooks." },
   { icon: Award, title: "Award-Winning Service", desc: "TripAdvisor Travellers' Choice 2022, 2023 & 2024. Pakistan's highest-rated tour operator." },
   { icon: Users, title: "Personalised Journeys", desc: "Small groups and custom itineraries tailored exactly to your pace, interests, and budget." },
@@ -101,7 +99,7 @@ export default async function Home() {
         duration: t.duration,
         location: t.location,
         difficulty: t.difficulty,
-        image: t.images.split(",")[0] || "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+        image: t.images.split(",")[0] || "/images/destinations/attabad-lake.jpeg",
         rating: 4.9,
         reviews: 124
       }));
@@ -109,7 +107,12 @@ export default async function Home() {
       featuredTours = FEATURED_TOURS;
     }
   } catch (error) {
-    console.error("Failed to fetch featured tours from database:", error);
+    // Log a simple warning instead of the full error during development if DB is not reachable
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("Database not reachable, using featured tours fallback data.");
+    } else {
+      console.error("Failed to fetch featured tours from database:", error);
+    }
     featuredTours = FEATURED_TOURS;
   }
 
@@ -132,9 +135,9 @@ export default async function Home() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[
-                { name: "Hunza Valley", slug: "hunza", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800", tours: 5 },
-                { name: "Skardu", slug: "skardu", img: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800", tours: 4 },
-                { name: "Fairy Meadows", slug: "fairy-meadows", img: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800", tours: 3 },
+                { name: "Baskochi View", slug: "hunza", img: "/images/destinations/attabad-lake.jpeg", tours: 5 },
+                { name: "Shangrilla Lake", slug: "skardu", img: "/images/destinations/shangrilla-lake.jpeg", tours: 4 },
+                { name: "Nanga Parbat", slug: "fairy-meadows", img: "/images/destinations/nanga-parbat.jpeg", tours: 3 },
               ].map((dest, i) => (
                 <Link
                   key={dest.slug}

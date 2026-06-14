@@ -38,9 +38,7 @@ export default function TourCard({
           <span className="text-gray-500 font-normal">({reviews})</span>
         </div>
         <div className="absolute bottom-4 left-4 z-20">
-          <span className="bg-shamaal-gold text-shamaal-navy text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider shadow-sm">
-            {difficulty}
-          </span>
+          {/* Removed difficulty label */}
         </div>
         <Image
           src={image}
@@ -56,10 +54,6 @@ export default function TourCard({
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-1 text-shamaal-gold" />
             {location}
-          </div>
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-1 text-shamaal-gold" />
-            {duration} Days
           </div>
         </div>
         

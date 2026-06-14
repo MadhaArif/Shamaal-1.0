@@ -4,11 +4,9 @@ import TourCard from "@/components/tours/TourCard";
 import TourFilters from "@/components/tours/TourFilters";
 import ToursHero from "@/components/tours/ToursHero";
 import { Filter } from "lucide-react";
-import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
 import { Suspense } from "react";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 const FALLBACK_TOURS = [
   {
@@ -19,7 +17,7 @@ const FALLBACK_TOURS = [
     duration: 3,
     location: "Kashmir",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/saiful-malook.jpeg",
     rating: 4.9,
     reviews: 124
   },
@@ -31,9 +29,45 @@ const FALLBACK_TOURS = [
     duration: 5,
     location: "Hunza",
     difficulty: "Moderate",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/attabad-lake.jpeg",
     rating: 4.8,
     reviews: 86
+  },
+  {
+    id: "3",
+    title: "Skardu Tour",
+    slug: "skardu-tour",
+    price: 32000,
+    duration: 6,
+    location: "Skardu",
+    difficulty: "Moderate",
+    image: "/images/destinations/shangrilla-lake.jpeg",
+    rating: 5.0,
+    reviews: 215
+  },
+  {
+    id: "4",
+    title: "Naran Valley Expedition",
+    slug: "naran-valley",
+    price: 25000,
+    duration: 3,
+    location: "Naran",
+    difficulty: "Easy",
+    image: "/images/destinations/babusar-top.jpeg",
+    rating: 4.7,
+    reviews: 98
+  },
+  {
+    id: "5",
+    title: "Swat & Malam Jabba",
+    slug: "swat-valley",
+    price: 22000,
+    duration: 4,
+    location: "Swat",
+    difficulty: "Easy",
+    image: "/images/destinations/malam-jabba.jpeg",
+    rating: 4.9,
+    reviews: 156
   }
 ];
 
@@ -62,46 +96,32 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
   
   let tours: Tour[] = [];
   try {
-    const whereClause: {
-      OR?: Array<{ title?: { contains: string }; location?: { contains: string }; description?: { contains: string } }>;
-      location?: { contains: string };
-    } = {};
-    
-    if (query) {
-      whereClause.OR = [
+    const queryData = query ? {
+      OR: [
         { title: { contains: query } },
         { location: { contains: query } },
-        { description: { contains: query } },
-      ];
-    }
-    
-    if (region) {
-      whereClause.location = { contains: region };
-    }
+        { description: { contains: query } }
+      ]
+    } : {};
+
+    const regionData = region ? {
+      location: { contains: region }
+    } : {};
 
     const dbTours = await prisma.tour.findMany({
-      where: whereClause,
-      orderBy: { createdAt: "desc" }
+      where: {
+        AND: [queryData, regionData]
+      }
     });
-
-    if (dbTours.length > 0) {
-      tours = dbTours.map((t) => ({
-        id: t.id,
-        title: t.title,
-        slug: t.slug,
-        price: t.price,
-        duration: t.duration,
-        location: t.location,
-        difficulty: t.difficulty,
-        image: t.images.split(",")[0] || "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
-        rating: 4.9,
-        reviews: 124
-      }));
-    } else if (!query && !region) {
-      tours = FALLBACK_TOURS;
-    }
-  } catch (error) {
-    console.error("Failed to fetch tours from database:", error);
+    
+    tours = dbTours.map(t => ({
+      ...t,
+      image: t.images.split(',')[0],
+      rating: 4.8, // Default rating as not in schema
+      reviews: 120 // Default reviews as not in schema
+    })) as Tour[];
+  } catch (error: unknown) {
+    console.error("Database error, using fallbacks:", error);
     tours = FALLBACK_TOURS;
   }
 

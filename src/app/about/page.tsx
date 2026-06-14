@@ -33,7 +33,7 @@ export default function AboutPage() {
         <section className="relative h-[60vh] flex items-end overflow-hidden">
           <div className="absolute inset-0 bg-shamaal-navy/60 z-10" />
           <Image
-            src="https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=2000"
+            src="/images/destinations/shangrilla-lake.jpeg"
             alt="Shamaal Tourism Team"
             fill
             className="object-cover"
@@ -96,7 +96,7 @@ export default function AboutPage() {
 
               <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=900"
+                  src="/images/destinations/skardu-viewpoint.jpeg"
                   alt="Northern Pakistan mountains"
                   fill
                   className="object-cover"

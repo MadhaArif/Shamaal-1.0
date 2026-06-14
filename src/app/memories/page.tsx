@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Camera, Heart, Share2, MapPin, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, Heart, Share2, MapPin, Check, X, Upload, Loader2 } from "lucide-react";
 
-const MEMORIES = [
+interface Memory {
+  id: string | number;
+  title: string;
+  location: string;
+  image: string;
+  author: string;
+  likes: number;
+}
+
+const FALLBACK_MEMORIES: Memory[] = [
   {
     id: 1,
     title: "Sunset at Attabad Lake",
     location: "Hunza Valley",
-    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/attabad-lake.jpeg",
     author: "Zahid Khan",
     likes: 124
   },
@@ -20,7 +29,7 @@ const MEMORIES = [
     id: 2,
     title: "Morning in Fairy Meadows",
     location: "Nanga Parbat Base",
-    image: "https://images.unsplash.com/photo-1627896157734-4d7d4388f28b?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/nanga-parbat.jpeg",
     author: "Ayesha Bibi",
     likes: 89
   },
@@ -28,7 +37,7 @@ const MEMORIES = [
     id: 3,
     title: "Skardu Cold Desert Safari",
     location: "Skardu",
-    image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/cold-desert.jpeg",
     author: "Irfan Ali",
     likes: 215
   },
@@ -36,13 +45,13 @@ const MEMORIES = [
     id: 4,
     title: "Autumn Colors",
     location: "Passu Cones",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
+    image: "/images/destinations/baldi-viewpoint.jpeg",
     author: "Sana Tariq",
     likes: 156
   }
 ];
 
-function MemoryCard({ memory, index }: { memory: typeof MEMORIES[0]; index: number }) {
+function MemoryCard({ memory, index }: { memory: Memory; index: number }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(memory.likes);
   const [isShared, setIsShared] = useState(false);
@@ -135,6 +144,81 @@ function MemoryCard({ memory, index }: { memory: typeof MEMORIES[0]; index: numb
 }
 
 export default function MemoriesPage() {
+  const [memories, setMemories] = useState<Memory[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const [formData, setFormData] = useState({
+    title: "",
+    location: "",
+    author: "",
+    image: null as File | null
+  });
+
+  const fetchMemories = async () => {
+    try {
+      const res = await fetch("/api/memories");
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        setMemories(data);
+      } else {
+        setMemories(FALLBACK_MEMORIES);
+      }
+    } catch (err) {
+      console.error("Error fetching memories:", err);
+      setMemories(FALLBACK_MEMORIES);
+    }
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      await fetchMemories();
+    };
+    init();
+  }, []);
+
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.image || !formData.title || !formData.location || !formData.author) {
+      alert("Please fill all fields and select an image.");
+      return;
+    }
+
+    setIsUploading(true);
+    const data = new FormData();
+    data.append("image", formData.image);
+    data.append("title", formData.title);
+    data.append("location", formData.location);
+    data.append("author", formData.author);
+
+    try {
+      const res = await fetch("/api/memories", {
+        method: "POST",
+        body: data
+      });
+
+      if (res.ok) {
+        setUploadSuccess(true);
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setUploadSuccess(false);
+          setFormData({ title: "", location: "", author: "", image: null });
+          fetchMemories();
+        }, 2000);
+      } else {
+        const err = await res.json();
+        alert(err.error || "Upload failed. Please check if your Database is running.");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -172,7 +256,7 @@ export default function MemoriesPage() {
 
           {/* Grid Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            {MEMORIES.map((memory, index) => (
+            {memories.map((memory, index) => (
               <MemoryCard key={memory.id} memory={memory} index={index} />
             ))}
           </div>
@@ -188,13 +272,137 @@ export default function MemoriesPage() {
             <div className="relative z-10">
               <h2 className="text-3xl font-bold text-white mb-4">Share Your Journey</h2>
               <p className="text-gray-400 mb-8 max-w-md mx-auto">Upload your favorite travel moments and inspire others to explore the Great North.</p>
-              <button className="bg-shamaal-gold text-shamaal-navy px-10 py-4 rounded-full font-bold hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-shamaal-gold/20">
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="bg-shamaal-gold text-shamaal-navy px-10 py-4 rounded-full font-bold hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-shamaal-gold/20"
+              >
                 Upload Your Memory
               </button>
             </div>
           </motion.div>
         </div>
       </main>
+
+      {/* Upload Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => !isUploading && setIsModalOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-shamaal-gold/5 blur-3xl rounded-full -mr-16 -mt-16" />
+              
+              <div className="flex justify-between items-center mb-8 relative z-10">
+                <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white">Share a Memory</h2>
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
+
+              {uploadSuccess ? (
+                <div className="py-12 text-center">
+                  <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Check className="w-10 h-10 text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-bold text-shamaal-navy dark:text-white mb-2">Memory Uploaded!</h3>
+                  <p className="text-gray-500">Your story has been added to the gallery.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleUpload} className="space-y-6 relative z-10">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Title of Memory</label>
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="e.g., Golden Hour at Attabad"
+                        value={formData.title}
+                        onChange={(e) => setFormData({...formData, title: e.target.value})}
+                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-3.5 outline-none focus:border-shamaal-gold transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Location</label>
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="e.g., Hunza Valley"
+                        value={formData.location}
+                        onChange={(e) => setFormData({...formData, location: e.target.value})}
+                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-3.5 outline-none focus:border-shamaal-gold transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 ml-1">Your Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="How should we credit you?"
+                        value={formData.author}
+                        onChange={(e) => setFormData({...formData, author: e.target.value})}
+                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-3.5 outline-none focus:border-shamaal-gold transition-all"
+                      />
+                    </div>
+                    
+                    <div className="pt-2">
+                      <input 
+                        type="file" 
+                        ref={fileInputRef}
+                        onChange={(e) => setFormData({...formData, image: e.target.files?.[0] || null})}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className={`w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all ${formData.image ? "border-green-500 bg-green-500/5" : "border-gray-200 dark:border-white/10 hover:border-shamaal-gold hover:bg-shamaal-gold/5"}`}
+                      >
+                        {formData.image ? (
+                          <>
+                            <Check className="w-8 h-8 text-green-500 mb-2" />
+                            <span className="text-sm font-bold text-green-600 truncate max-w-xs">{formData.image.name}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                            <span className="text-sm font-bold text-gray-500">Click to upload photo</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button 
+                    disabled={isUploading}
+                    className="w-full bg-shamaal-navy dark:bg-shamaal-gold text-white dark:text-shamaal-navy py-4 rounded-2xl font-bold flex items-center justify-center space-x-2 hover:scale-[1.02] active:scale-95 transition-all shadow-xl disabled:opacity-50"
+                  >
+                    {isUploading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      "Share Memory"
+                    )}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       <Footer />
     </>
   );
