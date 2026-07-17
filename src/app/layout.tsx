@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "YOUR_GOOGLE_SEARCH_CONSOLE_TOKEN",
+    google: "burGc3e9tW8vOiZa2zQb50FzUe8WBr4dghnt0AwDO2k",
   },
 };
 
@@ -136,9 +136,11 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <meta name="google-site-verification" content="burGc3e9tW8vOiZa2zQb50FzUe8WBr4dghnt0AwDO2k" />
       </head>
       <body 
-        className="min-h-full flex flex-col bg-shamaal-cream text-shamaal-navy dark:bg-[var(--background)] dark:text-[var(--foreground)] overflow-x-hidden"
+        className="min-h-full flex flex-col bg-[#060d1a] text-white overflow-x-hidden"
         suppressHydrationWarning
       >
         <CustomCursor />

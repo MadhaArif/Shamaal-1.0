@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Check, MapPin, Calendar, Users, User, CreditCard, ChevronRight, Loader2 } from "lucide-react";
+import { Check, MapPin, Calendar, Users, User, CreditCard, ChevronRight, Loader2, Copy, CheckCheck, Building2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -356,13 +356,14 @@ function BookingContent() {
             {/* Step 5: Payment */}
             {currentStep === 5 && (
               <div>
-                <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-6">Payment Method</h2>
-                <div className="space-y-4 mb-8">
+                <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-2">Payment Method</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Choose your preferred way to pay. Bank transfer is the most popular option in Pakistan.</p>
+                <div className="space-y-4 mb-6">
                   {[
-                    { id: "stripe", label: "Credit / Debit Card", sub: "Visa, Mastercard, AMEX — Powered by Stripe" },
+                    { id: "bank", label: "Bank Transfer", sub: "Direct transfer to Faisal Bank — most popular & secure", badge: "Recommended" },
                     { id: "jazzcash", label: "JazzCash", sub: "Pay via JazzCash mobile wallet or MPIN" },
                     { id: "easypaisa", label: "Easypaisa", sub: "Pay via Easypaisa mobile account" },
-                    { id: "bank", label: "Bank Transfer", sub: "Manual bank transfer — we'll confirm within 24 hours" },
+                    { id: "stripe", label: "Credit / Debit Card", sub: "Visa, Mastercard, AMEX — Powered by Stripe" },
                   ].map((method) => (
                     <button
                       key={method.id}
@@ -370,13 +371,24 @@ function BookingContent() {
                       className={`w-full flex items-center justify-between p-5 rounded-xl border-2 transition-all text-left ${form.paymentMethod === method.id ? "border-shamaal-gold bg-shamaal-gold/10" : "border-gray-200 dark:border-white/20 hover:border-shamaal-gold/50"}`}
                     >
                       <div>
-                        <p className="font-bold text-shamaal-navy dark:text-white">{method.label}</p>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <p className="font-bold text-shamaal-navy dark:text-white">{method.label}</p>
+                          {method.badge && (
+                            <span className="text-[10px] font-black bg-shamaal-gold text-shamaal-navy px-2 py-0.5 rounded-full tracking-wider uppercase">{method.badge}</span>
+                          )}
+                        </div>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{method.sub}</p>
                       </div>
                       {form.paymentMethod === method.id && <Check className="text-shamaal-gold w-6 h-6 shrink-0" />}
                     </button>
                   ))}
                 </div>
+
+                {/* Bank Transfer Details Card */}
+                {form.paymentMethod === "bank" && (
+                  <BankDetailsCard />
+                )}
+
                 {form.paymentMethod === "stripe" && (
                   <div className="space-y-4 p-6 bg-gray-50 dark:bg-shamaal-navy/50 rounded-xl border border-gray-200 dark:border-white/10">
                     <div>
@@ -393,6 +405,15 @@ function BookingContent() {
                         <input type="text" placeholder="123" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {(form.paymentMethod === "jazzcash" || form.paymentMethod === "easypaisa") && (
+                  <div className="p-5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-500/20">
+                    <p className="text-blue-700 dark:text-blue-300 font-semibold text-sm flex items-center gap-2">
+                      <Building2 className="w-4 h-4" />
+                      After submitting, we will send you the {form.paymentMethod === "jazzcash" ? "JazzCash" : "Easypaisa"} payment number via WhatsApp or email within a few minutes.
+                    </p>
                   </div>
                 )}
               </div>
@@ -462,7 +483,98 @@ function BookingContent() {
                 <Check className="w-4 h-4 mr-2" /> Free cancellation up to 14 days before departure
               </p>
             </div>
+            {/* Bank info always visible in sidebar */}
+            <div className="mt-4 p-4 bg-shamaal-navy rounded-xl border border-shamaal-gold/20">
+              <p className="text-shamaal-gold text-[10px] font-black tracking-widest uppercase mb-2 flex items-center gap-1.5">
+                <Building2 className="w-3 h-3" /> Bank Transfer
+              </p>
+              <p className="text-white text-xs font-bold">Faisal Bank</p>
+              <p className="text-gray-300 text-xs">Shamaal Tourism Pakistan (Pvt) Ltd</p>
+              <p className="text-shamaal-gold font-black text-sm tracking-wider mt-1">3300499000007541</p>
+            </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Bank Details Card Component ────────────────────────────────────────────
+function BankDetailsCard() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText("3300499000007541");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border-2 border-shamaal-gold/40 bg-gradient-to-br from-shamaal-navy via-[#1a3663] to-shamaal-navy p-6">
+      {/* Glow */}
+      <div className="absolute top-0 right-0 w-40 h-40 bg-shamaal-gold/15 blur-3xl rounded-full -mr-10 -mt-10 pointer-events-none" />
+      {/* Top line */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-shamaal-gold/60 to-transparent" />
+
+      <div className="relative z-10">
+        {/* Bank Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-shamaal-gold/20 border border-shamaal-gold/30 flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-shamaal-gold" />
+            </div>
+            <div>
+              <p className="text-[10px] text-shamaal-gold font-black tracking-[0.2em] uppercase">Bank Transfer</p>
+              <p className="text-white font-bold text-sm">Faisal Bank Ltd</p>
+            </div>
+          </div>
+          <span className="text-[10px] bg-green-500/20 border border-green-500/30 text-green-400 px-3 py-1 rounded-full font-bold tracking-wide">✓ Verified</span>
+        </div>
+
+        {/* Account Details */}
+        <div className="space-y-3 mb-5">
+          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+            <p className="text-white/40 text-[10px] font-bold tracking-widest uppercase mb-1">Account Title</p>
+            <p className="text-white font-bold text-base">Shamaal Tourism Pakistan (Pvt) Ltd</p>
+          </div>
+
+          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+            <p className="text-white/40 text-[10px] font-bold tracking-widest uppercase mb-1">Account Number</p>
+            <div className="flex items-center justify-between">
+              <p className="text-shamaal-gold font-black text-xl tracking-[0.12em]">3300499000007541</p>
+              <button
+                onClick={handleCopy}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${
+                  copied
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                    : "bg-shamaal-gold/20 hover:bg-shamaal-gold/30 text-shamaal-gold border border-shamaal-gold/30"
+                }`}
+              >
+                {copied ? <><CheckCheck className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy</>}
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-white/40 text-[10px] font-bold tracking-widest uppercase mb-1">IBAN</p>
+              <p className="text-white font-bold text-sm">PK95FAYS3300499000007541</p>
+            </div>
+            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-white/40 text-[10px] font-bold tracking-widest uppercase mb-1">Bank</p>
+              <p className="text-white font-bold text-sm">Faisal Bank</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="bg-shamaal-gold/10 border border-shamaal-gold/20 rounded-xl p-4">
+          <p className="text-shamaal-gold text-xs font-black tracking-wider uppercase mb-2">📋 After Transfer:</p>
+          <ul className="space-y-1.5 text-white/70 text-xs">
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold mt-0.5">1.</span> Transfer the total amount to the account above</li>
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold mt-0.5">2.</span> Send your transaction receipt via WhatsApp to <span className="text-shamaal-gold font-bold">0318-0425044</span></li>
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold mt-0.5">3.</span> We will confirm your booking within 24 hours</li>
+          </ul>
         </div>
       </div>
     </div>

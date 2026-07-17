@@ -121,7 +121,11 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
       reviews: 120 // Default reviews as not in schema
     })) as Tour[];
   } catch (error: unknown) {
-    console.error("Database error, using fallbacks:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn("Database not reachable, using tours fallback data.");
+    } else {
+      console.error("Database error, using fallbacks:", error);
+    }
     tours = FALLBACK_TOURS;
   }
 
@@ -133,25 +137,27 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
 
       <div className="w-full lg:w-3/4">
         <div className="mb-6">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            {tours.length} tours found {query || region ? "matching your criteria" : ""}
+          <p className="text-white/40 text-sm font-bold tracking-wider uppercase">
+            {tours.length} tours found {query || region ? "matching query" : ""}
           </p>
         </div>
 
         {tours.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tours.map((tour) => (
               <TourCard key={tour.id} {...tour} />
             ))}
           </div>
         ) : (
-          <div className="bg-white dark:bg-shamaal-navy/30 rounded-3xl p-12 text-center border border-dashed border-gray-200 dark:border-white/10">
-            <div className="bg-shamaal-cream dark:bg-white/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Filter className="w-10 h-10 text-shamaal-gold" />
+          <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-shamaal-gold/10 border border-shamaal-gold/20 flex items-center justify-center mx-auto mb-6">
+              <Filter className="w-8 h-8 text-shamaal-gold" />
             </div>
-            <h3 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-2">No tours found</h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-8">We couldn&apos;t find any tours matching your search criteria. Try adjusting your filters or search term.</p>
-            <Link href="/tours" className="inline-flex items-center px-8 py-3 bg-shamaal-gold text-shamaal-navy font-bold rounded-xl hover:bg-yellow-500 transition-all">
+            <h3 className="text-2xl font-black text-white mb-2">No tours found</h3>
+            <p className="text-white/45 text-sm mb-8 max-w-sm mx-auto leading-relaxed">
+              We couldn&apos;t find any tours matching your search criteria. Try adjusting filters or search term.
+            </p>
+            <Link href="/tours" className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-xs tracking-[0.2em] uppercase hover:bg-yellow-400 transition-all duration-400">
               View All Tours
             </Link>
           </div>
@@ -174,12 +180,12 @@ export default async function ToursCatalog({
     <>
       <Navbar />
       
-      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="flex-grow bg-[#060d1a]">
         {/* Modern Hero Section for Tours */}
         <ToursHero 
           title={query || region 
             ? `Results for ${[query, region].filter(Boolean).map(s => `"${s}"`).join(" in ")}` 
-            : <>Explore Our <span className="text-shamaal-gold">Tours</span></>
+            : <>Explore Our <span className="text-gradient-gold">Tours</span></>
           } 
         />
 

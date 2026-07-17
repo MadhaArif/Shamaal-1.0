@@ -3,11 +3,11 @@ import Footer from "@/components/layout/Footer";
 import DestinationsHero from "@/components/destinations/DestinationsHero";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Sun, Thermometer, Camera, ArrowRight } from "lucide-react";
+import { MapPin, Sun, Thermometer, Camera, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Destinations",
+  title: "Destinations | Shamaal Tourism",
   description: "Discover the most breathtaking destinations in Northern Pakistan — Hunza, Skardu, Fairy Meadows, Swat, Chitral, Gilgit, and Naran.",
 };
 
@@ -20,7 +20,7 @@ const DESTINATIONS = [
     bestTime: "April–May, Oct–Nov",
     temp: "15–25°C",
     image: "/images/destinations/attabad-lake.jpeg",
-    highlights: ["Baldi View Point", "Baskochi View Point", "Attabad Lake", "Baltit Fort"],
+    highlights: ["Baskochi View", "Attabad Lake", "Baltit Fort", "Passu Cones"],
     tours: 5,
   },
   {
@@ -31,7 +31,7 @@ const DESTINATIONS = [
     bestTime: "June–September",
     temp: "10–22°C",
     image: "/images/destinations/skardu-viewpoint.jpeg",
-    highlights: ["K2 Concordia", "Cold Desert", "Khaplu Fort", "Skardu View Point"],
+    highlights: ["K2 Concordia", "Cold Desert", "Khaplu Fort", "Shangrilla Lake"],
     tours: 4,
   },
   {
@@ -53,7 +53,7 @@ const DESTINATIONS = [
     bestTime: "April–October",
     temp: "18–28°C",
     image: "/images/destinations/malam-jabba.jpeg",
-    highlights: ["Malam Jabba", "Mahodand Lake", "Ushu Forest", "Mingora Bazaar"],
+    highlights: ["Malam Jabba", "Mahodand Lake", "Ushu Forest", "Kalam Valley"],
     tours: 6,
   },
   {
@@ -64,7 +64,7 @@ const DESTINATIONS = [
     bestTime: "May–September",
     temp: "12–25°C",
     image: "/images/destinations/deosai-plains.jpeg",
-    highlights: ["Kalash Valleys", "Tirich Mir View", "Chitral Fort", "Shandur Polo Festival"],
+    highlights: ["Kalash Valleys", "Tirich Mir View", "Chitral Fort", "Shandur Polo"],
     tours: 4,
   },
   {
@@ -75,7 +75,7 @@ const DESTINATIONS = [
     bestTime: "June–August",
     temp: "10–22°C",
     image: "/images/destinations/saiful-malook.jpeg",
-    highlights: ["Saif-ul-Malook Lake", "Babusar Top", "Ansoo Lake", "Lulusar Lake"],
+    highlights: ["Saif-ul-Malook", "Babusar Top", "Ansoo Lake", "Lulusar Lake"],
     tours: 5,
   },
   {
@@ -86,7 +86,7 @@ const DESTINATIONS = [
     bestTime: "April–October",
     temp: "15–28°C",
     image: "/images/destinations/rainbow-lake.jpeg",
-    highlights: ["Rainbow Lake", "Naltar Valley", "Kargah Buddha", "Gilgit Bazaar"],
+    highlights: ["Rainbow Lake", "Naltar Valley", "Kargah Buddha", "Phander Lake"],
     tours: 3,
   },
 ];
@@ -96,25 +96,25 @@ export default function DestinationsPage() {
     <>
       <Navbar />
 
-      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
+      <main className="min-h-screen bg-[#060d1a] overflow-x-hidden">
         {/* Hero Banner - No gap from navbar */}
         <DestinationsHero />
 
         {/* Destinations Grid */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg max-w-3xl mb-12 md:mb-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <p className="text-white/40 text-base md:text-lg max-w-3xl mb-16 leading-relaxed">
             From the lush valleys of Swat to the rugged high-altitude deserts of Skardu, our curated destinations cover the most spectacular corners of the Great North.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {DESTINATIONS.map((dest) => (
               <Link
                 key={dest.slug}
                 href={`/destinations/${dest.slug}`}
-                className="group bg-white dark:bg-shamaal-navy/30 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-transparent hover:border-shamaal-gold/40 transition-all duration-500 flex flex-col"
+                className="group relative rounded-2xl overflow-hidden border border-white/[0.05] bg-white/[0.02] hover:border-shamaal-gold/25 transition-all duration-500 flex flex-col hover:-translate-y-1"
               >
                 {/* Image */}
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-60 overflow-hidden shrink-0">
                   <Image
                     src={dest.image}
                     alt={dest.name}
@@ -122,48 +122,61 @@ export default function DestinationsPage() {
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <div className="flex items-center text-shamaal-gold text-xs font-semibold mb-1 uppercase tracking-wider">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060d1a] via-[#060d1a]/20 to-transparent" />
+                  
+                  {/* Regions info */}
+                  <div className="absolute bottom-4 left-4 text-white z-10">
+                    <div className="flex items-center text-shamaal-gold text-[10px] font-black uppercase tracking-[0.2em] mb-1">
                       <MapPin className="w-3 h-3 mr-1" />
                       {dest.region}
                     </div>
-                    <h2 className="text-2xl font-bold">{dest.name}</h2>
-                    <p className="text-gray-300 text-sm italic">&ldquo;{dest.tagline}&rdquo;</p>
+                    <h2 className="text-2xl font-black">{dest.name}</h2>
+                    <p className="text-white/50 text-xs italic mt-0.5">&ldquo;{dest.tagline}&rdquo;</p>
                   </div>
-                  <div className="absolute top-4 right-4 bg-shamaal-gold text-shamaal-navy text-xs font-bold px-3 py-1 rounded-full">
+                  
+                  {/* Tour count badge */}
+                  <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 text-white text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider">
                     {dest.tours} Tours
                   </div>
                 </div>
 
-                {/* Info */}
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                {/* Info block */}
+                <div className="p-6 flex flex-col flex-grow relative">
+                  {/* Hover accent glow */}
+                  <div className="absolute inset-0 rounded-b-2xl bg-shamaal-gold/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                  {/* Temperature / Best Time */}
+                  <div className="flex items-center space-x-6 text-[11px] font-bold text-white/40 mb-4">
                     <span className="flex items-center">
-                      <Sun className="w-4 h-4 text-shamaal-gold mr-1" />
+                      <Sun className="w-4 h-4 text-shamaal-gold mr-1.5" />
                       {dest.bestTime}
                     </span>
                     <span className="flex items-center">
-                      <Thermometer className="w-4 h-4 text-shamaal-gold mr-1" />
+                      <Thermometer className="w-4 h-4 text-shamaal-gold mr-1.5" />
                       {dest.temp}
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  {/* Highlight pill items */}
+                  <div className="flex flex-wrap gap-1.5 mb-8">
                     {dest.highlights.map((h) => (
-                      <span key={h} className="bg-shamaal-cream dark:bg-white/10 text-shamaal-navy dark:text-gray-300 text-xs font-medium px-2.5 py-1 rounded-full flex items-center">
-                        <Camera className="w-3 h-3 mr-1 text-shamaal-gold" />
+                      <span 
+                        key={h} 
+                        className="bg-white/[0.03] border border-white/[0.05] text-white/50 text-[10px] font-bold px-3 py-1 rounded-full flex items-center"
+                      >
+                        <Camera className="w-3 h-3 mr-1.5 text-shamaal-gold" />
                         {h}
                       </span>
                     ))}
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between">
-                    <span className="text-sm text-shamaal-sky dark:text-shamaal-gold font-semibold group-hover:underline underline-offset-2">
+                  {/* Actions */}
+                  <div className="mt-auto pt-4 border-t border-white/[0.04] flex items-center justify-between">
+                    <span className="text-xs text-shamaal-gold font-black tracking-wider uppercase group-hover:text-yellow-400 transition-colors">
                       Explore destination
                     </span>
-                    <div className="h-9 w-9 rounded-full bg-shamaal-cream dark:bg-white/10 flex items-center justify-center group-hover:bg-shamaal-gold transition-colors">
-                      <ArrowRight className="w-4 h-4 text-shamaal-navy dark:text-white group-hover:text-shamaal-navy" />
+                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-shamaal-gold group-hover:bg-shamaal-gold group-hover:text-shamaal-navy transition-all duration-400">
+                      <ArrowUpRight className="w-4 h-4 text-white group-hover:text-shamaal-navy" />
                     </div>
                   </div>
                 </div>

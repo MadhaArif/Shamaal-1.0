@@ -1,100 +1,224 @@
+"use client";
+
 import Link from "next/link";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowUpRight, Star } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
+const DESTINATIONS = [
+  { name: "Hunza Valley", href: "/destinations/hunza" },
+  { name: "Skardu & K2 Base Camp", href: "/destinations/skardu" },
+  { name: "Fairy Meadows", href: "/destinations/fairy-meadows" },
+  { name: "Swat Valley", href: "/destinations/swat" },
+  { name: "Chitral & Kalash", href: "/destinations/chitral" },
+];
+
+const COMPANY = [
+  { name: "About Us", href: "/about" },
+  { name: "All Tours", href: "/tours" },
+  { name: "Custom Itineraries", href: "/custom-tours" },
+  { name: "Travel Blog", href: "/blog" },
+  { name: "Contact Us", href: "/contact" },
+];
+
+const SOCIALS = [
+  { label: "IG", full: "Instagram", href: "https://instagram.com/shamaaltourism" },
+  { label: "FB", full: "Facebook",  href: "https://facebook.com/shamaaltourism" },
+  { label: "YT", full: "YouTube",   href: "https://youtube.com/@shamaaltourism" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-shamaal-navy text-shamaal-cream pt-16 pb-8 border-t border-shamaal-gold/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div className="space-y-6">
-            <Link href="/" className="flex items-center">
-              <div className="relative h-20 w-48 md:h-28 md:w-64">
-                <Image 
-                  src="/logo.png" 
-                  alt="Shamaal Tourism Logo" 
-                  fill 
-                  className="object-contain" 
-                  sizes="256px"
+    <footer className="relative overflow-hidden bg-[#060d1a]">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-shamaal-gold/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-shamaal-navy/60 rounded-full blur-[100px]" />
+        {/* Grid lines */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "linear-gradient(rgba(255,182,4,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,182,4,0.5) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+      </div>
+
+      {/* Top gold divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-shamaal-gold/40 to-transparent" />
+
+      {/* CTA Banner */}
+      <div className="relative border-b border-white/[0.04]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-center md:text-left">
+            <p className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase mb-3 flex items-center gap-2 justify-center md:justify-start">
+              <Star className="w-3 h-3 fill-current" /> Pakistan's #1 Tour Operator
+            </p>
+            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
+              Ready for Your Next<br />
+              <span className="text-gradient-gold">Adventure?</span>
+            </h2>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+            <Link
+              href="/tours"
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-shamaal-gold text-shamaal-navy font-black rounded-full hover:shadow-[0_0_40px_rgba(255,182,4,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-shamaal-gold to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative z-10 text-xs tracking-[0.2em] uppercase">Explore Tours</span>
+              <ArrowUpRight className="relative z-10 w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-white/15 text-white font-bold rounded-full hover:border-shamaal-gold/50 hover:text-shamaal-gold transition-all duration-500 text-xs tracking-[0.2em] uppercase"
+            >
+              Talk to Us
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Footer Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+
+          {/* Brand – 4 cols */}
+          <div className="lg:col-span-4 space-y-7">
+            <Link href="/" className="inline-block group">
+              <div className="relative h-20 w-44">
+                <Image
+                  src="/logo.png"
+                  alt="Shamaal Tourism"
+                  fill
+                  className="object-contain transition-all duration-500 group-hover:brightness-125"
+                  sizes="176px"
                 />
               </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Premium travel experiences across the breathtaking landscapes of Northern Pakistan. 
-              Discover Hunza, Skardu, Fairy Meadows, and beyond with our expert guides.
+            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+              Premium guided adventures across Pakistan's legendary Great North — Hunza, Skardu, Fairy Meadows and beyond.
             </p>
-            <div className="flex space-x-4">
-              {/* Social icons removed temporarily */}
+
+            {/* Rating badges */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="glass-gold px-4 py-2 rounded-full">
+                <p className="text-shamaal-gold text-xs font-black tracking-wider">★ 4.9 / 5.0</p>
+                <p className="text-white/40 text-[9px] tracking-widest uppercase">3,500+ Reviews</p>
+              </div>
+              <div className="px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.03]">
+                <p className="text-white text-xs font-black tracking-wider">DTS #10475</p>
+                <p className="text-white/40 text-[9px] tracking-widest uppercase">Licensed Operator</p>
+              </div>
+            </div>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-3">
+              {SOCIALS.map(({ label, full, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={full}
+                  className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-shamaal-gold/50 hover:bg-shamaal-gold/10 transition-all duration-400 text-[10px] font-bold text-white/50 hover:text-shamaal-gold"
+                >
+                  {label}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-bold tracking-wider mb-6 text-sm uppercase">Destinations</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link href="/destinations/hunza" className="hover:text-shamaal-gold transition-colors">Hunza Valley</Link></li>
-              <li><Link href="/destinations/skardu" className="hover:text-shamaal-gold transition-colors">Skardu & K2 Basecamp</Link></li>
-              <li><Link href="/destinations/fairy-meadows" className="hover:text-shamaal-gold transition-colors">Fairy Meadows</Link></li>
-              <li><Link href="/destinations/swat" className="hover:text-shamaal-gold transition-colors">Swat Valley</Link></li>
-              <li><Link href="/destinations/chitral" className="hover:text-shamaal-gold transition-colors">Chitral & Kalash</Link></li>
+          {/* Destinations – 3 cols */}
+          <div className="lg:col-span-3 lg:col-start-6">
+            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+              <span className="vline-gold h-4 inline-block" />
+              Destinations
+            </h3>
+            <ul className="space-y-3">
+              {DESTINATIONS.map(({ name, href }) => (
+                <li key={name}>
+                  <Link
+                    href={href}
+                    className="group flex items-center gap-2 text-sm text-white/40 hover:text-shamaal-gold transition-all duration-300"
+                  >
+                    <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300" />
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Company */}
-          <div>
-            <h3 className="text-white font-bold tracking-wider mb-6 text-sm uppercase">Company</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link href="/about" className="hover:text-shamaal-gold transition-colors">About Us</Link></li>
-              <li><Link href="/tours" className="hover:text-shamaal-gold transition-colors">All Tours</Link></li>
-              <li><Link href="/custom-tours" className="hover:text-shamaal-gold transition-colors">Custom Itineraries</Link></li>
-              <li><Link href="/blog" className="hover:text-shamaal-gold transition-colors">Travel Blog</Link></li>
-              <li><Link href="/contact" className="hover:text-shamaal-gold transition-colors">Contact Us</Link></li>
+          {/* Company – 2 cols */}
+          <div className="lg:col-span-2">
+            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+              <span className="vline-gold h-4 inline-block" />
+              Company
+            </h3>
+            <ul className="space-y-3">
+              {COMPANY.map(({ name, href }) => (
+                <li key={name}>
+                  <Link
+                    href={href}
+                    className="group flex items-center gap-2 text-sm text-white/40 hover:text-shamaal-gold transition-all duration-300"
+                  >
+                    <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300" />
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="text-white font-bold tracking-wider mb-6 text-sm uppercase">Contact</h3>
-            <ul className="space-y-4 text-sm text-gray-400">
-              <li className="flex items-start space-x-3">
-                <MapPin className="h-5 w-5 text-shamaal-gold shrink-0 mt-0.5" />
-                <span>UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</span>
+          {/* Contact – 3 cols */}
+          <div className="lg:col-span-3">
+            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+              <span className="vline-gold h-4 inline-block" />
+              Contact
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-sm text-white/40">
+                <MapPin className="w-4 h-4 text-shamaal-gold shrink-0 mt-0.5" />
+                <span className="leading-relaxed">UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-shamaal-gold shrink-0" />
-                <div className="flex flex-col">
-                  <a href="tel:03180425044" className="hover:text-shamaal-gold transition-colors">0318-0425044</a>
-                  <a href="tel:03180425025" className="hover:text-shamaal-gold transition-colors">0318-0425025</a>
+              <li className="flex items-start gap-3 text-sm text-white/40">
+                <Phone className="w-4 h-4 text-shamaal-gold shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <a href="tel:03180425044" className="block hover:text-shamaal-gold transition-colors">0318-0425044</a>
+                  <a href="tel:03180425025" className="block hover:text-shamaal-gold transition-colors">0318-0425025</a>
                 </div>
               </li>
-              <li className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-shamaal-gold shrink-0" />
+              <li className="flex items-center gap-3 text-sm text-white/40">
+                <Mail className="w-4 h-4 text-shamaal-gold shrink-0" />
                 <a href="mailto:Shamaaltours@gmail.com" className="hover:text-shamaal-gold transition-colors">Shamaaltours@gmail.com</a>
               </li>
-              <li className="flex items-center space-x-3 pt-2">
-                <a 
-                  href="https://wa.me/923180425044" 
-                  target="_blank" 
+              <li className="pt-2">
+                <a
+                  href="https://wa.me/923180425044"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center space-x-2 bg-green-500/10 hover:bg-green-500 hover:text-white text-green-500 px-4 py-2 rounded-full border border-green-500/20 transition-all duration-300 font-bold text-[10px] uppercase tracking-wider"
+                  className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-black tracking-[0.2em] uppercase hover:bg-green-500 hover:text-white hover:border-green-500 transition-all duration-400"
                 >
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span>WhatsApp Online</span>
+                  <span className="relative w-2 h-2">
+                    <span className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75" />
+                    <span className="relative block w-2 h-2 bg-green-400 rounded-full" />
+                  </span>
+                  WhatsApp Online
                 </a>
-              </li>
-              <li className="pt-2 text-[10px] uppercase tracking-widest font-bold text-gray-500">
-                DTS # 10475
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Shamaal Tourism. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+        {/* Bottom bar */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-8" />
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/25">
+          <p>© {new Date().getFullYear()} Shamaal Tourism Pakistan (Pvt) Ltd. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white/60 transition-colors">Terms of Service</Link>
+            <span className="text-white/10">|</span>
+            <span>Made with ♥ in Pakistan</span>
           </div>
         </div>
       </div>

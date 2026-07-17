@@ -1,15 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactHero from "@/components/contact/ContactHero";
-import { Mail, Phone, MapPin, MessageCircle, Clock, Loader2, CheckCircle } from "lucide-react";
+import {
+  Mail, Phone, MapPin, MessageCircle, Clock,
+  Loader2, CheckCircle, Building2, Copy, CheckCheck,
+  Send, ArrowUpRight
+} from "lucide-react";
+
+const INTERESTED_OPTIONS = [
+  "General Inquiry",
+  "Tour Booking",
+  "Custom Itinerary",
+  "Group / Corporate Tour",
+  "Honeymoon Package",
+];
+
+const INPUT_CLS =
+  "w-full px-5 py-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-white placeholder-white/25 focus:outline-none focus:border-shamaal-gold/50 focus:bg-white/[0.05] transition-all duration-300 text-sm";
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -17,219 +34,253 @@ export default function ContactPage() {
     email: "",
     phone: "",
     interestedIn: "General Inquiry",
-    message: ""
+    message: "",
   });
+
+  const update = (field: string, value: string) =>
+    setFormData((prev) => ({ ...prev, [field]: value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          name: `${formData.firstName} ${formData.lastName}`.trim()
-        })
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+        }),
       });
-
       if (res.ok) {
         setSuccess(true);
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          interestedIn: "General Inquiry",
-          message: ""
-        });
+        setFormData({ firstName: "", lastName: "", email: "", phone: "", interestedIn: "General Inquiry", message: "" });
       } else {
         const data = await res.json();
         setError(data.error || "Something went wrong. Please try again.");
       }
-    } catch (err) {
+    } catch {
       setError("Failed to connect to the server. Please check your internet.");
     } finally {
       setLoading(false);
     }
   };
 
+  const copyAccount = async () => {
+    await navigator.clipboard.writeText("3300499000007541");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
   return (
     <>
       <Navbar />
 
-      <main className="flex-grow bg-shamaal-cream dark:bg-[var(--background)]">
-        {/* Cinematic Header for Contact */}
+      <main className="min-h-screen bg-[#060d1a]">
         <ContactHero />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-xl mx-auto text-center mb-16">
-            Have questions about a tour? Ready to plan your dream trip? Our team is here to help you every step of the way.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
 
-            {/* Contact Form */}
-            <div className="lg:col-span-2 bg-white dark:bg-shamaal-navy/30 rounded-2xl p-8 shadow-md border border-gray-100 dark:border-white/10">
-              <h2 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-8">Send us a Message</h2>
-              
-              {success ? (
-                <div className="py-12 text-center">
-                  <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="w-10 h-10 text-green-500" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-shamaal-navy dark:text-white mb-4">Message Sent!</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-8">Thank you for reaching out. We will get back to you within 24 hours.</p>
-                  <button 
-                    onClick={() => setSuccess(false)}
-                    className="bg-shamaal-navy text-white px-8 py-3 rounded-full font-bold"
-                  >
-                    Send Another Message
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {error && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl text-sm font-medium">
-                      {error}
-                    </div>
-                  )}
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">First Name</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                        placeholder="Ali"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Last Name</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.lastName}
-                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                        placeholder="Ahmed"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                      />
-                    </div>
-                  </div>
+            {/* ── Contact Form ────────────────────────────────── */}
+            <div className="lg:col-span-2">
+              <div className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-8 md:p-10 overflow-hidden">
+                {/* Corner glow */}
+                <div className="absolute top-0 right-0 w-60 h-60 bg-shamaal-gold/[0.04] rounded-full blur-3xl pointer-events-none" />
 
-                  <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      placeholder="ali@example.com"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                    />
-                  </div>
+                <h2 className="text-2xl font-black text-white mb-2">
+                  Send us a <span className="text-gradient-gold">Message</span>
+                </h2>
+                <p className="text-white/35 text-sm mb-8">
+                  We typically reply within 2-4 hours during business hours.
+                </p>
 
-                  <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+92 300 0000000"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Interested In</label>
-                    <select 
-                      value={formData.interestedIn}
-                      onChange={(e) => setFormData({...formData, interestedIn: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition"
+                <AnimatePresence mode="wait">
+                  {success ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="py-16 text-center"
                     >
-                      <option>General Inquiry</option>
-                      <option>Tour Booking</option>
-                      <option>Custom Itinerary</option>
-                      <option>Group / Corporate Tour</option>
-                      <option>Honeymoon Package</option>
-                    </select>
-                  </div>
+                      <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle className="w-10 h-10 text-green-400" />
+                      </div>
+                      <h3 className="text-2xl font-black text-white mb-3">Message Sent!</h3>
+                      <p className="text-white/40 text-sm mb-8 max-w-xs mx-auto">
+                        Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+                      </p>
+                      <button
+                        onClick={() => setSuccess(false)}
+                        className="px-8 py-3 rounded-full border border-shamaal-gold/40 text-shamaal-gold text-xs font-black tracking-[0.2em] uppercase hover:bg-shamaal-gold hover:text-shamaal-navy transition-all duration-400"
+                      >
+                        Send Another Message
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleSubmit}
+                      className="space-y-5"
+                    >
+                      {error && (
+                        <div className="px-5 py-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
+                          {error}
+                        </div>
+                      )}
 
-                  <div>
-                    <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Message</label>
-                    <textarea
-                      rows={5}
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      placeholder="Tell us about your dream trip..."
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-shamaal-gold transition resize-none"
-                    />
-                  </div>
+                      {/* Name row */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                            First Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={formData.firstName}
+                            onChange={(e) => update("firstName", e.target.value)}
+                            placeholder="Ali"
+                            className={INPUT_CLS}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                            Last Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={formData.lastName}
+                            onChange={(e) => update("lastName", e.target.value)}
+                            placeholder="Ahmed"
+                            className={INPUT_CLS}
+                          />
+                        </div>
+                      </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold text-lg rounded-xl py-4 transition-all duration-300 shadow-md shadow-shamaal-gold/30 flex items-center justify-center space-x-2 disabled:opacity-50"
-                  >
-                    {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Send Message"}
-                  </button>
-                </form>
-              )}
+                      {/* Email */}
+                      <div>
+                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => update("email", e.target.value)}
+                          placeholder="ali@example.com"
+                          className={INPUT_CLS}
+                        />
+                      </div>
+
+                      {/* Phone */}
+                      <div>
+                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          Phone Number *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => update("phone", e.target.value)}
+                          placeholder="+92 300 0000000"
+                          className={INPUT_CLS}
+                        />
+                      </div>
+
+                      {/* Interested In */}
+                      <div>
+                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          Interested In
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {INTERESTED_OPTIONS.map((opt) => (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => update("interestedIn", opt)}
+                              className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                                formData.interestedIn === opt
+                                  ? "bg-shamaal-gold text-shamaal-navy"
+                                  : "border border-white/10 text-white/40 hover:border-shamaal-gold/40 hover:text-white/70"
+                              }`}
+                            >
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Message */}
+                      <div>
+                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          Message *
+                        </label>
+                        <textarea
+                          rows={5}
+                          required
+                          value={formData.message}
+                          onChange={(e) => update("message", e.target.value)}
+                          placeholder="Tell us about your dream trip to Northern Pakistan..."
+                          className={`${INPUT_CLS} resize-none`}
+                        />
+                      </div>
+
+                      {/* Submit */}
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="group w-full flex items-center justify-center gap-3 py-4 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-sm tracking-[0.15em] uppercase hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-400 shadow-[0_0_30px_rgba(255,182,4,0.25)] hover:shadow-[0_0_50px_rgba(255,182,4,0.4)]"
+                      >
+                        {loading ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            Send Message
+                          </>
+                        )}
+                      </button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
-            {/* Contact Info Sidebar */}
-            <div className="space-y-6">
-              {/* Info Cards */}
-              <div className="bg-shamaal-navy rounded-2xl p-8 text-white">
-                <h3 className="text-xl font-bold mb-6">Contact Information</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-shamaal-gold/20 p-3 rounded-xl">
-                      <MapPin className="w-5 h-5 text-shamaal-gold" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm mb-1">Our Office</p>
-                      <p className="text-gray-300 text-sm">UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</p>
-                      <p className="text-gray-400 text-[10px] mt-2 font-bold uppercase tracking-widest">DTS # 10475</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-shamaal-gold/20 p-3 rounded-xl">
-                      <Phone className="w-5 h-5 text-shamaal-gold" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm mb-1">Phone</p>
-                      <p className="text-gray-300 text-sm">0318-0425044</p>
-                      <p className="text-gray-300 text-sm">0318-0425025</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-shamaal-gold/20 p-3 rounded-xl">
-                      <Mail className="w-5 h-5 text-shamaal-gold" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm mb-1">Email</p>
-                      <p className="text-gray-300 text-sm">Shamaaltours@gmail.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-shamaal-gold/20 p-3 rounded-xl">
-                      <Clock className="w-5 h-5 text-shamaal-gold" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm mb-1">Office Hours</p>
-                      <p className="text-gray-300 text-sm">Mon – Sat: 9am – 7pm</p>
-                      <p className="text-gray-300 text-sm">Sunday: 10am – 4pm</p>
-                    </div>
-                  </div>
-                </div>
+            {/* ── Sidebar ──────────────────────────────────────── */}
+            <div className="space-y-5">
+
+              {/* Contact Info Card */}
+              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-shamaal-gold/30 to-transparent" />
+                <h3 className="text-white font-black text-base mb-6">Contact Information</h3>
+                <ul className="space-y-5">
+                  {[
+                    { icon: MapPin, label: "Our Office", val: "UG-18 Big City Plaza,\nLiberty Roundabout, Lahore.\nDTS # 10475" },
+                    { icon: Phone, label: "Phone", val: "0318-0425044\n0318-0425025" },
+                    { icon: Mail, label: "Email", val: "Shamaaltours@gmail.com" },
+                    { icon: Clock, label: "Office Hours", val: "Mon – Sat: 9am – 7pm\nSunday: 10am – 4pm" },
+                  ].map(({ icon: Icon, label, val }) => (
+                    <li key={label} className="flex items-start gap-4">
+                      <div className="w-9 h-9 rounded-xl bg-shamaal-gold/10 border border-shamaal-gold/20 flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-shamaal-gold" />
+                      </div>
+                      <div>
+                        <p className="text-white/30 text-[10px] font-black tracking-[0.2em] uppercase mb-0.5">{label}</p>
+                        {val.split("\n").map((line, i) => (
+                          <p key={i} className="text-white/70 text-sm leading-relaxed">{line}</p>
+                        ))}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* WhatsApp CTA */}
@@ -237,23 +288,106 @@ export default function ContactPage() {
                 href="https://wa.me/923180425044"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl p-6 transition-colors shadow-md shadow-green-500/30"
+                className="group flex items-center justify-between p-6 rounded-2xl bg-green-500/5 border border-green-500/20 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-400"
               >
-                <MessageCircle className="w-6 h-6" />
-                <span>Chat on WhatsApp</span>
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center">
+                    <MessageCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div>
+                    <p className="text-white font-black text-sm">WhatsApp</p>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      <span className="text-green-400 text-[10px] font-bold">We&apos;re online now</span>
+                    </div>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-green-400 group-hover:rotate-45 transition-all duration-400" />
               </a>
 
-              {/* Map Placeholder */}
-              <div className="bg-gray-200 dark:bg-white/10 rounded-2xl overflow-hidden h-48 flex items-center justify-center border border-gray-200 dark:border-white/10">
-                <span className="text-gray-400 text-sm">Interactive Map (Google Maps)</span>
-              </div>
+              {/* Bank Card */}
+              <BankCard onCopy={copyAccount} copied={copied} />
             </div>
-
           </div>
         </div>
       </main>
 
       <Footer />
     </>
+  );
+}
+
+// ── Premium Bank Card ──────────────────────────────────────────────
+function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-shamaal-gold/20 bg-gradient-to-br from-[#0d1a33] via-[#1a3663] to-[#0d1a33] p-6">
+      {/* Top gold line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-shamaal-gold/60 to-transparent" />
+      {/* Glow */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-shamaal-gold/10 blur-3xl rounded-full -mr-8 -mt-8 pointer-events-none" />
+
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-shamaal-gold/15 border border-shamaal-gold/25 flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-shamaal-gold" />
+            </div>
+            <div>
+              <p className="text-shamaal-gold text-[9px] font-black tracking-[0.25em] uppercase">Bank Transfer</p>
+              <p className="text-white font-bold text-sm">Faisal Bank Ltd</p>
+            </div>
+          </div>
+          <span className="text-[9px] bg-green-500/15 border border-green-500/25 text-green-400 px-2.5 py-1 rounded-full font-bold">
+            ✓ Verified
+          </span>
+        </div>
+
+        {/* Account Details */}
+        <div className="space-y-2.5 mb-4">
+          <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
+            <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Account Title</p>
+            <p className="text-white font-bold text-sm">Shamaal Tourism Pakistan (Pvt) Ltd</p>
+          </div>
+          <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
+            <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-1">Account Number</p>
+            <div className="flex items-center justify-between">
+              <p className="text-shamaal-gold font-black text-lg tracking-wider">3300499000007541</p>
+              <button
+                onClick={onCopy}
+                type="button"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all duration-300 ${
+                  copied
+                    ? "bg-green-500/15 text-green-400 border border-green-500/25"
+                    : "bg-shamaal-gold/15 hover:bg-shamaal-gold/25 text-shamaal-gold border border-shamaal-gold/25"
+                }`}
+              >
+                {copied ? <><CheckCheck className="w-3 h-3" /> Copied!</> : <><Copy className="w-3 h-3" /> Copy</>}
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5">
+            <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
+              <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">IBAN</p>
+              <p className="text-white font-bold text-xs">PK95FAYS3300499000007541</p>
+            </div>
+            <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
+              <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Bank</p>
+              <p className="text-white font-bold text-sm">Faisal Bank</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="rounded-xl p-4 bg-shamaal-gold/[0.07] border border-shamaal-gold/15">
+          <p className="text-shamaal-gold text-[9px] font-black tracking-wider uppercase mb-2">📋 After Transfer:</p>
+          <ul className="space-y-1.5 text-white/50 text-[11px]">
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">1.</span> Transfer the full amount above</li>
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">2.</span> Send receipt to WhatsApp <span className="text-shamaal-gold font-bold">0318-0425044</span></li>
+            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">3.</span> Confirmation within 24 hours</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 }
