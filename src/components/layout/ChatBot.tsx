@@ -1,8 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, RotateCcw, Minimize2 } from "lucide-react";
+
+function BotAvatar({ size = 28, className = "" }: { size?: number; className?: string }) {
+  return (
+    <Image
+      src="/chatbot-logo.png"
+      alt="Shamaal AI"
+      width={size}
+      height={size}
+      className={`object-contain bg-transparent ${className}`}
+    />
+  );
+}
 
 type BotResponse = { text: string; quick?: string[] };
 
@@ -230,33 +243,25 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button — stacked above WhatsApp */}
       <motion.button
         onClick={() => { setOpen(true); setMinimized(false); }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 2.5, type: "spring", stiffness: 200, damping: 16 }}
-        whileHover={{ scale: 1.12 }}
+        whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        className="fixed bottom-28 right-7 z-50 group"
+        className="fixed bottom-[7.25rem] right-6 z-50 group"
         aria-label="Open Shamaal AI chat"
         title="Chat with Shamaal AI"
         style={{ display: open ? "none" : undefined }}
       >
         <span className="absolute inset-0 rounded-full bg-shamaal-gold/30 animate-ping" />
         <span className="absolute inset-0 rounded-full bg-shamaal-gold/15 animate-ping" style={{ animationDelay: "0.6s" }} />
-        <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-shamaal-gold via-yellow-500 to-amber-600 shadow-[0_8px_32px_rgba(255,182,4,0.55)] group-hover:shadow-[0_12px_48px_rgba(255,182,4,0.75)] transition-shadow duration-400 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-full" />
-          <svg viewBox="0 0 40 40" className="w-8 h-8 relative z-10" fill="none">
-            <path d="M5 32 L14 16 L20 22 L26 12 L35 32 Z" fill="rgba(27,47,90,0.9)" />
-            <circle cx="10" cy="10" r="1.2" fill="white" opacity="0.9" />
-            <circle cx="30" cy="7" r="1" fill="white" opacity="0.7" />
-            <circle cx="22" cy="5" r="0.8" fill="white" opacity="0.6" />
-            <circle cx="26" cy="12" r="2.2" fill="#FFB604" />
-            <circle cx="26" cy="12" r="1.2" fill="white" />
-          </svg>
+        <div className="relative w-[72px] h-[72px] flex items-center justify-center overflow-visible">
+          <BotAvatar size={88} className="drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)] scale-110" />
         </div>
-        <span className="absolute right-16 top-1/2 -translate-y-1/2 whitespace-nowrap bg-[#060d1a] text-white text-xs font-bold px-3 py-1.5 rounded-full border border-shamaal-gold/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-xl pointer-events-none">
+        <span className="absolute right-[5.25rem] top-1/2 -translate-y-1/2 whitespace-nowrap bg-[#060d1a] text-white text-xs font-bold px-3 py-1.5 rounded-full border border-shamaal-gold/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-xl pointer-events-none">
           💬 Ask Shamaal AI
         </span>
       </motion.button>
@@ -270,17 +275,13 @@ export default function ChatBot() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 30 }}
             transition={{ type: "spring", stiffness: 350, damping: 28 }}
-            className="fixed bottom-7 right-7 z-[60] w-[360px] max-w-[calc(100vw-1.75rem)] rounded-3xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.35)] border border-white/[0.06] flex flex-col"
+            className="fixed bottom-6 right-6 z-[60] w-[360px] max-w-[calc(100vw-1.75rem)] rounded-3xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.35)] border border-white/[0.06] flex flex-col"
             style={{ maxHeight: minimized ? "auto" : "min(600px, calc(100vh - 2rem))" }}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[#060d1a] via-[#0d1a30] to-[#060d1a] px-4 py-3.5 flex items-center gap-3 border-b border-white/[0.06]">
-              <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-shamaal-gold to-amber-600 flex items-center justify-center shadow-[0_0_16px_rgba(255,182,4,0.4)] shrink-0">
-                <svg viewBox="0 0 40 40" className="w-6 h-6" fill="none">
-                  <path d="M5 32 L14 16 L20 22 L26 12 L35 32 Z" fill="rgba(27,47,90,0.9)" />
-                  <circle cx="26" cy="12" r="2.2" fill="#FFB604" />
-                  <circle cx="26" cy="12" r="1.2" fill="white" />
-                </svg>
+              <div className="relative w-12 h-12 shrink-0">
+                <BotAvatar size={48} />
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-[#060d1a]" />
               </div>
               <div className="flex-1 min-w-0">
@@ -319,12 +320,8 @@ export default function ChatBot() {
                     {messages.map((msg) => (
                       <div key={msg.id} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
                         {msg.role === "bot" && (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-shamaal-gold to-amber-600 flex items-center justify-center shrink-0 mt-1 shadow-[0_0_10px_rgba(255,182,4,0.3)]">
-                            <svg viewBox="0 0 40 40" className="w-4 h-4" fill="none">
-                              <path d="M5 32 L14 16 L20 22 L26 12 L35 32 Z" fill="rgba(27,47,90,0.9)" />
-                              <circle cx="26" cy="12" r="2" fill="#FFB604" />
-                              <circle cx="26" cy="12" r="1" fill="white" />
-                            </svg>
+                          <div className="w-9 h-9 shrink-0 mt-1">
+                            <BotAvatar size={36} />
                           </div>
                         )}
                         <div className={`flex flex-col gap-1.5 max-w-[82%] ${msg.role === "user" ? "items-end" : "items-start"}`}>
@@ -352,10 +349,8 @@ export default function ChatBot() {
 
                     {typing && (
                       <div className="flex gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-shamaal-gold to-amber-600 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(255,182,4,0.3)]">
-                          <svg viewBox="0 0 40 40" className="w-4 h-4" fill="none">
-                            <path d="M5 32 L14 16 L20 22 L26 12 L35 32 Z" fill="rgba(27,47,90,0.9)" />
-                          </svg>
+                        <div className="w-9 h-9 shrink-0">
+                          <BotAvatar size={36} />
                         </div>
                         <div className="bg-white/[0.06] border border-white/[0.07] rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
                           {[0, 0.18, 0.36].map((d) => (

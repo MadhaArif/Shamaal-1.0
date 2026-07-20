@@ -7,8 +7,14 @@ import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Camera, Heart, Share2, MapPin, Check, X, Upload, Loader2,
-  ZoomIn, ChevronLeft, ChevronRight, Play, Sparkles
+  ZoomIn, ChevronLeft, ChevronRight, Play, Sparkles, Trash2
 } from "lucide-react";
+import {
+  addOwnedMemory,
+  getOwnedMemories,
+  getDeleteToken,
+  removeOwnedMemory,
+} from "@/lib/memoryOwnership";
 
 interface Memory {
   id: string | number;
@@ -19,6 +25,7 @@ interface Memory {
   likes: number;
   category?: string;
   size?: "large" | "medium" | "small";
+  deleteToken?: string;
 }
 
 const FALLBACK_MEMORIES: Memory[] = [
@@ -43,13 +50,15 @@ const CATEGORIES = ["All", "Landscapes", "Mountains", "Lakes", "Adventure", "Cul
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────
 function Lightbox({
-  memories, activeIndex, onClose, onPrev, onNext,
+  memories, activeIndex, onClose, onPrev, onNext, canDelete, onDelete,
 }: {
   memories: Memory[];
   activeIndex: number;
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  canDelete?: boolean;
+  onDelete?: () => void;
 }) {
   const m = memories[activeIndex];
 
@@ -80,12 +89,23 @@ function Lightbox({
       </div>
 
       {/* Close */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur flex items-center justify-center transition-all border border-white/10"
-      >
-        <X className="w-5 h-5 text-white" />
-      </button>
+      <div className="absolute top-6 right-6 z-10 flex items-center gap-2">
+        {canDelete && onDelete && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            className="w-12 h-12 rounded-full bg-red-500/20 hover:bg-red-500/40 backdrop-blur flex items-center justify-center transition-all border border-red-400/30"
+            title="Delete your memory"
+          >
+            <Trash2 className="w-5 h-5 text-red-300" />
+          </button>
+        )}
+        <button
+          onClick={onClose}
+          className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur flex items-center justify-center transition-all border border-white/10"
+        >
+          <X className="w-5 h-5 text-white" />
+        </button>
+      </div>
 
       {/* Prev */}
       <button
@@ -179,15 +199,18 @@ function FilmStrip({ memories }: { memories: Memory[] }) {
 
 // ─── Memory Card ────────────────────────────────────────────────────────────
 function MemoryCard({
-  memory, index, onClick,
+  memory, index, onClick, canDelete, onDelete,
 }: {
   memory: Memory;
   index: number;
   onClick: () => void;
+  canDelete?: boolean;
+  onDelete?: (id: string) => void;
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(memory.likes);
   const [copied, setCopied] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -200,6 +223,15 @@ function MemoryCard({
     await navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!onDelete || isDeleting) return;
+    if (!window.confirm("Delete this memory? This cannot be undone.")) return;
+    setIsDeleting(true);
+    await onDelete(String(memory.id));
+    setIsDeleting(false);
   };
 
   // Varied heights for masonry feel
@@ -234,9 +266,21 @@ function MemoryCard({
         </div>
       )}
 
-      {/* Zoom icon */}
-      <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/0 group-hover:bg-white/20 backdrop-blur-0 group-hover:backdrop-blur-md flex items-center justify-center transition-all duration-500 opacity-0 group-hover:opacity-100 border border-white/0 group-hover:border-white/30">
-        <ZoomIn className="w-4 h-4 text-white" />
+      {/* Top actions */}
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        {canDelete && (
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            title="Delete your memory"
+            className="w-9 h-9 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 border border-red-400/40 disabled:opacity-50"
+          >
+            {isDeleting ? <Loader2 className="w-4 h-4 text-white animate-spin" /> : <Trash2 className="w-4 h-4 text-white" />}
+          </button>
+        )}
+        <div className="w-9 h-9 rounded-full bg-white/0 group-hover:bg-white/20 backdrop-blur-0 group-hover:backdrop-blur-md flex items-center justify-center transition-all duration-500 opacity-0 group-hover:opacity-100 border border-white/0 group-hover:border-white/30">
+          <ZoomIn className="w-4 h-4 text-white" />
+        </div>
       </div>
 
       {/* Bottom info */}
@@ -279,36 +323,55 @@ function MemoryCard({
 }
 
 // ─── Upload Modal ────────────────────────────────────────────────────────────
-function UploadModal({ onClose }: { onClose: () => void }) {
+function UploadModal({
+  onClose,
+  onSuccess,
+}: {
+  onClose: () => void;
+  onSuccess: (memory: Memory) => void;
+}) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [error, setError] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({ title: "", location: "", author: "", image: null as File | null });
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    setFormData((prev) => ({ ...prev, image: f }));
+  const handleFile = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file (JPG, PNG, WEBP).");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Image must be smaller than 10MB.");
+      return;
+    }
+    setError("");
+    setFormData((prev) => ({ ...prev, image: file }));
     const reader = new FileReader();
     reader.onload = () => setPreview(reader.result as string);
-    reader.readAsDataURL(f);
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) handleFile(f);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const f = e.dataTransfer.files[0];
-    if (!f) return;
-    setFormData((prev) => ({ ...prev, image: f }));
-    const reader = new FileReader();
-    reader.onload = () => setPreview(reader.result as string);
-    reader.readAsDataURL(f);
+    if (f) handleFile(f);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.image) return;
+    if (!formData.image) {
+      setError("Please select a photo to upload.");
+      return;
+    }
     setIsUploading(true);
+    setError("");
     const data = new FormData();
     data.append("image", formData.image);
     data.append("title", formData.title);
@@ -316,14 +379,16 @@ function UploadModal({ onClose }: { onClose: () => void }) {
     data.append("author", formData.author);
     try {
       const res = await fetch("/api/memories", { method: "POST", body: data });
-      if (res.ok) {
+      const result = await res.json();
+      if (res.ok && result.memory) {
         setUploadSuccess(true);
-        setTimeout(onClose, 2200);
+        onSuccess(result.memory);
+        setTimeout(onClose, 1800);
       } else {
-        alert("Upload failed. Please try again.");
+        setError(result.error || "Upload failed. Please try again.");
       }
     } catch {
-      alert("Something went wrong.");
+      setError("Something went wrong. Please check your connection and try again.");
     } finally {
       setIsUploading(false);
     }
@@ -376,10 +441,15 @@ function UploadModal({ onClose }: { onClose: () => void }) {
                 <Check className="w-10 h-10 text-green-400" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">Memory Shared!</h3>
-              <p className="text-white/50">Your photo is under review and will appear soon.</p>
+              <p className="text-white/50">Your photo is now live in the gallery.</p>
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
+              {error && (
+                <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                  {error}
+                </div>
+              )}
               {/* Drag & Drop Upload */}
               <div
                 onDrop={handleDrop}
@@ -392,7 +462,8 @@ function UploadModal({ onClose }: { onClose: () => void }) {
               >
                 {preview ? (
                   <>
-                    <Image src={preview} alt="Preview" fill className="object-cover opacity-80" sizes="500px" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={preview} alt="Preview" className="absolute inset-0 h-full w-full object-cover opacity-80" />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div className="bg-shamaal-gold/20 border border-shamaal-gold/50 text-shamaal-gold px-4 py-2 rounded-full text-xs font-bold backdrop-blur">
                         Click to change photo
@@ -409,7 +480,7 @@ function UploadModal({ onClose }: { onClose: () => void }) {
                   </div>
                 )}
               </div>
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+              <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/*" className="hidden" onChange={handleFileInput} />
 
               {/* Fields */}
               {[
@@ -432,8 +503,8 @@ function UploadModal({ onClose }: { onClose: () => void }) {
 
               <button
                 type="submit"
-                disabled={isUploading || !formData.image}
-                className="w-full bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold text-shamaal-navy font-black rounded-xl py-4 flex items-center justify-center gap-2 hover:shadow-[0_8px_40px_rgba(255,182,4,0.4)] transition-all duration-500 hover:scale-[1.02] active:scale-95 disabled:opacity-40 disabled:scale-100"
+                disabled={isUploading || !formData.image || !formData.title || !formData.location || !formData.author}
+                className="w-full bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold text-shamaal-navy font-black rounded-xl py-4 flex items-center justify-center gap-2 hover:shadow-[0_8px_40px_rgba(255,182,4,0.4)] transition-all duration-500 hover:scale-[1.02] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isUploading ? (
                   <><Loader2 className="w-5 h-5 animate-spin" /> Uploading...</>
@@ -449,6 +520,24 @@ function UploadModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+const SIZES: ("large" | "medium" | "small")[] = ["large", "medium", "small", "medium", "large", "small"];
+
+function normalizeMemory(item: Memory, index: number): Memory {
+  return {
+    ...item,
+    size: item.size || SIZES[index % SIZES.length],
+    category: item.category || "Landscapes",
+    likes: item.likes ?? 0,
+  };
+}
+
+function mergeMemories(userMemories: Memory[]): Memory[] {
+  const normalizedUser = userMemories.map((item, i) => normalizeMemory(item, i));
+  const userIds = new Set(normalizedUser.map((m) => String(m.id)));
+  const fallbacks = FALLBACK_MEMORIES.filter((m) => !userIds.has(String(m.id)));
+  return [...normalizedUser, ...fallbacks];
+}
+
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function MemoriesPage() {
   const [memories, setMemories] = useState<Memory[]>(FALLBACK_MEMORIES);
@@ -456,23 +545,81 @@ export default function MemoriesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [ownedIds, setOwnedIds] = useState<Set<string>>(new Set());
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const heroY = useTransform(scrollY, [0, 400], [0, 120]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/memories");
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          const sizes: ("large" | "medium" | "small")[] = ["large", "medium", "small", "medium", "large", "small"];
-          setMemories(data.map((item: Memory, i: number) => ({ ...item, size: sizes[i % sizes.length] })));
-        }
-      } catch { /* use fallback */ }
-    })();
+  const loadMemories = useCallback(async () => {
+    try {
+      const res = await fetch("/api/memories");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setMemories(mergeMemories(data));
+      }
+    } catch {
+      setMemories(FALLBACK_MEMORIES);
+    }
   }, []);
+
+  const handleUploadSuccess = useCallback((memory: Memory) => {
+    if (memory.deleteToken) {
+      addOwnedMemory(String(memory.id), memory.deleteToken);
+      setOwnedIds((prev) => new Set([...prev, String(memory.id)]));
+    }
+    setMemories((prev) => {
+      const normalized = normalizeMemory(memory, 0);
+      const rest = prev.filter((m) => String(m.id) !== String(memory.id));
+      return [normalized, ...rest];
+    });
+    setActiveCategory("All");
+    loadMemories();
+    setTimeout(() => {
+      document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
+  }, [loadMemories]);
+
+  const handleDeleteMemory = useCallback(async (id: string) => {
+    const deleteToken = getDeleteToken(id);
+    if (!deleteToken) {
+      alert("You can only delete memories that you uploaded.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/memories/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleteToken }),
+      });
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert(result.error || "Could not delete this memory.");
+        return;
+      }
+
+      removeOwnedMemory(id);
+      setOwnedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      setMemories((prev) => prev.filter((m) => String(m.id) !== id));
+      setLightboxIndex(null);
+    } catch {
+      alert("Something went wrong while deleting.");
+    }
+  }, []);
+
+  useEffect(() => {
+    setOwnedIds(new Set(getOwnedMemories().map((m) => m.id)));
+  }, []);
+
+  useEffect(() => {
+    loadMemories();
+  }, [loadMemories]);
 
   useEffect(() => {
     if (activeCategory === "All") {
@@ -550,13 +697,15 @@ export default function MemoriesPage() {
               className="flex flex-wrap gap-4"
             >
               <button
+                type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="group flex items-center gap-3 bg-shamaal-gold hover:bg-yellow-400 text-shamaal-navy font-black px-8 py-4 rounded-full transition-all duration-500 hover:shadow-[0_10px_50px_rgba(255,182,4,0.4)] hover:scale-105"
+                className="group flex items-center gap-3 bg-shamaal-gold hover:bg-yellow-400 text-shamaal-navy font-black px-8 py-4 rounded-full transition-all duration-500 hover:shadow-[0_10px_50px_rgba(255,182,4,0.4)] hover:scale-105 active:scale-95"
               >
-                <Camera className="w-5 h-5" />
+                <Camera className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 Share Your Memory
               </button>
               <button
+                type="button"
                 className="flex items-center gap-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-shamaal-navy dark:text-white font-bold px-8 py-4 rounded-full border border-gray-200 dark:border-white/10 transition-all"
                 onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
               >
@@ -637,6 +786,8 @@ export default function MemoriesPage() {
                     memory={memory}
                     index={index}
                     onClick={() => openLightbox(index)}
+                    canDelete={ownedIds.has(String(memory.id))}
+                    onDelete={handleDeleteMemory}
                   />
                 </div>
               ))}
@@ -691,8 +842,9 @@ export default function MemoriesPage() {
                 Upload your favourite travel photo from any Shamaal tour and inspire thousands of future explorers.
               </p>
               <button
+                type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="group inline-flex items-center gap-3 bg-shamaal-gold hover:bg-yellow-400 text-shamaal-navy font-black px-10 py-5 rounded-full text-lg transition-all duration-500 hover:shadow-[0_15px_60px_rgba(255,182,4,0.4)] hover:scale-105"
+                className="group inline-flex items-center gap-3 bg-shamaal-gold hover:bg-yellow-400 text-shamaal-navy font-black px-10 py-5 rounded-full text-lg transition-all duration-500 hover:shadow-[0_15px_60px_rgba(255,182,4,0.4)] hover:scale-105 active:scale-95"
               >
                 <Camera className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                 Upload Your Memory
@@ -713,27 +865,26 @@ export default function MemoriesPage() {
             onClose={closeLightbox}
             onPrev={prevImage}
             onNext={nextImage}
+            canDelete={ownedIds.has(String(filtered[lightboxIndex]?.id))}
+            onDelete={() => {
+              const id = String(filtered[lightboxIndex!]?.id);
+              if (window.confirm("Delete this memory? This cannot be undone.")) {
+                handleDeleteMemory(id);
+              }
+            }}
           />
         )}
       </AnimatePresence>
 
       {/* Upload Modal */}
       <AnimatePresence>
-        {isModalOpen && <UploadModal onClose={() => setIsModalOpen(false)} />}
+        {isModalOpen && (
+          <UploadModal
+            onClose={() => setIsModalOpen(false)}
+            onSuccess={handleUploadSuccess}
+          />
+        )}
       </AnimatePresence>
-
-      {/* Floating Upload FAB */}
-      <motion.button
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1, type: "spring" }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 z-[90] w-14 h-14 rounded-full bg-shamaal-gold shadow-[0_8px_40px_rgba(255,182,4,0.5)] flex items-center justify-center"
-      >
-        <Camera className="w-6 h-6 text-shamaal-navy" />
-      </motion.button>
     </>
   );
 }

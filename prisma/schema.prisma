@@ -119,12 +119,13 @@ model Lead {
 }
 
 model Memory {
-  id        String   @id @default(cuid())
-  title     String
-  location  String
-  image     String   // URL or path
-  author    String
-  likes     Int      @default(0)
-  approved  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  title       String
+  location    String
+  image       String   // URL or path
+  author      String
+  likes       Int      @default(0)
+  approved    Boolean  @default(false)
+  deleteToken String?  @unique
+  createdAt   DateTime @default(now())
 }

@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { randomUUID } from "crypto";
 
 export async function GET() {
   try {
@@ -16,7 +17,6 @@ export async function GET() {
     return NextResponse.json(memories);
   } catch (error) {
     console.error("GET Memories Error:", error);
-    // Return empty array instead of error to let frontend use fallbacks if needed
     return NextResponse.json([]);
   }
 }
@@ -24,19 +24,30 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const file = formData.get("image") as File;
-    const title = formData.get("title") as string;
-    const location = formData.get("location") as string;
-    const author = formData.get("author") as string;
+    const file = formData.get("image") as File | null;
+    const title = (formData.get("title") as string)?.trim();
+    const location = (formData.get("location") as string)?.trim();
+    const author = (formData.get("author") as string)?.trim();
 
     if (!file || !title || !location || !author) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json({ error: "Please fill all fields and select a photo." }, { status: 400 });
+    }
+
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json({ error: "Only image files are allowed." }, { status: 400 });
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: "Image must be smaller than 10MB." }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = Date.now() + "_" + file.name.replace(/\s+/g, "_");
-    const uploadPath = path.join(process.cwd(), "public/uploads/memories", filename);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filename = `${Date.now()}_${safeName}`;
+    const uploadDir = path.join(process.cwd(), "public/uploads/memories");
+    const uploadPath = path.join(uploadDir, filename);
 
+    await mkdir(uploadDir, { recursive: true });
     await writeFile(uploadPath, buffer);
 
     const memory = await prisma.memory.create({
@@ -46,17 +57,17 @@ export async function POST(req: Request) {
         author,
         image: `/uploads/memories/${filename}`,
         approved: true,
+        deleteToken: randomUUID(),
       },
     });
 
     return NextResponse.json({ success: true, memory });
   } catch (error: unknown) {
     console.error("POST Memory Error:", error);
-    
-    // Check if it's a Prisma connection error
-    if (error && typeof error === 'object' && 'code' in error && error.code === 'P1001') {
-      return NextResponse.json({ 
-        error: "Database connection failed. Please ensure your MySQL server is running." 
+
+    if (error && typeof error === "object" && "code" in error && error.code === "P1001") {
+      return NextResponse.json({
+        error: "Database connection failed. Please try again later.",
       }, { status: 503 });
     }
 
