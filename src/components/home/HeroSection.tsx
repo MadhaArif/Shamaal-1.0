@@ -367,7 +367,7 @@ export default function HeroSection() {
         <div className="h-20 w-[1px] bg-gradient-to-b from-shamaal-gold/50 to-transparent" />
       </div>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes cinematic-zoom {
           0% { transform: scale(1.0); }
           100% { transform: scale(1.05); }

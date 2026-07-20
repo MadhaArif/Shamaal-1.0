@@ -28,7 +28,7 @@ export default function AboutPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#060d1a] overflow-x-hidden">
+      <main className="min-h-screen bg-shamaal-cream dark:bg-[#060d1a] overflow-x-hidden">
         
         {/* ── Hero Section ─────────────────────────────────── */}
         <section className="relative h-[70vh] flex items-end overflow-hidden">
@@ -51,7 +51,7 @@ export default function AboutPage() {
               <Compass className="w-3.5 h-3.5 text-shamaal-gold" />
               <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Our Story</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-white max-w-3xl leading-tight">
+            <h1 className="text-5xl md:text-7xl font-black text-shamaal-navy dark:text-white max-w-3xl leading-tight">
               Crafting <span className="text-gradient-gold">Unforgettable</span> Northern Journeys
             </h1>
           </div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
                   >
                     {stat.value}
                   </p>
-                  <p className="text-white/40 text-[10px] tracking-[0.2em] font-black uppercase">{stat.label}</p>
+                  <p className="text-gray-500 dark:text-white/40 text-[10px] tracking-[0.2em] font-black uppercase">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -85,15 +85,15 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <span className="text-shamaal-gold font-black tracking-[0.25em] uppercase text-[10px] block mb-4">Who We Are</span>
-                <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                <h2 className="text-3xl md:text-5xl font-black text-shamaal-navy dark:text-white mb-6 leading-tight">
                   Born in the Mountains, Built for Adventurers
                 </h2>
-                <div className="space-y-6 text-white/45 text-sm md:text-base leading-relaxed">
+                <div className="space-y-6 text-gray-600 dark:text-white/45 text-sm md:text-base leading-relaxed">
                   <p>
                     Shamaal Tourism was founded by a group of passionate mountaineers and travel enthusiasts who wanted to share the raw, breathtaking beauty of Northern Pakistan with the world — authentically and responsibly.
                   </p>
                   <p>
-                    The name <strong className="text-white font-bold">Shamaal</strong> (شمال) — meaning <em className="text-shamaal-gold italic">North</em> in Urdu — embodies our soul. We are a brand built entirely around the magnificent landscapes, rich cultures, and legendary hospitality of Pakistan&apos;s north.
+                    The name <strong className="text-shamaal-navy dark:text-white font-bold">Shamaal</strong> (شمال) — meaning <em className="text-shamaal-gold italic">North</em> in Urdu — embodies our soul. We are a brand built entirely around the magnificent landscapes, rich cultures, and legendary hospitality of Pakistan&apos;s north.
                   </p>
                   <p>
                     Today, we are Pakistan&apos;s most trusted premium tour operator, having taken over 50,000 travellers on life-changing journeys through Hunza, Skardu, Fairy Meadows, and beyond.
@@ -107,7 +107,7 @@ export default function AboutPage() {
                     "Local Guide Expertise",
                     "24/7 Ground Support",
                   ].map((item) => (
-                    <div key={item} className="flex items-center gap-3 text-white/70 font-semibold text-sm">
+                    <div key={item} className="flex items-center gap-3 text-gray-600 dark:text-white/70 font-semibold text-sm">
                       <div className="w-5 h-5 rounded-full bg-shamaal-gold/15 border border-shamaal-gold/20 flex items-center justify-center shrink-0">
                         <CheckCircle className="w-3.5 h-3.5 text-shamaal-gold" />
                       </div>
@@ -129,12 +129,12 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#060d1a]/80 via-transparent to-transparent z-10" />
 
                 {/* Rating Card badge */}
-                <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-white/[0.04] border border-white/10 rounded-2xl p-5 z-20">
+                <div className="absolute bottom-6 left-6 right-6 backdrop-blur-md bg-white dark:bg-white/[0.04] border border-gray-200 dark:border-white/10 rounded-2xl p-5 z-20">
                   <div className="flex items-center gap-1 text-shamaal-gold mb-2">
                     {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
-                  <p className="text-white font-bold text-sm leading-relaxed">&ldquo;Best tour company in Pakistan!&rdquo;</p>
-                  <p className="text-white/40 text-xs mt-1.5">— TripAdvisor Travellers&apos; Choice 2024</p>
+                  <p className="text-shamaal-navy dark:text-white font-bold text-sm leading-relaxed">&ldquo;Best tour company in Pakistan!&rdquo;</p>
+                  <p className="text-gray-500 dark:text-white/40 text-xs mt-1.5">— TripAdvisor Travellers&apos; Choice 2024</p>
                 </div>
               </div>
             </div>
@@ -152,14 +152,14 @@ export default function AboutPage() {
                 <Sparkles className="w-3.5 h-3.5 text-shamaal-gold" />
                 <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Our Promise</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white">What Sets Us Apart</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-shamaal-navy dark:text-white">What Sets Us Apart</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               {VALUES.map((val, index) => (
                 <div 
                   key={val.title} 
-                  className="group relative p-7 rounded-2xl border border-white/[0.05] bg-white/[0.02] hover:border-shamaal-gold/20 hover:bg-white/[0.04] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden"
+                  className="group relative p-7 rounded-2xl border border-gray-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] hover:border-shamaal-gold/20 hover:bg-white/[0.04] hover:-translate-y-1.5 transition-all duration-500 overflow-hidden"
                 >
                   <div className="absolute inset-0 rounded-2xl bg-shamaal-gold/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -167,8 +167,8 @@ export default function AboutPage() {
                     <val.icon className="w-5 h-5 text-shamaal-gold" />
                   </div>
                   
-                  <h3 className="text-white font-black text-lg mb-3 group-hover:text-shamaal-gold/90 transition-colors duration-400">{val.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed">{val.desc}</p>
+                  <h3 className="text-shamaal-navy dark:text-white font-black text-lg mb-3 group-hover:text-shamaal-gold/90 transition-colors duration-400">{val.title}</h3>
+                  <p className="text-gray-600 dark:text-white/40 text-sm leading-relaxed">{val.desc}</p>
 
                   {/* Bottom gold line on hover */}
                   <div className="absolute bottom-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-shamaal-gold/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />

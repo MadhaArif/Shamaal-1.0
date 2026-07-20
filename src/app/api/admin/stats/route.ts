@@ -6,13 +6,13 @@ export async function GET() {
   try {
     const session = await auth();
     
-    // Check if user is admin (you can add a role check here)
-    // For now, we allow access but you should protect this in production
-    /*
-    if (session?.user?.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Check if user is admin
+    if (process.env.NODE_ENV === "production") {
+      const role = (session?.user as { role?: string })?.role;
+      if (role !== "ADMIN") {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
     }
-    */
 
     const [bookings, leads, memories] = await Promise.all([
       prisma.booking.findMany({

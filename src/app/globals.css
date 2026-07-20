@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-shamaal-navy: #1b2f5a;
   --color-shamaal-gold: #ffb604;
@@ -12,19 +14,12 @@
 }
 
 :root {
-  --background: #F5F1EA;
-  --foreground: #1b2f5a;
+  --background: #060d1a;
+  --foreground: #ffffff;
   --gold: #ffb604;
   --navy: #1b2f5a;
-  --navy-deep: #0d1a33;
-  --cream: #F5F1EA;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #080f1e;
-    --foreground: #F5F1EA;
-  }
+  --navy-deep: #050d1a;
+  --cream: #060d1a;
 }
 
 /* ── Base ─────────────────────────────────────────────── */

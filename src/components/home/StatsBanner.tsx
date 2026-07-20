@@ -44,7 +44,7 @@ function Counter({
         style={{ background: `radial-gradient(circle at center, ${color}18, transparent 70%)` }}
       />
 
-      <div className="relative flex flex-col items-center text-center p-6 md:p-8 rounded-2xl border border-white/[0.05] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-500">
+      <div className="relative flex flex-col items-center text-center p-6 md:p-8 rounded-2xl border border-shamaal-navy/[0.06] bg-white hover:border-shamaal-navy/20 hover:bg-white transition-all duration-500">
         
         {/* Icon */}
         <div
@@ -68,7 +68,7 @@ function Counter({
         </div>
 
         {/* Label */}
-        <p className="text-white/40 text-[10px] font-bold tracking-[0.2em] uppercase leading-tight">
+        <p className="text-shamaal-navy/55 text-[10px] font-bold tracking-[0.2em] uppercase leading-tight">
           {label}
         </p>
 
@@ -84,7 +84,7 @@ function Counter({
 
 export default function StatsBanner() {
   return (
-    <section className="relative overflow-hidden bg-[#08101f] py-20 md:py-28">
+    <section className="relative overflow-hidden bg-shamaal-cream py-20 md:py-28">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-shamaal-gold/[0.04] rounded-full blur-[120px]" />
@@ -109,7 +109,7 @@ export default function StatsBanner() {
           <p className="text-shamaal-gold text-[10px] font-black tracking-[0.35em] uppercase mb-3">
             Our Track Record
           </p>
-          <h2 className="text-3xl md:text-4xl font-black text-white">
+          <h2 className="text-3xl md:text-4xl font-black text-shamaal-navy">
             Numbers that Speak for{" "}
             <span className="text-gradient-gold">Themselves</span>
           </h2>

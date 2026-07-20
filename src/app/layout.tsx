@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { Providers } from "@/components/Providers";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/layout/ChatBot";
 import CustomCursor from "@/components/layout/CustomCursor";
 
 const inter = Inter({
@@ -140,12 +141,13 @@ export default function RootLayout({
         <meta name="google-site-verification" content="burGc3e9tW8vOiZa2zQb50FzUe8WBr4dghnt0AwDO2k" />
       </head>
       <body 
-        className="min-h-full flex flex-col bg-[#060d1a] text-white overflow-x-hidden"
+        className="min-h-full flex flex-col bg-shamaal-cream text-shamaal-navy overflow-x-hidden"
         suppressHydrationWarning
       >
         <CustomCursor />
         <Providers>
           {children}
+          <ChatBot />
           <WhatsAppButton />
         </Providers>
         <Script

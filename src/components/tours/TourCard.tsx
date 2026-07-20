@@ -34,7 +34,7 @@ export default function TourCard({
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ type: "spring", stiffness: 250, damping: 22 }}
-        className="relative flex flex-col h-full rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0c1525] hover:border-shamaal-gold/25 transition-colors duration-500 shadow-[0_4px_40px_rgba(0,0,0,0.4)]"
+        className="relative flex flex-col h-full rounded-2xl overflow-hidden border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-[#0c1525] hover:border-shamaal-gold/25 transition-colors duration-500 shadow-[0_4px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_40px_rgba(0,0,0,0.4)]"
       >
         {/* ── Image ─────────────────────────────────── */}
         <div className="relative h-60 overflow-hidden shrink-0">
@@ -76,7 +76,7 @@ export default function TourCard({
           </div>
 
           {/* Title */}
-          <h3 className="text-white text-lg font-bold leading-snug mb-4 line-clamp-2 group-hover:text-shamaal-gold/90 transition-colors duration-400">
+          <h3 className="text-shamaal-navy dark:text-white text-lg font-bold leading-snug mb-4 line-clamp-2 group-hover:text-shamaal-gold/90 transition-colors duration-400">
             {title}
           </h3>
 
@@ -86,11 +86,11 @@ export default function TourCard({
           {/* Price + CTA */}
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-white/30 text-[9px] font-bold tracking-[0.2em] uppercase mb-0.5">Starting from</p>
+              <p className="text-gray-400 dark:text-white/30 text-[9px] font-bold tracking-[0.2em] uppercase mb-0.5">Starting from</p>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-white/50 text-xs font-bold">PKR</span>
+                <span className="text-gray-500 dark:text-white/50 text-xs font-bold">PKR</span>
                 <span className="text-shamaal-gold text-2xl font-black">{price.toLocaleString()}</span>
-                <span className="text-white/30 text-[10px]">/person</span>
+                <span className="text-gray-400 dark:text-white/30 text-[10px]">/person</span>
               </div>
             </div>
 

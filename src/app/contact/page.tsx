@@ -20,7 +20,7 @@ const INTERESTED_OPTIONS = [
 ];
 
 const INPUT_CLS =
-  "w-full px-5 py-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-white placeholder-white/25 focus:outline-none focus:border-shamaal-gold/50 focus:bg-white/[0.05] transition-all duration-300 text-sm";
+  "w-full px-5 py-3.5 rounded-xl border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-shamaal-navy dark:text-white placeholder-gray-400 dark:placeholder-white/25 focus:outline-none focus:border-shamaal-gold/50 dark:focus:bg-white/[0.05] transition-all duration-300 text-sm";
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
@@ -77,7 +77,7 @@ export default function ContactPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#060d1a]">
+      <main className="min-h-screen bg-shamaal-cream dark:bg-[#060d1a]">
         <ContactHero />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -86,14 +86,14 @@ export default function ContactPage() {
 
             {/* ── Contact Form ────────────────────────────────── */}
             <div className="lg:col-span-2">
-              <div className="relative rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-8 md:p-10 overflow-hidden">
+              <div className="relative rounded-3xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] backdrop-blur-sm p-8 md:p-10 overflow-hidden">
                 {/* Corner glow */}
                 <div className="absolute top-0 right-0 w-60 h-60 bg-shamaal-gold/[0.04] rounded-full blur-3xl pointer-events-none" />
 
-                <h2 className="text-2xl font-black text-white mb-2">
+                <h2 className="text-2xl font-black text-shamaal-navy dark:text-white mb-2">
                   Send us a <span className="text-gradient-gold">Message</span>
                 </h2>
-                <p className="text-white/35 text-sm mb-8">
+                <p className="text-gray-600 dark:text-white/35 text-sm mb-8">
                   We typically reply within 2-4 hours during business hours.
                 </p>
 
@@ -109,8 +109,8 @@ export default function ContactPage() {
                       <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-6">
                         <CheckCircle className="w-10 h-10 text-green-400" />
                       </div>
-                      <h3 className="text-2xl font-black text-white mb-3">Message Sent!</h3>
-                      <p className="text-white/40 text-sm mb-8 max-w-xs mx-auto">
+                      <h3 className="text-2xl font-black text-shamaal-navy dark:text-white mb-3">Message Sent!</h3>
+                      <p className="text-gray-600 dark:text-white/40 text-sm mb-8 max-w-xs mx-auto">
                         Thank you for reaching out. We&apos;ll get back to you within 24 hours.
                       </p>
                       <button
@@ -138,7 +138,7 @@ export default function ContactPage() {
                       {/* Name row */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                             First Name *
                           </label>
                           <input
@@ -151,7 +151,7 @@ export default function ContactPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                          <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                             Last Name *
                           </label>
                           <input
@@ -167,7 +167,7 @@ export default function ContactPage() {
 
                       {/* Email */}
                       <div>
-                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                        <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                           Email Address *
                         </label>
                         <input
@@ -182,7 +182,7 @@ export default function ContactPage() {
 
                       {/* Phone */}
                       <div>
-                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                        <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                           Phone Number *
                         </label>
                         <input
@@ -197,7 +197,7 @@ export default function ContactPage() {
 
                       {/* Interested In */}
                       <div>
-                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                        <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                           Interested In
                         </label>
                         <div className="flex flex-wrap gap-2">
@@ -209,7 +209,7 @@ export default function ContactPage() {
                               className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
                                 formData.interestedIn === opt
                                   ? "bg-shamaal-gold text-shamaal-navy"
-                                  : "border border-white/10 text-white/40 hover:border-shamaal-gold/40 hover:text-white/70"
+                                  : "border border-gray-200 dark:border-white/10 text-gray-600 dark:text-white/40 hover:border-shamaal-gold/40 hover:text-shamaal-navy dark:hover:text-white/70"
                               }`}
                             >
                               {opt}
@@ -220,7 +220,7 @@ export default function ContactPage() {
 
                       {/* Message */}
                       <div>
-                        <label className="block text-[10px] font-black text-white/40 tracking-[0.2em] uppercase mb-2">
+                        <label className="block text-[10px] font-black text-gray-500 dark:text-white/40 tracking-[0.2em] uppercase mb-2">
                           Message *
                         </label>
                         <textarea
@@ -258,9 +258,9 @@ export default function ContactPage() {
             <div className="space-y-5">
 
               {/* Contact Info Card */}
-              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 overflow-hidden">
+              <div className="relative rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-7 overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-shamaal-gold/30 to-transparent" />
-                <h3 className="text-white font-black text-base mb-6">Contact Information</h3>
+                <h3 className="text-shamaal-navy dark:text-white font-black text-base mb-6">Contact Information</h3>
                 <ul className="space-y-5">
                   {[
                     { icon: MapPin, label: "Our Office", val: "UG-18 Big City Plaza,\nLiberty Roundabout, Lahore.\nDTS # 10475" },
@@ -273,9 +273,9 @@ export default function ContactPage() {
                         <Icon className="w-4 h-4 text-shamaal-gold" />
                       </div>
                       <div>
-                        <p className="text-white/30 text-[10px] font-black tracking-[0.2em] uppercase mb-0.5">{label}</p>
+                        <p className="text-gray-500 dark:text-white/30 text-[10px] font-black tracking-[0.2em] uppercase mb-0.5">{label}</p>
                         {val.split("\n").map((line, i) => (
-                          <p key={i} className="text-white/70 text-sm leading-relaxed">{line}</p>
+                          <p key={i} className="text-gray-600 dark:text-white/70 text-sm leading-relaxed">{line}</p>
                         ))}
                       </div>
                     </li>
@@ -295,14 +295,14 @@ export default function ContactPage() {
                     <MessageCircle className="w-5 h-5 text-green-400" />
                   </div>
                   <div>
-                    <p className="text-white font-black text-sm">WhatsApp</p>
+                    <p className="text-shamaal-navy dark:text-white font-black text-sm">WhatsApp</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                       <span className="text-green-400 text-[10px] font-bold">We&apos;re online now</span>
                     </div>
                   </div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-white/30 group-hover:text-green-400 group-hover:rotate-45 transition-all duration-400" />
+                <ArrowUpRight className="w-4 h-4 text-gray-500 dark:text-white/30 group-hover:text-green-400 group-hover:rotate-45 transition-all duration-400" />
               </a>
 
               {/* Bank Card */}
@@ -335,7 +335,7 @@ function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
             </div>
             <div>
               <p className="text-shamaal-gold text-[9px] font-black tracking-[0.25em] uppercase">Bank Transfer</p>
-              <p className="text-white font-bold text-sm">Faisal Bank Ltd</p>
+              <p className="text-shamaal-navy dark:text-white font-bold text-sm">Faisal Bank Ltd</p>
             </div>
           </div>
           <span className="text-[9px] bg-green-500/15 border border-green-500/25 text-green-400 px-2.5 py-1 rounded-full font-bold">
@@ -346,11 +346,11 @@ function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
         {/* Account Details */}
         <div className="space-y-2.5 mb-4">
           <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-            <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Account Title</p>
-            <p className="text-white font-bold text-sm">Shamaal Tourism Pakistan (Pvt) Ltd</p>
+            <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Account Title</p>
+            <p className="text-shamaal-navy dark:text-white font-bold text-sm">Shamaal Tourism Pakistan (Pvt) Ltd</p>
           </div>
           <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-            <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-1">Account Number</p>
+            <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-1">Account Number</p>
             <div className="flex items-center justify-between">
               <p className="text-shamaal-gold font-black text-lg tracking-wider">3300499000007541</p>
               <button
@@ -368,12 +368,12 @@ function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-              <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">IBAN</p>
-              <p className="text-white font-bold text-xs">PK95FAYS3300499000007541</p>
+              <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">IBAN</p>
+              <p className="text-shamaal-navy dark:text-white font-bold text-xs">PK95FAYS3300499000007541</p>
             </div>
             <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-              <p className="text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Bank</p>
-              <p className="text-white font-bold text-sm">Faisal Bank</p>
+              <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Bank</p>
+              <p className="text-shamaal-navy dark:text-white font-bold text-sm">Faisal Bank</p>
             </div>
           </div>
         </div>
@@ -381,7 +381,7 @@ function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
         {/* Instructions */}
         <div className="rounded-xl p-4 bg-shamaal-gold/[0.07] border border-shamaal-gold/15">
           <p className="text-shamaal-gold text-[9px] font-black tracking-wider uppercase mb-2">📋 After Transfer:</p>
-          <ul className="space-y-1.5 text-white/50 text-[11px]">
+          <ul className="space-y-1.5 text-gray-600 dark:text-white/50 text-[11px]">
             <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">1.</span> Transfer the full amount above</li>
             <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">2.</span> Send receipt to WhatsApp <span className="text-shamaal-gold font-bold">0318-0425044</span></li>
             <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">3.</span> Confirmation within 24 hours</li>

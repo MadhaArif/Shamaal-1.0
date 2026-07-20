@@ -34,6 +34,27 @@ function BookingContent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedTour, setSelectedTour] = useState(FALLBACK_TOUR);
   const [fetchingTour, setFetchingTour] = useState(!!tourIdFromUrl);
+  const [futureDates, setFutureDates] = useState<string[]>([]);
+
+  // Generate dynamic future dates on mount
+  useEffect(() => {
+    const dates: string[] = [];
+    const today = new Date();
+    
+    // Find next Sunday (0)
+    let current = new Date();
+    current.setDate(today.getDate() + (7 - today.getDay()) % 7);
+    if (current <= today) {
+      current.setDate(current.getDate() + 7);
+    }
+    
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(current);
+      d.setDate(current.getDate() + i * 14);
+      dates.push(d.toISOString().split('T')[0]);
+    }
+    setFutureDates(dates);
+  }, []);
   
   const [form, setForm] = useState({
     tourId: tourIdFromUrl || "",
@@ -316,7 +337,7 @@ function BookingContent() {
                     </div>
                   )}
                   <div className="grid grid-cols-3 gap-3">
-                    {["2026-07-05", "2026-08-02", "2026-09-06", "2026-10-04", "2026-10-18", "2026-11-01"].map((date) => (
+                    {futureDates.map((date) => (
                       <button
                         key={date}
                         onClick={() => setForm({ ...form, startDate: date })}

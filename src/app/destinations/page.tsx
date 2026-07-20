@@ -96,13 +96,13 @@ export default function DestinationsPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#060d1a] overflow-x-hidden">
+      <main className="min-h-screen bg-shamaal-cream dark:bg-[#060d1a] overflow-x-hidden">
         {/* Hero Banner - No gap from navbar */}
         <DestinationsHero />
 
         {/* Destinations Grid */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <p className="text-white/40 text-base md:text-lg max-w-3xl mb-16 leading-relaxed">
+          <p className="text-gray-600 dark:text-white/40 text-base md:text-lg max-w-3xl mb-16 leading-relaxed">
             From the lush valleys of Swat to the rugged high-altitude deserts of Skardu, our curated destinations cover the most spectacular corners of the Great North.
           </p>
 
@@ -111,7 +111,7 @@ export default function DestinationsPage() {
               <Link
                 key={dest.slug}
                 href={`/destinations/${dest.slug}`}
-                className="group relative rounded-2xl overflow-hidden border border-white/[0.05] bg-white/[0.02] hover:border-shamaal-gold/25 transition-all duration-500 flex flex-col hover:-translate-y-1"
+                className="group relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] hover:border-shamaal-gold/25 transition-all duration-500 flex flex-col hover:-translate-y-1"
               >
                 {/* Image */}
                 <div className="relative h-60 overflow-hidden shrink-0">
@@ -146,7 +146,7 @@ export default function DestinationsPage() {
                   <div className="absolute inset-0 rounded-b-2xl bg-shamaal-gold/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                   {/* Temperature / Best Time */}
-                  <div className="flex items-center space-x-6 text-[11px] font-bold text-white/40 mb-4">
+                  <div className="flex items-center space-x-6 text-[11px] font-bold text-gray-500 dark:text-white/40 mb-4">
                     <span className="flex items-center">
                       <Sun className="w-4 h-4 text-shamaal-gold mr-1.5" />
                       {dest.bestTime}
@@ -162,7 +162,7 @@ export default function DestinationsPage() {
                     {dest.highlights.map((h) => (
                       <span 
                         key={h} 
-                        className="bg-white/[0.03] border border-white/[0.05] text-white/50 text-[10px] font-bold px-3 py-1 rounded-full flex items-center"
+                        className="bg-gray-100 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.05] text-gray-600 dark:text-white/50 text-[10px] font-bold px-3 py-1 rounded-full flex items-center"
                       >
                         <Camera className="w-3 h-3 mr-1.5 text-shamaal-gold" />
                         {h}
@@ -171,12 +171,12 @@ export default function DestinationsPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="mt-auto pt-4 border-t border-white/[0.04] flex items-center justify-between">
+                  <div className="mt-auto pt-4 border-t border-gray-200 dark:border-white/[0.04] flex items-center justify-between">
                     <span className="text-xs text-shamaal-gold font-black tracking-wider uppercase group-hover:text-yellow-400 transition-colors">
                       Explore destination
                     </span>
-                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-shamaal-gold group-hover:bg-shamaal-gold group-hover:text-shamaal-navy transition-all duration-400">
-                      <ArrowUpRight className="w-4 h-4 text-white group-hover:text-shamaal-navy" />
+                    <div className="w-8 h-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center group-hover:border-shamaal-gold group-hover:bg-shamaal-gold group-hover:text-shamaal-navy transition-all duration-400">
+                      <ArrowUpRight className="w-4 h-4 text-gray-600 dark:text-white group-hover:text-shamaal-navy" />
                     </div>
                   </div>
                 </div>

@@ -89,36 +89,45 @@ interface Tour {
   reviews: number;
 }
 
-async function ToursList({ searchParams }: { searchParams: Promise<{ query?: string; region?: string }> }) {
+async function ToursList({ searchParams }: { searchParams: Promise<{ query?: string; region?: string; difficulty?: string }> }) {
   const params = await searchParams;
   const query = params.query || '';
   const region = params.region || '';
+  const difficulty = params.difficulty || '';
   
   let tours: Tour[] = [];
   try {
-    const queryData = query ? {
-      OR: [
-        { title: { contains: query } },
-        { location: { contains: query } },
-        { description: { contains: query } }
-      ]
-    } : {};
+    // Build where conditions cleanly
+    const whereConditions: object[] = [];
 
-    const regionData = region ? {
-      location: { contains: region }
-    } : {};
+    if (query) {
+      whereConditions.push({
+        OR: [
+          { title: { contains: query } },
+          { location: { contains: query } },
+          { description: { contains: query } },
+        ],
+      });
+    }
+
+    if (region) {
+      whereConditions.push({ location: { contains: region } });
+    }
+
+    if (difficulty) {
+      whereConditions.push({ difficulty: { equals: difficulty } });
+    }
 
     const dbTours = await prisma.tour.findMany({
-      where: {
-        AND: [queryData, regionData]
-      }
+      where: whereConditions.length > 0 ? { AND: whereConditions } : {},
+      orderBy: { createdAt: "desc" },
     });
     
     tours = dbTours.map(t => ({
       ...t,
       image: t.images.split(',')[0],
-      rating: 4.8, // Default rating as not in schema
-      reviews: 120 // Default reviews as not in schema
+      rating: 4.8,
+      reviews: 120,
     })) as Tour[];
   } catch (error: unknown) {
     if (process.env.NODE_ENV === 'development') {
@@ -126,8 +135,15 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
     } else {
       console.error("Database error, using fallbacks:", error);
     }
-    tours = FALLBACK_TOURS;
+    // Apply client-side filtering on fallback data too
+    let filtered = FALLBACK_TOURS;
+    if (query) filtered = filtered.filter(t => t.title.toLowerCase().includes(query.toLowerCase()) || t.location.toLowerCase().includes(query.toLowerCase()));
+    if (region) filtered = filtered.filter(t => t.location.toLowerCase().includes(region.toLowerCase()));
+    if (difficulty) filtered = filtered.filter(t => t.difficulty.toLowerCase() === difficulty.toLowerCase());
+    tours = filtered;
   }
+
+  const activeFilters = [query, region, difficulty].filter(Boolean);
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
@@ -137,8 +153,8 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
 
       <div className="w-full lg:w-3/4">
         <div className="mb-6">
-          <p className="text-white/40 text-sm font-bold tracking-wider uppercase">
-            {tours.length} tours found {query || region ? "matching query" : ""}
+          <p className="text-gray-500 dark:text-white/40 text-sm font-bold tracking-wider uppercase">
+            {tours.length} tour{tours.length !== 1 ? "s" : ""} found{activeFilters.length > 0 ? ` — filtered by: ${activeFilters.join(", ")}` : ""}
           </p>
         </div>
 
@@ -149,12 +165,12 @@ async function ToursList({ searchParams }: { searchParams: Promise<{ query?: str
             ))}
           </div>
         ) : (
-          <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-12 text-center">
+          <div className="rounded-3xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] backdrop-blur-sm p-12 text-center">
             <div className="w-20 h-20 rounded-full bg-shamaal-gold/10 border border-shamaal-gold/20 flex items-center justify-center mx-auto mb-6">
               <Filter className="w-8 h-8 text-shamaal-gold" />
             </div>
-            <h3 className="text-2xl font-black text-white mb-2">No tours found</h3>
-            <p className="text-white/45 text-sm mb-8 max-w-sm mx-auto leading-relaxed">
+            <h3 className="text-2xl font-black text-shamaal-navy dark:text-white mb-2">No tours found</h3>
+            <p className="text-gray-500 dark:text-white/45 text-sm mb-8 max-w-sm mx-auto leading-relaxed">
               We couldn&apos;t find any tours matching your search criteria. Try adjusting filters or search term.
             </p>
             <Link href="/tours" className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-xs tracking-[0.2em] uppercase hover:bg-yellow-400 transition-all duration-400">
@@ -180,7 +196,7 @@ export default async function ToursCatalog({
     <>
       <Navbar />
       
-      <main className="flex-grow bg-[#060d1a]">
+      <main className="flex-grow bg-shamaal-cream dark:bg-[#060d1a]">
         {/* Modern Hero Section for Tours */}
         <ToursHero 
           title={query || region 

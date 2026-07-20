@@ -33,12 +33,12 @@ export default function Footer() {
       {/* Background effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-shamaal-gold/[0.03] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-shamaal-navy/60 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-shamaal-navy/5 rounded-full blur-[100px]" />
         {/* Grid lines */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.025]"
           style={{
-            backgroundImage: "linear-gradient(rgba(255,182,4,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,182,4,0.5) 1px, transparent 1px)",
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
           }}
         />
@@ -48,7 +48,7 @@ export default function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-shamaal-gold/40 to-transparent" />
 
       {/* CTA Banner */}
-      <div className="relative border-b border-white/[0.04]">
+      <div className="relative border-b border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">
             <p className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase mb-3 flex items-center gap-2 justify-center md:justify-start">
@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row gap-4 shrink-0">
             <Link
               href="/tours"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-shamaal-gold text-shamaal-navy font-black rounded-full hover:shadow-[0_0_40px_rgba(255,182,4,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden"
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-shamaal-gold text-shamaal-navy font-black rounded-full hover:shadow-[0_0_40px_rgba(255,182,4,0.3)] transition-all duration-500 hover:scale-105 overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-shamaal-gold to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <span className="relative z-10 text-xs tracking-[0.2em] uppercase">Explore Tours</span>
@@ -70,7 +70,7 @@ export default function Footer() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-white/15 text-white font-bold rounded-full hover:border-shamaal-gold/50 hover:text-shamaal-gold transition-all duration-500 text-xs tracking-[0.2em] uppercase"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-white/15 text-white/80 font-bold rounded-full hover:border-shamaal-gold/50 hover:text-shamaal-gold transition-all duration-500 text-xs tracking-[0.2em] uppercase"
             >
               Talk to Us
             </Link>
@@ -95,7 +95,7 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/50 text-sm leading-relaxed max-w-xs">
               Premium guided adventures across Pakistan's legendary Great North — Hunza, Skardu, Fairy Meadows and beyond.
             </p>
 
@@ -103,7 +103,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 flex-wrap">
               <div className="glass-gold px-4 py-2 rounded-full">
                 <p className="text-shamaal-gold text-xs font-black tracking-wider">★ 4.9 / 5.0</p>
-                <p className="text-white/40 text-[9px] tracking-widest uppercase">3,500+ Reviews</p>
+                <p className="text-shamaal-navy/40 text-[9px] tracking-widest uppercase">3,500+ Reviews</p>
               </div>
               <div className="px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.03]">
                 <p className="text-white text-xs font-black tracking-wider">DTS #10475</p>
@@ -120,7 +120,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={full}
-                  className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-shamaal-gold/50 hover:bg-shamaal-gold/10 transition-all duration-400 text-[10px] font-bold text-white/50 hover:text-shamaal-gold"
+                  className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-shamaal-gold/50 hover:bg-shamaal-gold/10 transition-all duration-400 text-[10px] font-bold text-white/40 hover:text-shamaal-gold"
                 >
                   {label}
                 </a>
@@ -129,8 +129,8 @@ export default function Footer() {
           </div>
 
           {/* Destinations – 3 cols */}
-          <div className="lg:col-span-3 lg:col-start-6">
-            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+          <div className="lg:col-span-3">
+            <h3 className="text-white/60 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
               <span className="vline-gold h-4 inline-block" />
               Destinations
             </h3>
@@ -139,7 +139,7 @@ export default function Footer() {
                 <li key={name}>
                   <Link
                     href={href}
-                    className="group flex items-center gap-2 text-sm text-white/40 hover:text-shamaal-gold transition-all duration-300"
+                    className="group flex items-center gap-2 text-sm text-white/50 hover:text-shamaal-gold transition-all duration-300"
                   >
                     <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300" />
                     {name}
@@ -151,7 +151,7 @@ export default function Footer() {
 
           {/* Company – 2 cols */}
           <div className="lg:col-span-2">
-            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+            <h3 className="text-white/60 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
               <span className="vline-gold h-4 inline-block" />
               Company
             </h3>
@@ -160,7 +160,7 @@ export default function Footer() {
                 <li key={name}>
                   <Link
                     href={href}
-                    className="group flex items-center gap-2 text-sm text-white/40 hover:text-shamaal-gold transition-all duration-300"
+                    className="group flex items-center gap-2 text-sm text-white/50 hover:text-shamaal-gold transition-all duration-300"
                   >
                     <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300" />
                     {name}
@@ -172,23 +172,23 @@ export default function Footer() {
 
           {/* Contact – 3 cols */}
           <div className="lg:col-span-3">
-            <h3 className="text-white/90 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
+            <h3 className="text-white/60 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-3">
               <span className="vline-gold h-4 inline-block" />
               Contact
             </h3>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-sm text-white/40">
+              <li className="flex items-start gap-3 text-sm text-white/55">
                 <MapPin className="w-4 h-4 text-shamaal-gold shrink-0 mt-0.5" />
                 <span className="leading-relaxed">UG-18 Big City Plaza,<br />Liberty Roundabout, Lahore.</span>
               </li>
-              <li className="flex items-start gap-3 text-sm text-white/40">
+              <li className="flex items-start gap-3 text-sm text-white/55">
                 <Phone className="w-4 h-4 text-shamaal-gold shrink-0 mt-0.5" />
                 <div className="space-y-1">
                   <a href="tel:03180425044" className="block hover:text-shamaal-gold transition-colors">0318-0425044</a>
                   <a href="tel:03180425025" className="block hover:text-shamaal-gold transition-colors">0318-0425025</a>
                 </div>
               </li>
-              <li className="flex items-center gap-3 text-sm text-white/40">
+              <li className="flex items-center gap-3 text-sm text-white/55">
                 <Mail className="w-4 h-4 text-shamaal-gold shrink-0" />
                 <a href="mailto:Shamaaltours@gmail.com" className="hover:text-shamaal-gold transition-colors">Shamaaltours@gmail.com</a>
               </li>
@@ -197,7 +197,7 @@ export default function Footer() {
                   href="https://wa.me/923180425044"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-black tracking-[0.2em] uppercase hover:bg-green-500 hover:text-white hover:border-green-500 transition-all duration-400"
+                  className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-600 text-[10px] font-black tracking-[0.2em] uppercase hover:bg-green-500 hover:text-white hover:border-green-500 transition-all duration-400"
                 >
                   <span className="relative w-2 h-2">
                     <span className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75" />
@@ -212,11 +212,11 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-8" />
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/25">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-white/40">
           <p>© {new Date().getFullYear()} Shamaal Tourism Pakistan (Pvt) Ltd. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white/60 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
             <span className="text-white/10">|</span>
             <span>Made with ♥ in Pakistan</span>
           </div>

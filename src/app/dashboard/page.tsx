@@ -71,7 +71,7 @@ export default function DashboardPage() {
 
   if (status === "loading" || (status === "authenticated" && loading)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-shamaal-cream">
+      <div className="min-h-screen flex items-center justify-center bg-[#060d1a]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-shamaal-gold"></div>
       </div>
     );
@@ -81,6 +81,10 @@ export default function DashboardPage() {
 
   const user = session.user;
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U";
+  const nameParts = (user?.name || "").trim().split(/\s+/);
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts.slice(1).join(" ") || "";
+  const email = user?.email || "";
 
   const upcoming = bookings.filter(b => b.status === "CONFIRMED");
 
@@ -113,11 +117,13 @@ export default function DashboardPage() {
                 <p className="text-gray-400 text-xs uppercase tracking-wider mt-1">Total Trips</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-shamaal-gold">2</p>
+                <p className="text-3xl font-bold text-shamaal-gold">
+                  {bookings.filter(b => b.status === "COMPLETED").length}
+                </p>
                 <p className="text-gray-400 text-xs uppercase tracking-wider mt-1">Reviews</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-shamaal-gold">650</p>
+                <p className="text-3xl font-bold text-shamaal-gold">{bookings.length > 0 ? bookings.length * 150 + 200 : 0}</p>
                 <p className="text-gray-400 text-xs uppercase tracking-wider mt-1">Reward Pts</p>
               </div>
             </div>
@@ -262,20 +268,20 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">First Name</label>
-                        <input type="text" defaultValue="Ali" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                        <input type="text" defaultValue={firstName} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
                       </div>
                       <div>
                         <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Last Name</label>
-                        <input type="text" defaultValue="Ahmed" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                        <input type="text" defaultValue={lastName} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Email Address</label>
-                      <input type="email" defaultValue="ali.ahmed@example.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                      <input type="email" defaultValue={email} className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-shamaal-navy dark:text-white mb-2">Phone</label>
-                      <input type="tel" defaultValue="+92 300 1234567" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
+                      <input type="tel" placeholder="+92 300 1234567" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-white/20 bg-gray-50 dark:bg-shamaal-navy/50 text-shamaal-navy dark:text-white focus:outline-none focus:ring-2 focus:ring-shamaal-gold" />
                     </div>
                     <button className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all">
                       Save Changes

@@ -1,60 +1,65 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import * as XLSX from "xlsx";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
-    // Fetch all leads from database
+    const session = await auth();
+
+    // Check if user is admin
+    if (process.env.NODE_ENV === "production") {
+      const role = (session?.user as { role?: string })?.role;
+      if (role !== "ADMIN") {
+        return new NextResponse("Unauthorized", { status: 401 });
+      }
+    }
+
     const leads = await prisma.lead.findMany({
-      orderBy: { updatedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
 
-    // Format data for Excel
-    const data = leads.map((lead) => ({
-      "First Name": lead.firstName,
-      "Last Name": lead.lastName,
-      Email: lead.email,
-      Phone: lead.phone,
-      "Tour ID": lead.tourId,
-      "Start Date": lead.startDate,
-      Travelers: lead.travelers,
-      Status: lead.status,
-      "Last Updated": lead.updatedAt.toLocaleString(),
-    }));
-
-    // Create Excel Workbook
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    
-    // Adjust column widths
-    const wscols = [
-      { wch: 15 }, // First Name
-      { wch: 15 }, // Last Name
-      { wch: 25 }, // Email
-      { wch: 15 }, // Phone
-      { wch: 10 }, // Tour ID
-      { wch: 15 }, // Start Date
-      { wch: 10 }, // Travelers
-      { wch: 10 }, // Status
-      { wch: 25 }, // Last Updated
+    // Generate CSV Content
+    const headers = [
+      "ID",
+      "First Name",
+      "Last Name",
+      "Email",
+      "Phone",
+      "Tour/Interest",
+      "Message",
+      "Start Date",
+      "Travelers",
+      "Status",
+      "Created At"
     ];
-    worksheet["!cols"] = wscols;
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Leads");
+    const rows = leads.map(lead => [
+      lead.id,
+      lead.firstName || "",
+      lead.lastName || "",
+      lead.email,
+      lead.phone || "",
+      lead.tourId || "",
+      (lead.message || "").replace(/"/g, '""'), // Escape double quotes
+      lead.startDate || "",
+      lead.travelers,
+      lead.status,
+      lead.createdAt.toISOString()
+    ]);
 
-    // Generate buffer
-    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(val => `"${val}"`).join(","))
+    ].join("\n");
 
-    // Return as downloadable file
-    return new NextResponse(buffer, {
-      status: 200,
+    return new NextResponse(csvContent, {
       headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Disposition": 'attachment; filename="shamaal-leads.xlsx"',
+        "Content-Type": "text/csv",
+        "Content-Disposition": `attachment; filename=shamaal_leads_${new Date().toISOString().split("T")[0]}.csv`,
       },
     });
   } catch (error) {
     console.error("Export Leads Error:", error);
-    return NextResponse.json({ error: "Failed to export leads" }, { status: 500 });
+    return new NextResponse("Failed to export leads", { status: 500 });
   }
 }

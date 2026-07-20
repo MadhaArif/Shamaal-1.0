@@ -37,7 +37,7 @@ export default function Navbar() {
       <nav
         className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
           isScrolled
-            ? "top-4 mx-4 lg:mx-auto lg:max-w-5xl rounded-2xl py-3 px-5 md:px-8 bg-[#060d1a]/80 backdrop-blur-[40px] border border-white/[0.08] shadow-[0_8px_60px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)]"
+            ? "top-4 mx-4 lg:mx-auto lg:max-w-5xl rounded-2xl py-3 px-5 md:px-8 bg-[#060d1a]/80 backdrop-blur-[40px] border border-white/[0.06] shadow-[0_8px_60px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
             : isHome
             ? "top-0 max-w-full bg-transparent border-b border-transparent py-8 px-6 sm:px-14 lg:px-20"
             : "top-0 max-w-full bg-[#060d1a]/90 backdrop-blur-[32px] border-b border-white/[0.06] py-5 px-6 sm:px-14 lg:px-20"
@@ -89,7 +89,7 @@ export default function Navbar() {
             {/* Book Now CTA */}
             <Link
               href="/book"
-              className="group relative inline-flex items-center gap-2.5 px-7 py-3 rounded-full overflow-hidden text-[10px] font-black tracking-[0.25em] uppercase transition-all duration-500 border border-shamaal-gold/50 text-shamaal-gold hover:text-shamaal-navy hover:shadow-[0_0_30px_rgba(255,182,4,0.4)]"
+              className="group relative inline-flex items-center gap-2.5 px-7 py-3 rounded-full overflow-hidden text-[10px] font-black tracking-[0.25em] uppercase transition-all duration-500 border border-shamaal-gold/50 text-shamaal-gold hover:text-[#060d1a] hover:shadow-[0_0_30px_rgba(255,182,4,0.4)]"
             >
               {/* Fill animation */}
               <span className="absolute inset-0 bg-shamaal-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-full" />
@@ -141,7 +141,7 @@ export default function Navbar() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[80vw] max-w-sm bg-[#060d1a] border-l border-white/[0.06] flex flex-col md:hidden shadow-[−20px_0_80px_rgba(0,0,0,0.8)]"
+              className="fixed top-0 right-0 bottom-0 z-50 w-[80vw] max-w-sm bg-[#060d1a] border-l border-white/[0.06] flex flex-col md:hidden shadow-[-20px_0_80px_rgba(0,0,0,0.5)]"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.06]">
@@ -173,7 +173,7 @@ export default function Navbar() {
                         className={`flex items-center justify-between py-4 px-4 rounded-xl font-black text-sm tracking-[0.2em] transition-all duration-300 ${
                           isActive
                             ? "text-shamaal-gold bg-shamaal-gold/5 border border-shamaal-gold/20"
-                            : "text-white/50 hover:text-white hover:bg-white/[0.03]"
+                            : "text-white/60 hover:text-white hover:bg-white/[0.03]"
                         }`}
                       >
                         {link.name}
@@ -189,7 +189,7 @@ export default function Navbar() {
                 <Link
                   href="/book"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-shamaal-gold text-shamaal-navy font-black tracking-[0.2em] text-xs uppercase hover:bg-yellow-400 transition-colors shadow-[0_0_30px_rgba(255,182,4,0.3)]"
+                  className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-shamaal-gold text-shamaal-navy font-black tracking-[0.2em] text-xs uppercase hover:bg-yellow-400 transition-colors shadow-[0_0_30px_rgba(255,182,4,0.15)]"
                 >
                   <Compass className="w-4 h-4" />
                   Book Now

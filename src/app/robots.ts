@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard/", "/book/", "/_next/"],
+        disallow: ["/api/", "/dashboard/", "/book/", "/admin/", "/_next/"],
       },
     ],
     sitemap: "https://www.shamaaltourism.com/sitemap.xml",

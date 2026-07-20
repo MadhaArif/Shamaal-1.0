@@ -491,7 +491,7 @@ export default function MemoriesPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#030b1a] text-white overflow-x-hidden">
+      <main className="min-h-screen bg-shamaal-cream dark:bg-[#030b1a] text-shamaal-navy dark:text-white overflow-x-hidden">
 
         {/* ── Cinematic Hero ── */}
         <section ref={heroRef} className="relative h-[92vh] flex items-end pb-20 overflow-hidden">
@@ -529,7 +529,7 @@ export default function MemoriesPage() {
               transition={{ duration: 0.9, delay: 0.2 }}
               className="text-6xl sm:text-7xl md:text-8xl font-black leading-[0.9] mb-6"
             >
-              <span className="block text-white">Stories</span>
+              <span className="block text-shamaal-navy dark:text-white">Stories</span>
               <span className="block">from the <span className="text-shamaal-gold">North</span></span>
             </motion.h1>
 
@@ -537,7 +537,7 @@ export default function MemoriesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.35 }}
-              className="text-white/50 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
+              className="text-gray-600 dark:text-white/50 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
             >
               {memories.length.toLocaleString()}+ breathtaking moments captured by real explorers
               across Pakistan's magnificent Great North.
@@ -557,7 +557,7 @@ export default function MemoriesPage() {
                 Share Your Memory
               </button>
               <button
-                className="flex items-center gap-3 bg-white/5 hover:bg-white/10 text-white font-bold px-8 py-4 rounded-full border border-white/10 transition-all"
+                className="flex items-center gap-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-shamaal-navy dark:text-white font-bold px-8 py-4 rounded-full border border-gray-200 dark:border-white/10 transition-all"
                 onClick={() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <Play className="w-4 h-4" />
@@ -570,9 +570,9 @@ export default function MemoriesPage() {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 dark:text-white/30"
           >
-            <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center pt-1.5">
+            <div className="w-5 h-8 rounded-full border border-gray-300 dark:border-white/20 flex items-start justify-center pt-1.5">
               <div className="w-1 h-2 rounded-full bg-shamaal-gold" />
             </div>
           </motion.div>
@@ -602,7 +602,7 @@ export default function MemoriesPage() {
                 className={`relative px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
                   activeCategory === cat
                     ? "text-shamaal-navy"
-                    : "text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10"
+                    : "text-gray-600 dark:text-white/50 hover:text-shamaal-navy dark:hover:text-white bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10"
                 }`}
               >
                 {activeCategory === cat && (
@@ -616,7 +616,7 @@ export default function MemoriesPage() {
               </button>
             ))}
 
-            <div className="ml-auto text-white/30 text-sm font-bold">
+            <div className="ml-auto text-gray-500 dark:text-white/30 text-sm font-bold">
               {filtered.length} photos
             </div>
           </div>
@@ -644,7 +644,7 @@ export default function MemoriesPage() {
           </AnimatePresence>
 
           {filtered.length === 0 && (
-            <div className="text-center py-32 text-white/30">
+            <div className="text-center py-32 text-gray-500 dark:text-white/30">
               <Camera className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p className="text-lg font-bold">No memories in this category yet.</p>
             </div>

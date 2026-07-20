@@ -86,10 +86,13 @@ const WHY_US = [
 export default async function Home() {
   let featuredTours = [];
   try {
-    const dbFeatured = await prisma.tour.findMany({
-      where: { featured: true },
-      take: 3
-    });
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("DB timeout")), 3000)
+    );
+    const dbFeatured = await Promise.race([
+      prisma.tour.findMany({ where: { featured: true }, take: 3 }),
+      timeout,
+    ]);
     if (dbFeatured.length > 0) {
       featuredTours = dbFeatured.map((t) => ({
         id: t.id,
@@ -107,12 +110,7 @@ export default async function Home() {
       featuredTours = FEATURED_TOURS;
     }
   } catch (error) {
-    // Log a simple warning instead of the full error during development if DB is not reachable
-    if (process.env.NODE_ENV === 'development') {
-      console.warn("Database not reachable, using featured tours fallback data.");
-    } else {
-      console.error("Failed to fetch featured tours from database:", error);
-    }
+    console.warn("DB not reachable or timed out — using fallback data.");
     featuredTours = FEATURED_TOURS;
   }
 
@@ -125,9 +123,9 @@ export default async function Home() {
         <HeroSection />
 
         {/* Featured Destinations */}
-        <section className="relative py-28 bg-[#07101f] overflow-hidden">
+        <section className="relative py-28 bg-white overflow-hidden">
           {/* Subtle grid bg */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.025]" style={{ backgroundImage: "radial-gradient(rgba(255,182,4,0.8) 1px, transparent 1px)", backgroundSize: "44px 44px" }} />
+          <div className="absolute inset-0 pointer-events-none opacity-[0.025]" style={{ backgroundImage: "radial-gradient(rgba(27,47,90,0.8) 1px, transparent 1px)", backgroundSize: "44px 44px" }} />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Section header */}
@@ -136,7 +134,7 @@ export default async function Home() {
                 <Sparkles className="w-3.5 h-3.5 text-shamaal-gold" />
                 <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Explore Pakistan</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white">Popular <span className="text-gradient-gold">Destinations</span></h2>
+              <h2 className="text-4xl md:text-5xl font-black text-shamaal-navy">Popular <span className="text-gradient-gold">Destinations</span></h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -148,10 +146,10 @@ export default async function Home() {
                 <Link
                   key={dest.slug}
                   href={`/destinations/${dest.slug}`}
-                  className={`group relative rounded-2xl overflow-hidden border border-white/[0.05] hover:border-shamaal-gold/30 transition-all duration-500 ${i === 1 ? "lg:mt-10" : ""} ${i === 2 ? "lg:mt-20" : ""}`}
+                  className={`group relative rounded-2xl overflow-hidden border border-shamaal-navy/[0.06] hover:border-shamaal-gold/30 transition-all duration-500 ${i === 1 ? "lg:mt-10" : ""} ${i === 2 ? "lg:mt-20" : ""}`}
                   style={{ height: "400px" }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07101f]/95 via-[#07101f]/20 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent z-10" />
                   <Image src={dest.img} alt={dest.name} fill className="object-cover group-hover:scale-110 transition-transform duration-[1.2s]" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
 
                   {/* Tour count badge */}
@@ -174,7 +172,7 @@ export default async function Home() {
             </div>
 
             <div className="mt-14 text-center">
-              <Link href="/destinations" className="group inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/15 text-white/60 font-black text-xs tracking-[0.2em] uppercase hover:border-shamaal-gold/50 hover:text-shamaal-gold transition-all duration-400">
+              <Link href="/destinations" className="group inline-flex items-center gap-3 px-8 py-4 rounded-full border border-shamaal-navy/15 text-shamaal-navy/75 font-black text-xs tracking-[0.2em] uppercase hover:border-shamaal-gold/50 hover:text-shamaal-gold transition-all duration-400">
                 View All Destinations
                 <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
               </Link>
@@ -189,7 +187,7 @@ export default async function Home() {
         <StatsBanner />
 
         {/* Popular Tours */}
-        <section className="relative py-28 bg-[#060d1a] overflow-hidden">
+        <section className="relative py-28 bg-shamaal-cream overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-shamaal-gold/[0.03] rounded-full blur-[140px]" />
           </div>
@@ -200,7 +198,7 @@ export default async function Home() {
                 <Star className="w-3.5 h-3.5 text-shamaal-gold fill-shamaal-gold" />
                 <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Handpicked for You</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white">Most Popular <span className="text-gradient-gold">Tours</span></h2>
+              <h2 className="text-4xl md:text-5xl font-black text-shamaal-navy">Most Popular <span className="text-gradient-gold">Tours</span></h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -219,7 +217,7 @@ export default async function Home() {
         </section>
 
         {/* Why Choose Us */}
-        <section className="relative py-28 bg-[#07101f] overflow-hidden">
+        <section className="relative py-28 bg-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-shamaal-gold/[0.04] rounded-full blur-[130px]" />
           </div>
@@ -230,10 +228,10 @@ export default async function Home() {
                 <Award className="w-3.5 h-3.5 text-shamaal-gold" />
                 <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Why We Stand Out</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white max-w-2xl mx-auto leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-shamaal-navy max-w-2xl mx-auto leading-tight">
                 Why Choose <span className="text-gradient-gold">Shamaal Tourism?</span>
               </h2>
-              <p className="text-white/35 mt-4 max-w-xl mx-auto text-sm leading-relaxed">
+              <p className="text-shamaal-navy/60 mt-4 max-w-xl mx-auto text-sm leading-relaxed">
                 Choosing Shamaal Tourism means choosing experience, convenience, and complete peace of mind.
               </p>
             </div>
@@ -242,7 +240,7 @@ export default async function Home() {
               {WHY_US.map((item, index) => (
                 <div
                   key={item.title}
-                  className="group relative p-7 rounded-2xl border border-white/[0.05] bg-white/[0.02] hover:border-shamaal-gold/20 hover:bg-white/[0.04] transition-all duration-500 overflow-hidden"
+                  className="group relative p-7 rounded-2xl border border-shamaal-navy/[0.06] bg-shamaal-cream/20 hover:border-shamaal-gold/20 hover:bg-shamaal-cream/50 transition-all duration-500 overflow-hidden"
                 >
                   {/* Hover glow */}
                   <div className="absolute inset-0 rounded-2xl bg-shamaal-gold/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -255,8 +253,8 @@ export default async function Home() {
                     <span className="text-shamaal-gold/30 font-black text-4xl leading-none">0{index + 1}</span>
                   </div>
 
-                  <h3 className="text-white font-black text-lg mb-3 group-hover:text-shamaal-gold/90 transition-colors duration-400">{item.title}</h3>
-                  <p className="text-white/35 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-shamaal-navy font-black text-lg mb-3 group-hover:text-shamaal-gold/90 transition-colors duration-400">{item.title}</h3>
+                  <p className="text-shamaal-navy/60 text-sm leading-relaxed">{item.desc}</p>
 
                   {/* Bottom glow line */}
                   <div className="absolute bottom-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-shamaal-gold/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -269,8 +267,8 @@ export default async function Home() {
                 <div className="text-shamaal-gold mb-4">
                   <CheckCircle className="w-10 h-10" />
                 </div>
-                <h3 className="text-white font-black text-xl mb-3">DTS Verified</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-5">
+                <h3 className="text-shamaal-navy font-black text-xl mb-3">DTS Verified</h3>
+                <p className="text-shamaal-navy/60 text-sm leading-relaxed mb-5">
                   Pakistan Tourism Authority verified operator. Licence #10475.
                 </p>
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-shamaal-gold/15 border border-shamaal-gold/25">
@@ -283,7 +281,7 @@ export default async function Home() {
         </section>
 
         {/* Testimonials */}
-        <section className="relative py-28 bg-[#060d1a] overflow-hidden">
+        <section className="relative py-28 bg-shamaal-cream overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-shamaal-gold/[0.03] rounded-full blur-[150px]" />
           </div>
@@ -294,7 +292,7 @@ export default async function Home() {
                 <Quote className="w-3.5 h-3.5 text-shamaal-gold" />
                 <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Real Stories</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white">
+              <h2 className="text-4xl md:text-5xl font-black text-shamaal-navy">
                 What Our <span className="text-gradient-gold">Travellers Say</span>
               </h2>
             </div>
@@ -303,10 +301,10 @@ export default async function Home() {
               {TESTIMONIALS.map((t) => (
                 <div
                   key={t.name}
-                  className="group relative p-7 rounded-2xl border border-white/[0.05] bg-white/[0.02] hover:border-shamaal-gold/20 hover:bg-white/[0.04] hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                  className="group relative p-7 rounded-2xl border border-shamaal-navy/[0.06] bg-white hover:border-shamaal-gold/20 hover:bg-white hover:-translate-y-2 transition-all duration-500 overflow-hidden"
                 >
                   {/* Giant quote icon */}
-                  <Quote className="absolute right-5 top-5 w-16 h-16 text-white/[0.03] group-hover:text-shamaal-gold/[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none" />
+                  <Quote className="absolute right-5 top-5 w-16 h-16 text-shamaal-navy/[0.03] group-hover:text-shamaal-gold/[0.07] group-hover:scale-110 transition-all duration-700 pointer-events-none" />
 
                   {/* Stars */}
                   <div className="flex items-center gap-0.5 mb-5">
@@ -318,10 +316,10 @@ export default async function Home() {
                   {/* Tour tag */}
                   <p className="text-shamaal-gold/60 text-[10px] font-black tracking-[0.2em] uppercase mb-4">{t.tour}</p>
 
-                  <p className="text-white/50 text-sm leading-relaxed mb-7 italic">&ldquo;{t.text}&rdquo;</p>
+                  <p className="text-shamaal-navy/70 text-sm leading-relaxed mb-7 italic">&ldquo;{t.text}&rdquo;</p>
 
                   {/* Author */}
-                  <div className="flex items-center gap-4 pt-5 border-t border-white/[0.05]">
+                  <div className="flex items-center gap-4 pt-5 border-t border-shamaal-navy/[0.05]">
                     <Image
                       src={t.avatar}
                       alt={t.name}
@@ -330,8 +328,8 @@ export default async function Home() {
                       className="rounded-full border-2 border-shamaal-gold/30 group-hover:border-shamaal-gold/60 transition-all duration-400"
                     />
                     <div>
-                      <p className="text-white font-black text-sm">{t.name}</p>
-                      <p className="text-white/30 text-xs">{t.location}</p>
+                      <p className="text-shamaal-navy font-black text-sm">{t.name}</p>
+                      <p className="text-shamaal-navy/55 text-xs">{t.location}</p>
                     </div>
                   </div>
 
@@ -344,16 +342,16 @@ export default async function Home() {
         </section>
 
         {/* CTA Banner */}
-        <section className="relative py-28 bg-[#07101f] overflow-hidden">
+        <section className="relative py-28 bg-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <Image
               src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=2000"
               alt="Northern Pakistan"
               fill
-              className="object-cover opacity-[0.06]"
+              className="object-cover opacity-[0.04]"
               unoptimized
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#07101f] via-transparent to-[#07101f]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-shamaal-gold/[0.06] rounded-full blur-[150px]" />
           </div>
 
@@ -363,11 +361,11 @@ export default async function Home() {
               <span className="text-shamaal-gold text-[10px] font-black tracking-[0.3em] uppercase">Start Your Journey</span>
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-black text-white leading-tight mb-6">
+            <h2 className="text-4xl md:text-6xl font-black text-shamaal-navy leading-tight mb-6">
               Ready to Explore{" "}
               <span className="text-gradient-gold">The Great North?</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-xl mb-12 max-w-xl mx-auto leading-relaxed">
+            <p className="text-shamaal-navy/60 text-lg md:text-xl mb-12 max-w-xl mx-auto leading-relaxed">
               Let us craft your perfect Pakistani adventure. Speak to our travel experts today — no commitment required.
             </p>
 

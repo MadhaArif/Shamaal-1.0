@@ -51,7 +51,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-shamaal-cream">
+      <div className="min-h-screen flex items-center justify-center bg-[#060d1a]">
         <Loader2 className="w-12 h-12 animate-spin text-shamaal-gold" />
       </div>
     );
@@ -59,11 +59,11 @@ export default function AdminDashboard() {
 
   if (!data || data.error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-shamaal-cream p-4">
-        <div className="bg-white p-8 rounded-3xl shadow-xl text-center max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-[#060d1a] p-4">
+        <div className="bg-shamaal-navy/30 p-8 rounded-3xl border border-white/10 shadow-xl text-center max-w-md">
           <h1 className="text-2xl font-bold text-red-500 mb-4">Database Connection Issue</h1>
-          <p className="text-gray-600 mb-6">Make sure your database is running to see admin stats.</p>
-          <button onClick={() => window.location.reload()} className="bg-shamaal-navy text-white px-8 py-3 rounded-full font-bold">Retry</button>
+          <p className="text-white/60 mb-6">Make sure your database is running to see admin stats.</p>
+          <button onClick={() => window.location.reload()} className="bg-shamaal-gold text-shamaal-navy px-8 py-3 rounded-full font-bold hover:bg-yellow-400 transition-colors">Retry</button>
         </div>
       </div>
     );

@@ -53,7 +53,7 @@ export default function VibeFinder() {
   const [active, setActive] = useState(VIBES[0]);
 
   return (
-    <section className="relative py-28 md:py-36 bg-[#07101f] overflow-hidden">
+    <section className="relative py-28 md:py-36 bg-white overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -61,9 +61,9 @@ export default function VibeFinder() {
           style={{ background: `${active.accent}08` }}
         />
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.012]"
           style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(rgba(27,47,90,0.4) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
           }}
         />
@@ -84,7 +84,7 @@ export default function VibeFinder() {
               Find Your Perfect Trip
             </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">
+          <h2 className="text-4xl md:text-6xl font-black text-shamaal-navy leading-tight">
             What&apos;s your travel{" "}
             <span className="text-gradient-gold">vibe?</span>
           </h2>
@@ -106,16 +106,16 @@ export default function VibeFinder() {
                     transition={{ type: "spring", stiffness: 300, damping: 22 }}
                     className={`relative group p-5 md:p-6 rounded-2xl border text-left transition-all duration-500 overflow-hidden ${
                       isActive
-                        ? "border-white/25 bg-white/[0.12] shadow-[0_0_30px_rgba(255,255,255,0.03)]"
-                        : "border-white/[0.05] bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]"
+                        ? "border-shamaal-navy/20 bg-shamaal-cream shadow-[0_4px_30px_rgba(27,47,90,0.06)]"
+                        : "border-shamaal-navy/[0.05] bg-shamaal-cream/30 hover:border-shamaal-navy/10 hover:bg-shamaal-cream/60"
                     }`}
                   >
                     {/* Active accent glow */}
                     {isActive && (
                       <motion.div
                         layoutId="vibe-glow"
-                        className="absolute inset-0 opacity-22 rounded-2xl"
-                        style={{ background: vibe.accent }}
+                        className="absolute inset-0 rounded-2xl"
+                        style={{ background: vibe.accent, opacity: 0.08 }}
                         transition={{ type: "spring", stiffness: 200, damping: 25 }}
                       />
                     )}
@@ -124,24 +124,24 @@ export default function VibeFinder() {
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-all duration-400"
                       style={{
-                        background: isActive ? `${vibe.accent}20` : "rgba(255,255,255,0.04)",
-                        border: `1px solid ${isActive ? vibe.accent + "40" : "rgba(255,255,255,0.06)"}`,
+                        background: isActive ? `${vibe.accent}20` : "rgba(27,47,90,0.06)",
+                        border: `1px solid ${isActive ? vibe.accent + "40" : "rgba(27,47,90,0.08)"}`,
                       }}
                     >
                       <vibe.icon
                         className="w-5 h-5 transition-colors duration-400"
-                        style={{ color: isActive ? vibe.accent : "rgba(255,255,255,0.4)" }}
+                        style={{ color: isActive ? vibe.accent : "rgba(27,47,90,0.4)" }}
                       />
                     </div>
 
                     {/* Text */}
                     <p
                       className="text-[9px] font-black tracking-[0.2em] uppercase mb-1 transition-colors duration-400"
-                      style={{ color: isActive ? vibe.accent : "rgba(255,255,255,0.3)" }}
+                      style={{ color: isActive ? vibe.accent : "rgba(27,47,90,0.4)" }}
                     >
                       {vibe.label}
                     </p>
-                    <h3 className={`text-base font-black transition-colors duration-400 ${isActive ? "text-white" : "text-white/50"}`}>
+                    <h3 className={`text-base font-black transition-colors duration-400 ${isActive ? "text-shamaal-navy" : "text-shamaal-navy/50"}`}>
                       {vibe.title}
                     </h3>
 
@@ -168,7 +168,7 @@ export default function VibeFinder() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.5 }}
               >
-                <p className="text-white/40 text-sm leading-relaxed mb-8 max-w-sm">
+                <p className="text-shamaal-navy/60 text-sm leading-relaxed mb-8 max-w-sm">
                   {active.desc}
                 </p>
                 <Link
@@ -176,7 +176,7 @@ export default function VibeFinder() {
                   className="group inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,182,4,0.35)] hover:scale-105"
                   style={{
                     background: active.accent,
-                    color: "#07101f",
+                    color: "#1b2f5a",
                     boxShadow: `0 0 24px ${active.accent}30`,
                   }}
                 >
@@ -211,7 +211,7 @@ export default function VibeFinder() {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07101f]/90 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-shamaal-navy/90 via-transparent to-transparent" />
 
                 {/* Info card */}
                 <motion.div
