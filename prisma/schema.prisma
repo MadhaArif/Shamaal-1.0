@@ -3,7 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  // Use PostgreSQL for Google Cloud / production (SQLite file: URLs do not work there)
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,12 +15,12 @@ model Account {
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?
-  access_token       String?
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?
+  id_token           String? @db.Text
   session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -62,13 +63,13 @@ model Tour {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  description String
+  description String   @db.Text
   price       Float
   duration    Int      // in days
   location    String
   difficulty  String   // e.g., Easy, Moderate, Hard
   featured    Boolean  @default(false)
-  images      String   // Comma-separated list of URLs
+  images      String   @db.Text // Comma-separated list of URLs
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -96,7 +97,7 @@ model Review {
   userId      String
   tourId      String
   rating      Int      // 1-5
-  comment     String?
+  comment     String?  @db.Text
   createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])
@@ -110,7 +111,7 @@ model Lead {
   email       String   @unique
   phone       String?
   tourId      String?
-  message     String?  // Added for contact form
+  message     String?  @db.Text
   startDate   String?
   travelers   Int      @default(1)
   status      String   @default("DRAFT")
@@ -122,7 +123,7 @@ model Memory {
   id          String   @id @default(cuid())
   title       String
   location    String
-  image       String   // URL or path
+  image       String   @db.Text // URL, path, or base64 data URL
   author      String
   likes       Int      @default(0)
   approved    Boolean  @default(false)

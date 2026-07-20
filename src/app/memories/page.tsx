@@ -28,6 +28,35 @@ interface Memory {
   deleteToken?: string;
 }
 
+function MemoryImage({
+  src,
+  alt,
+  fill,
+  className,
+  sizes,
+}: {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  className?: string;
+  sizes?: string;
+}) {
+  if (src.startsWith("data:")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt}
+        className={`${fill ? "absolute inset-0 h-full w-full" : ""} ${className || ""}`}
+      />
+    );
+  }
+
+  return (
+    <Image src={src} alt={alt} fill={fill} className={className} sizes={sizes} />
+  );
+}
+
 const FALLBACK_MEMORIES: Memory[] = [
   { id: 1, title: "Sunset at Attabad Lake", location: "Hunza Valley", image: "/images/destinations/attabad-lake.jpeg", author: "Zahid Khan", likes: 124, category: "Landscapes", size: "large" },
   { id: 2, title: "Nanga Parbat at Dawn", location: "Fairy Meadows", image: "/images/destinations/nanga-parbat.jpeg", author: "Ayesha Bibi", likes: 89, category: "Mountains", size: "medium" },
@@ -135,7 +164,7 @@ function Lightbox({
       >
         <div className="relative w-full" style={{ maxHeight: "72vh" }}>
           <div className="relative rounded-2xl overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.8)]" style={{ height: "72vh" }}>
-            <Image src={m.image} alt={m.title} fill className="object-cover" sizes="90vw" />
+            <MemoryImage src={m.image} alt={m.title} fill className="object-cover" sizes="90vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           </div>
         </div>
@@ -178,7 +207,7 @@ function FilmStrip({ memories }: { memories: Memory[] }) {
             key={i}
             className="relative h-28 w-44 shrink-0 rounded-xl overflow-hidden border-2 border-white/10"
           >
-            <Image src={m.image} alt={m.title} fill className="object-cover opacity-70" sizes="176px" />
+            <MemoryImage src={m.image} alt={m.title} fill className="object-cover opacity-70" sizes="176px" />
             {/* Sprocket holes */}
             <div className="absolute left-1 top-0 bottom-0 flex flex-col justify-around pointer-events-none">
               {[0, 1, 2, 3].map((h) => (
@@ -248,7 +277,7 @@ function MemoryCard({
       onClick={onClick}
       className={`group relative ${h} rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-[0_30px_60px_rgba(0,0,0,0.35)] transition-shadow duration-700`}
     >
-      <Image
+      <MemoryImage
         src={memory.image}
         alt={memory.title}
         fill
@@ -342,8 +371,8 @@ function UploadModal({
       setError("Please select a valid image file (JPG, PNG, WEBP).");
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      setError("Image must be smaller than 10MB.");
+    if (file.size > 4 * 1024 * 1024) {
+      setError("Image must be smaller than 4MB.");
       return;
     }
     setError("");
@@ -476,7 +505,7 @@ function UploadModal({
                       <Upload className="w-5 h-5" />
                     </div>
                     <p className="text-sm font-bold">Drop photo here or <span className="text-shamaal-gold">browse</span></p>
-                    <p className="text-xs">JPG, PNG, WEBP · Max 10MB</p>
+                    <p className="text-xs">JPG, PNG, WEBP · Max 4MB</p>
                   </div>
                 )}
               </div>
@@ -646,7 +675,7 @@ export default function MemoriesPage() {
           <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1 opacity-40">
             {memories.slice(0, 6).map((m, i) => (
               <div key={i} className="relative overflow-hidden">
-                <Image src={m.image} alt={m.title} fill className="object-cover scale-110" sizes="33vw" />
+                <MemoryImage src={m.image} alt={m.title} fill className="object-cover scale-110" sizes="33vw" />
               </div>
             ))}
           </div>
@@ -816,7 +845,7 @@ export default function MemoriesPage() {
             <div className="absolute inset-0 grid grid-cols-4 gap-0.5 opacity-20">
               {memories.slice(0, 8).map((m, i) => (
                 <div key={i} className="relative overflow-hidden">
-                  <Image src={m.image} alt="" fill className="object-cover" sizes="25vw" />
+                  <MemoryImage src={m.image} alt="" fill className="object-cover" sizes="25vw" />
                 </div>
               ))}
             </div>
