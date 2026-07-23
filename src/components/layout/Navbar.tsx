@@ -37,10 +37,10 @@ export default function Navbar() {
       <nav
         className={`fixed z-50 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
           isScrolled
-            ? "top-6 mx-4 lg:mx-auto lg:max-w-6xl rounded-full py-3 px-6 md:px-10 bg-[#060d1a]/60 backdrop-blur-[40px] border border-white/[0.08] shadow-[0_20px_80px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)]"
+            ? "top-6 mx-4 lg:mx-auto lg:max-w-6xl rounded-full py-3 px-6 md:px-10 bg-[#060d1a]/60 backdrop-blur-[40px] border border-white/[0.08]"
             : isHome
-            ? "top-0 max-w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent border-b border-transparent py-10 px-6 sm:px-14 lg:px-20"
-            : "top-0 max-w-full bg-[#060d1a]/80 backdrop-blur-[40px] border-b border-white/[0.06] py-6 px-6 sm:px-14 lg:px-20 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+            ? "top-0 max-w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent py-10 px-6 sm:px-14 lg:px-20"
+            : "top-0 max-w-full bg-[#060d1a]/80 backdrop-blur-[40px] py-6 px-6 sm:px-14 lg:px-20"
         }`}
       >
         <div className="flex justify-between items-center">
@@ -49,7 +49,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center group shrink-0">
             <div
               className={`relative transition-all duration-1000 group-hover:brightness-125 group-hover:scale-105 origin-left ${
-                isScrolled ? "h-10 w-32 md:h-11 md:w-36" : "h-12 w-36 md:h-14 md:w-48"
+                isScrolled ? "h-12 w-40 md:h-14 md:w-48" : "h-16 w-48 md:h-20 md:w-64"
               }`}
             >
               <Image
@@ -150,8 +150,8 @@ export default function Navbar() {
             >
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.06]">
-                <div className="relative h-10 w-32">
-                  <Image src="/logo.png" alt="Shamaal Tourism" fill className="object-contain" sizes="128px" />
+                <div className="relative h-14 w-44">
+                  <Image src="/logo.png" alt="Shamaal Tourism" fill className="object-contain" sizes="176px" />
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}

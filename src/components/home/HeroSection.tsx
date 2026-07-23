@@ -40,7 +40,7 @@ const DESTINATIONS = [
     tagline: "Touch the sky at the highest point of Kaghan Valley."
   },
   {
-    url: "https://images.unsplash.com/photo-1589553460732-58ef7a71fbb5?auto=format&fit=crop&q=80&w=2500",
+    url: "/images/destinations/skardu-viewpoint.jpeg",
     title: "SKARDU",
     sub: "The Throne of Mountains",
     color: "#1b2f5a",

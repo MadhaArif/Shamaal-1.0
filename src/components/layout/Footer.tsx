@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowUpRight, Star } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { siInstagram, siFacebook, siYoutube } from "simple-icons";
 
 const DESTINATIONS = [
   { name: "Hunza Valley", href: "/destinations/hunza" },
@@ -22,9 +23,9 @@ const COMPANY = [
 ];
 
 const SOCIALS = [
-  { label: "IG", full: "Instagram", href: "https://instagram.com/shamaaltourism" },
-  { label: "FB", full: "Facebook",  href: "https://facebook.com/shamaaltourism" },
-  { label: "YT", full: "YouTube",   href: "https://youtube.com/@shamaaltourism" },
+  { icon: siInstagram, full: "Instagram", href: "https://instagram.com/shamaaltourism" },
+  { icon: siFacebook, full: "Facebook",  href: "https://facebook.com/shamaaltourism" },
+  { icon: siYoutube, full: "YouTube",   href: "https://youtube.com/@shamaaltourism" },
 ];
 
 export default function Footer() {
@@ -113,16 +114,19 @@ export default function Footer() {
 
             {/* Social icons */}
             <div className="flex items-center gap-3">
-              {SOCIALS.map(({ label, full, href }) => (
+              {SOCIALS.map(({ icon, full, href }) => (
                 <a
-                  key={label}
+                  key={full}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={full}
-                  className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-shamaal-gold/50 hover:bg-shamaal-gold/10 transition-all duration-400 text-[10px] font-bold text-white/40 hover:text-shamaal-gold"
+                  className="group w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-shamaal-gold/50 hover:bg-shamaal-gold/10 transition-all duration-400 text-white/40 hover:text-shamaal-gold [&_svg]:w-full [&_svg]:h-full [&_svg]:fill-current"
                 >
-                  {label}
+                  <div 
+                    className="w-6 h-6"
+                    dangerouslySetInnerHTML={{ __html: icon.svg }}
+                  />
                 </a>
               ))}
             </div>
