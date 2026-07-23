@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Search, ArrowUpRight } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Search, ArrowUpRight, Compass, MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const DESTINATIONS = [
   {
-    url: "/images/destinations/attabad-lake.jpeg",
+    url: "https://images.unsplash.com/photo-1542359649-31e03cd4d909?auto=format&fit=crop&q=80&w=2500",
     title: "HUNZA",
     sub: "Valley of Eternal Youth",
     color: "#ffb604",
@@ -16,7 +16,7 @@ const DESTINATIONS = [
     tagline: "Witness the majestic golden peaks and the turquoise Attabad Lake."
   },
   {
-    url: "/images/destinations/deosai-plains.jpeg",
+    url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=2500",
     title: "NEELUM",
     sub: "The Blue Gem of Kashmir",
     color: "#1b2f5a",
@@ -24,7 +24,7 @@ const DESTINATIONS = [
     tagline: "Where the river hums the songs of the mountains."
   },
   {
-    url: "/images/destinations/saiful-malook.jpeg",
+    url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2500",
     title: "NARAN",
     sub: "Heart of the Himalayas",
     color: "#ffb604",
@@ -32,7 +32,7 @@ const DESTINATIONS = [
     tagline: "Drive through the clouds on the road to heaven."
   },
   {
-    url: "/images/destinations/babusar-top.jpeg",
+    url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=2500",
     title: "BABUSAR",
     sub: "Gateway to the North",
     color: "#ffb604",
@@ -40,7 +40,7 @@ const DESTINATIONS = [
     tagline: "Touch the sky at the highest point of Kaghan Valley."
   },
   {
-    url: "/images/destinations/shangrilla-lake.jpeg",
+    url: "https://images.unsplash.com/photo-1589553460732-58ef7a71fbb5?auto=format&fit=crop&q=80&w=2500",
     title: "SKARDU",
     sub: "The Throne of Mountains",
     color: "#1b2f5a",
@@ -48,7 +48,7 @@ const DESTINATIONS = [
     tagline: "Explore the gateway to the world's highest peaks."
   },
   {
-    url: "/images/destinations/nanga-parbat.jpeg",
+    url: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&q=80&w=2500",
     title: "NANGA PARBAT",
     sub: "The Killer Mountain",
     color: "#ffb604",
@@ -56,7 +56,7 @@ const DESTINATIONS = [
     tagline: "The ninth highest mountain in the world, standing in all its glory."
   },
   {
-    url: "/images/destinations/shangrilla-resort.jpeg",
+    url: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=2500",
     title: "SHANGRILLA",
     sub: "The Heart of Skardu",
     color: "#1b2f5a",
@@ -64,323 +64,193 @@ const DESTINATIONS = [
     tagline: "Experience the ultimate luxury amidst the red-roofed cottages."
   },
   {
-    url: "/images/destinations/rainbow-lake.jpeg",
+    url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=2500",
     title: "NALTAR",
     sub: "The Rainbow of Pakistan",
     color: "#ffb604",
     coords: "36.1367° N, 74.1833° E",
     tagline: "Explore the magical colors of Rainbow Lake in Naltar Valley."
-  },
-  {
-    url: "/images/destinations/kharphocho-fort.jpeg",
-    title: "KHARPHOCHO",
-    sub: "The King of Forts",
-    color: "#1b2f5a",
-    coords: "35.3000° N, 75.6167° E",
-    tagline: "Gaze upon the Indus river from the ancient walls of Skardu's crown."
-  },
-  {
-    url: "/images/destinations/skardu-viewpoint.jpeg",
-    title: "SKARDU VALLEY",
-    sub: "The Heart of Baltistan",
-    color: "#ffb604",
-    coords: "35.2975° N, 75.6333° E",
-    tagline: "A breathtaking panoramic view where the mountains meet the Indus."
-  },
-  {
-    url: "/images/destinations/khaplu-fort.jpeg",
-    title: "KHAPLU FORT",
-    sub: "Architectural Heritage",
-    color: "#1b2f5a",
-    coords: "35.1440° N, 76.3399° E",
-    tagline: "Discover the royal history of Baltistan in this beautifully restored palace."
-  },
-  {
-    url: "/images/destinations/cold-desert.jpeg",
-    title: "COLD DESERT",
-    sub: "Sarfaranga Sands",
-    color: "#ffb604",
-    coords: "35.3167° N, 75.5500° E",
-    tagline: "The world's highest cold desert, where dunes are dusted with snow."
-  },
-  {
-    url: "/images/destinations/babusar-top.jpeg",
-    title: "BABUSAR TOP",
-    sub: "The Gateway Peak",
-    color: "#1b2f5a",
-    coords: "35.0872° N, 74.0272° E",
-    tagline: "Touch the sky at 13,691 feet on the highest point of the Kaghan Valley."
-  },
-  {
-    url: "/images/destinations/k2-concordia.jpeg",
-    title: "K2 CONCORDIA",
-    sub: "Throne Room of the Gods",
-    color: "#1b2f5a",
-    coords: "35.7417° N, 76.5150° E",
-    tagline: "The most spectacular mountain wilderness on the planet."
-  },
-  {
-    url: "/images/destinations/baldi-viewpoint.jpeg",
-    title: "ATTABAD LAKE",
-    sub: "Aerial View from Baldi",
-    color: "#ffb604",
-    coords: "36.3100° N, 74.8700° E",
-    tagline: "The turquoise waters of Attabad Lake as seen from the heavens."
   }
 ];
 
 export default function HeroSection() {
-  const [index, setIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [mounted, setMounted] = useState(false);
-  const [particles, setParticles] = useState<{x: number, y: number, targetX: number, targetX2: number, duration: number, delay: number}[]>([]);
-  
-  const { scrollY } = useScroll();
-  const yBg = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  const next = useCallback(() => setIndex((i) => (i + 1) % DESTINATIONS.length), []);
-
+  // Auto play
   useEffect(() => {
-    // Generate particles on client side only to avoid hydration mismatch and impurity issues
-    const generatedParticles = [...Array(10)].map(() => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      targetX: Math.random() * 100,
-      targetX2: Math.random() * 100 + 2,
-      duration: 20 + Math.random() * 30,
-      delay: Math.random() * 10
-    }));
-    
-    // Defer state updates to avoid cascading render warning in some linters
-    const timeout = setTimeout(() => {
-      setParticles(generatedParticles);
-      setMounted(true);
-    }, 0);
-    return () => clearTimeout(timeout);
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % DESTINATIONS.length);
+    }, 6000);
+    return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const t = setInterval(next, 5000);
-    return () => clearInterval(t);
-  }, [next]);
+  const handleThumbnailClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  const getVisibleThumbnails = () => {
+    const thumbnails = [];
+    // Show 4 upcoming destinations in the carousel
+    for (let i = 1; i <= 4; i++) {
+      thumbnails.push(DESTINATIONS[(currentIndex + i) % DESTINATIONS.length]);
+    }
+    return thumbnails;
+  };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-[#0a0a0a] text-white font-sans">
-      {/* Cinematic Living Background Layer */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 bg-[#0a0a0a]">
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            {/* Base Image with Ultra-Subtle Ken Burns */}
-            <div className="absolute inset-0 h-full w-full overflow-hidden">
-              <Image 
-                src={DESTINATIONS[index].url}
-                alt={DESTINATIONS[index].title}
-                fill
-                priority
-                quality={100}
-                className="object-cover object-[center_40%] transition-opacity duration-1000"
-                sizes="100vw"
-                style={{ 
-                  animation: 'cinematic-zoom 40s infinite alternate-reverse ease-in-out'
-                }}
-              />
-            </div>
-            
-            {/* Minimalist Gradients for Text Legibility only - Not ruining the image */}
-            <div className="absolute inset-0 bg-black/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100" />
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Cinematic Particle System (Snow/Dust) - Kept very subtle */}
-      {mounted && (
-        <div className="absolute inset-0 z-[1] pointer-events-none">
-          {particles.map((p, i) => (
-            <motion.div
-              key={i}
-              initial={{ 
-                x: p.x + "%", 
-                y: p.y + "%",
-                opacity: 0
-              }}
-              animate={{ 
-                y: ["-5%", "105%"],
-                x: [p.targetX + "%", p.targetX2 + "%"],
-                opacity: [0, 0.1, 0]
-              }}
-              transition={{ 
-                duration: p.duration, 
-                repeat: Infinity, 
-                ease: "linear",
-                delay: p.delay
-              }}
-              className="absolute w-[1px] h-[1px] bg-white/20 rounded-full"
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Main Content Layout */}
-      <div className="relative z-10 h-full w-full max-w-[1536px] mx-auto px-6 md:px-16 lg:px-24 flex flex-col justify-end pb-16 md:pb-24">
-        
-        <motion.div 
-          style={{ opacity }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="grid lg:grid-cols-12 gap-10 md:gap-16 items-end"
+    <section className="relative h-screen w-full overflow-hidden bg-black font-sans">
+      {/* Main Background Image with AnimatePresence */}
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="absolute inset-0"
         >
-          {/* Left Side: Main Brand & CTA */}
-          <div className="lg:col-span-8">
+          <img
+            src={DESTINATIONS[currentIndex].url}
+            alt={DESTINATIONS[currentIndex].title}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Cinematic Film Grain Noise Overlay to mask pixelation */}
+          <div className="absolute inset-0 z-[1] opacity-[0.04] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
+          {/* Elegant Overlay gradients for readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <div className="relative z-10 h-full w-full max-w-[1536px] mx-auto px-6 md:px-16 lg:px-24 flex flex-col justify-center pb-32 md:pb-20">
+        
+        <div className="max-w-3xl mt-20 md:mt-0">
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex items-center space-x-4 mb-6"
-            >
-              <div className="h-[1px] w-8 bg-shamaal-gold/60" />
-              <span className="text-[10px] md:text-xs font-medium tracking-[0.2em] text-shamaal-gold/80 uppercase">
-                Discover Pakistan • 0{index + 1}
-              </span>
-            </motion.div>
-
-            <div className="relative mb-8 md:mb-12">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold leading-tight tracking-normal text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-                    {DESTINATIONS[index].title.charAt(0) + DESTINATIONS[index].title.slice(1).toLowerCase()}
-                  </h1>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
+              key={currentIndex}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-8 items-start sm:items-center"
+              exit={{ opacity: 0, y: -40 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <button 
-                onClick={() => router.push('/tours')}
-                className="group relative w-full sm:w-auto px-8 py-4 border border-shamaal-gold/50 text-shamaal-gold font-medium rounded-full transition-all duration-500 hover:bg-shamaal-gold hover:text-shamaal-navy active:scale-95 overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center justify-center tracking-[0.1em] text-[10px] md:text-xs">
-                  VIEW EXPEDITIONS <ArrowUpRight className="ml-2 w-3 h-3 group-hover:rotate-45 transition-transform duration-300" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-[1px] bg-shamaal-gold" />
+                <Compass className="w-4 h-4 text-shamaal-gold animate-spin-slow" style={{ animationDuration: '4s' }} />
+                <span className="text-shamaal-gold font-semibold tracking-[0.3em] text-xs uppercase">
+                  Discover Pakistan
                 </span>
-              </button>
+              </div>
               
-              <div className="relative group w-full sm:max-w-[240px]">
-                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-3 h-3 text-white/60 group-focus-within:text-shamaal-gold transition-colors" />
-                <input 
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && router.push(`/tours?query=${query}`)}
-                  placeholder="Find a destination..."
-                  className="w-full bg-black/40 backdrop-blur-md border-b border-white/30 py-3 pl-8 outline-none focus:border-shamaal-gold/60 transition-all text-[10px] md:text-xs font-semibold tracking-wide text-white placeholder:text-white/60"
-                />
+              {/* Massive Modern Typography */}
+              <h1 className="text-[5rem] sm:text-[7rem] lg:text-[9rem] font-black leading-[0.85] text-white tracking-tighter mb-8 drop-shadow-2xl uppercase">
+                {DESTINATIONS[currentIndex].title}
+              </h1>
+              
+              <div className="pl-6 border-l-2 border-shamaal-gold mb-12">
+                <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
+                  {DESTINATIONS[currentIndex].sub}
+                </h3>
+                <p className="text-white/70 text-base md:text-lg max-w-lg font-light leading-relaxed">
+                  {DESTINATIONS[currentIndex].tagline}
+                </p>
               </div>
             </motion.div>
-          </div>
+          </AnimatePresence>
 
-          {/* Right Side: Narrative & Discovery */}
-          <div className="lg:col-span-4 lg:pl-12 hidden md:block">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-8"
-              >
-                <div className="space-y-4">
-                  <h3 className="text-2xl lg:text-3xl font-semibold tracking-tight text-shamaal-gold/90">
-                    {DESTINATIONS[index].sub}
-                  </h3>
-                  <p className="text-sm lg:text-base text-white/40 leading-relaxed font-light">
-                    {DESTINATIONS[index].tagline}
-                  </p>
-                </div>
-
-                <div className="pt-8 border-t border-white/5 flex items-center justify-between">
-                  <div className="flex -space-x-3">
-                    {[1,2,3].map(i => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0a0a0a] bg-zinc-900 overflow-hidden relative shadow-xl">
-                        <Image src={`https://i.pravatar.cc/100?u=${i+150}`} alt="explorer" fill className="object-cover opacity-60 hover:opacity-100 transition-opacity duration-500" unoptimized />
-                      </div>
-                    ))}
-                    <div className="w-10 h-10 rounded-full border-2 border-[#0a0a0a] bg-shamaal-gold/80 flex items-center justify-center text-[10px] font-bold text-black">
-                      +10k
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] font-medium tracking-widest text-white/20 uppercase">
-                      Official Guide
-                    </p>
-                    <p className="text-xs font-semibold text-shamaal-gold/70">Pakistan Tourism</p>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Modern Navigation Controls */}
-      <div className="absolute right-8 bottom-16 z-20 flex flex-col items-center space-y-10">
-        <div className="flex flex-col space-y-5">
-          {DESTINATIONS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className="group relative flex items-center justify-center"
+          {/* Search & Action */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-xl"
+          >
+            <div className="relative group w-full flex-1">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 group-focus-within:text-shamaal-gold transition-colors" />
+              <input 
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && router.push(`/tours?query=${query}`)}
+                placeholder="Where to next?"
+                className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-full py-4 pl-14 pr-6 outline-none focus:border-shamaal-gold focus:bg-white/20 transition-all text-sm font-medium text-white placeholder:text-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.12)]"
+              />
+            </div>
+            <button 
+              onClick={() => router.push('/tours')}
+              className="group flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-shamaal-gold text-black font-bold tracking-[0.15em] uppercase hover:bg-white transition-colors shrink-0 w-full sm:w-auto shadow-[0_0_30px_rgba(255,182,4,0.3)]"
             >
-              {index === i && (
-                <motion.div 
-                  layoutId="nav-glow"
-                  className="absolute -inset-2 bg-shamaal-gold/10 rounded-full blur-sm"
-                />
-              )}
-              <div className={`transition-all duration-500 rounded-full ${
-                index === i ? "w-2.5 h-2.5 bg-shamaal-gold shadow-[0_0_20px_rgba(255,182,4,0.6)]" : "w-1.5 h-1.5 bg-white/20 group-hover:bg-white/40"
-              }`} />
+              Explore <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
             </button>
-          ))}
+          </motion.div>
         </div>
-        <div className="h-20 w-[1px] bg-gradient-to-b from-shamaal-gold/50 to-transparent" />
+
       </div>
 
-      <style>{`
-        @keyframes cinematic-zoom {
-          0% { transform: scale(1.0); }
-          100% { transform: scale(1.05); }
-        }
-        @keyframes mist {
-          from { transform: translateX(-100%) skewX(12deg); }
-          to { transform: translateX(100%) skewX(12deg); }
-        }
-        @keyframes mist-slow {
-          from { transform: translateX(100%) -skewX(12deg); }
-          to { transform: translateX(-100%) -skewX(12deg); }
-        }
-      `}</style>
+      {/* Modern Interactive Thumbnails Overlay - The "Outstanding" Factor */}
+      <div className="absolute bottom-12 right-6 md:right-16 lg:right-24 z-20 hidden lg:flex items-end gap-5">
+        {getVisibleThumbnails().map((dest, idx) => {
+          const actualIndex = DESTINATIONS.findIndex(d => d.title === dest.title);
+          
+          return (
+            <motion.div
+              key={`${dest.title}-${actualIndex}`}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              onClick={() => handleThumbnailClick(actualIndex)}
+              className={`group relative w-36 h-48 rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-500 hover:-translate-y-2 ${
+                idx === 0 
+                  ? "border-shamaal-gold shadow-[0_15px_40px_rgba(255,182,4,0.3)] scale-105" 
+                  : "border-white/20 hover:border-white/50 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+              }`}
+            >
+              <img
+                src={dest.url}
+                alt={dest.title}
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
+              
+              <div className="absolute bottom-5 left-4 right-4">
+                <p className="text-white text-xs font-bold tracking-[0.15em] uppercase mb-1">
+                  {dest.title}
+                </p>
+                <div className="flex items-center gap-1.5 text-shamaal-gold/80">
+                  <MapPin className="w-3 h-3" />
+                  <span className="text-[9px] font-bold uppercase tracking-widest">Pakistan</span>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Mobile Slide Indicator */}
+      <div className="absolute bottom-6 left-6 right-6 lg:hidden flex gap-2 z-20">
+        {DESTINATIONS.map((_, idx) => (
+          <div 
+            key={idx} 
+            className={`h-1 rounded-full transition-all duration-500 ${idx === currentIndex ? "w-8 bg-shamaal-gold" : "w-2 bg-white/30"}`}
+          />
+        ))}
+      </div>
+
+      {/* Elegant Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/5 z-20 backdrop-blur-sm">
+        <motion.div
+          key={currentIndex}
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 6, ease: "linear" }}
+          className="h-full bg-shamaal-gold shadow-[0_0_20px_rgba(255,182,4,0.8)]"
+        />
+      </div>
+
     </section>
   );
 }

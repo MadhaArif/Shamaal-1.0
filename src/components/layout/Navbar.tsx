@@ -35,12 +35,12 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
+        className={`fixed z-50 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
           isScrolled
-            ? "top-4 mx-4 lg:mx-auto lg:max-w-5xl rounded-2xl py-3 px-5 md:px-8 bg-[#060d1a]/80 backdrop-blur-[40px] border border-white/[0.06] shadow-[0_8px_60px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
+            ? "top-6 mx-4 lg:mx-auto lg:max-w-6xl rounded-full py-3 px-6 md:px-10 bg-[#060d1a]/60 backdrop-blur-[40px] border border-white/[0.08] shadow-[0_20px_80px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)]"
             : isHome
-            ? "top-0 max-w-full bg-transparent border-b border-transparent py-8 px-6 sm:px-14 lg:px-20"
-            : "top-0 max-w-full bg-[#060d1a]/90 backdrop-blur-[32px] border-b border-white/[0.06] py-5 px-6 sm:px-14 lg:px-20"
+            ? "top-0 max-w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent border-b border-transparent py-10 px-6 sm:px-14 lg:px-20"
+            : "top-0 max-w-full bg-[#060d1a]/80 backdrop-blur-[40px] border-b border-white/[0.06] py-6 px-6 sm:px-14 lg:px-20 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
         }`}
       >
         <div className="flex justify-between items-center">
@@ -48,8 +48,8 @@ export default function Navbar() {
           {/* ── Logo ──────────────────────────────── */}
           <Link href="/" className="flex items-center group shrink-0">
             <div
-              className={`relative transition-all duration-700 group-hover:brightness-110 ${
-                isScrolled ? "h-10 w-32 md:h-12 md:w-40" : "h-12 w-36 md:h-16 md:w-52"
+              className={`relative transition-all duration-1000 group-hover:brightness-125 group-hover:scale-105 origin-left ${
+                isScrolled ? "h-10 w-32 md:h-11 md:w-36" : "h-12 w-36 md:h-14 md:w-48"
               }`}
             >
               <Image
@@ -71,15 +71,21 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.path}
-                  className={`relative text-[10px] font-black tracking-[0.28em] transition-colors duration-400 group ${
-                    isActive ? "text-shamaal-gold" : "text-white/60 hover:text-white"
+                  className={`relative text-[11px] font-medium tracking-[0.2em] transition-all duration-500 group py-2 ${
+                    isActive ? "text-shamaal-gold drop-shadow-[0_0_8px_rgba(255,182,4,0.5)]" : "text-white/70 hover:text-white"
                   }`}
                 >
                   {link.name}
                   {/* Active / hover line */}
                   <span
-                    className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-shamaal-gold transition-all duration-500 ${
-                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-gradient-to-r from-transparent via-shamaal-gold to-transparent transition-all duration-500 ${
+                      isActive ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                    }`}
+                  />
+                  {/* Elegant dot */}
+                  <span 
+                    className={`absolute -bottom-[2px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-shamaal-gold transition-all duration-500 ${
+                      isActive ? "opacity-100 scale-100" : "opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100"
                     }`}
                   />
                 </Link>
@@ -89,11 +95,11 @@ export default function Navbar() {
             {/* Book Now CTA */}
             <Link
               href="/book"
-              className="group relative inline-flex items-center gap-2.5 px-7 py-3 rounded-full overflow-hidden text-[10px] font-black tracking-[0.25em] uppercase transition-all duration-500 border border-shamaal-gold/50 text-shamaal-gold hover:text-[#060d1a] hover:shadow-[0_0_30px_rgba(255,182,4,0.4)]"
+              className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full overflow-hidden text-[11px] font-semibold tracking-[0.25em] uppercase transition-all duration-700 border border-shamaal-gold/30 text-shamaal-gold hover:text-[#060d1a] hover:border-shamaal-gold hover:shadow-[0_0_40px_rgba(255,182,4,0.4)]"
             >
-              {/* Fill animation */}
-              <span className="absolute inset-0 bg-shamaal-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-full" />
-              <Compass className="w-3.5 h-3.5 relative z-10 group-hover:rotate-45 transition-transform duration-400" />
+              {/* Elegant glow inside */}
+              <span className="absolute inset-0 bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
+              <Compass className="w-4 h-4 relative z-10 group-hover:rotate-90 transition-transform duration-700" />
               <span className="relative z-10">Book Now</span>
             </Link>
           </div>
@@ -123,8 +129,6 @@ export default function Navbar() {
       {/* ── Mobile Menu ──────────────────────────────── */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
-            {/* Backdrop */}
             <motion.div
               key="backdrop"
               initial={{ opacity: 0 }}
@@ -133,8 +137,9 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
             />
+        )}
 
-            {/* Panel */}
+        {isMobileMenuOpen && (
             <motion.div
               key="panel"
               initial={{ x: "100%", opacity: 0 }}
@@ -170,10 +175,10 @@ export default function Navbar() {
                       <Link
                         href={link.path}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center justify-between py-4 px-4 rounded-xl font-black text-sm tracking-[0.2em] transition-all duration-300 ${
-                          isActive
-                            ? "text-shamaal-gold bg-shamaal-gold/5 border border-shamaal-gold/20"
-                            : "text-white/60 hover:text-white hover:bg-white/[0.03]"
+                        className={`flex items-center justify-between py-4 px-4 rounded-xl font-semibold text-sm tracking-[0.2em] transition-all duration-300 ${
+                            isActive
+                              ? "text-shamaal-gold bg-shamaal-gold/5 border border-shamaal-gold/20"
+                              : "text-white/70 hover:text-white hover:bg-white/[0.03]"
                         }`}
                       >
                         {link.name}
@@ -189,14 +194,13 @@ export default function Navbar() {
                 <Link
                   href="/book"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-shamaal-gold text-shamaal-navy font-black tracking-[0.2em] text-xs uppercase hover:bg-yellow-400 transition-colors shadow-[0_0_30px_rgba(255,182,4,0.15)]"
+                  className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-gradient-to-r from-shamaal-gold to-yellow-500 text-shamaal-navy font-semibold tracking-[0.2em] text-xs uppercase hover:brightness-110 transition-all duration-300 shadow-[0_0_30px_rgba(255,182,4,0.2)]"
                 >
                   <Compass className="w-4 h-4" />
                   Book Now
                 </Link>
               </div>
             </motion.div>
-          </>
         )}
       </AnimatePresence>
     </>
