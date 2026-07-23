@@ -7,8 +7,8 @@ import Footer from "@/components/layout/Footer";
 import ContactHero from "@/components/contact/ContactHero";
 import {
   Mail, Phone, MapPin, MessageCircle, Clock,
-  Loader2, CheckCircle, Building2, Copy, CheckCheck,
-  Send, ArrowUpRight
+  Loader2, CheckCircle,
+  Send, ArrowUpRight, ExternalLink, Navigation
 } from "lucide-react";
 
 const INTERESTED_OPTIONS = [
@@ -26,7 +26,6 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -283,6 +282,52 @@ export default function ContactPage() {
                 </ul>
               </div>
 
+              {/* Office Google Map Card */}
+              <div className="relative rounded-2xl border border-gray-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] p-5 overflow-hidden">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2 text-shamaal-navy dark:text-white font-black text-sm">
+                    <MapPin className="w-4 h-4 text-shamaal-gold" />
+                    Office Location Map
+                  </div>
+                  <span className="text-[10px] text-shamaal-gold font-bold bg-shamaal-gold/10 px-2.5 py-0.5 rounded-full border border-shamaal-gold/20">Lahore</span>
+                </div>
+
+                <div className="relative h-44 rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 mb-4">
+                  <iframe
+                    title="Shamaal Tourism Office Google Map"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    src="https://maps.google.com/maps?q=UG-18+Big+City+Plaza+Liberty+Roundabout+Lahore&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=UG-18+Big+City+Plaza+Liberty+Roundabout+Lahore"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-[11px] uppercase tracking-wider hover:bg-yellow-400 transition-all text-center"
+                  >
+                    <span>Open Map</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=UG-18+Big+City+Plaza+Liberty+Roundabout+Lahore"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-gray-100 dark:bg-white/10 text-shamaal-navy dark:text-white font-bold text-[11px] hover:bg-gray-200 dark:hover:bg-white/20 transition-all text-center"
+                  >
+                    <Navigation className="w-3 h-3 text-shamaal-gold" />
+                    <span>Directions</span>
+                  </a>
+                </div>
+              </div>
+
               {/* WhatsApp CTA */}
               <a
                 href="https://wa.me/923180425044"
@@ -304,9 +349,6 @@ export default function ContactPage() {
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-gray-500 dark:text-white/30 group-hover:text-green-400 group-hover:rotate-45 transition-all duration-400" />
               </a>
-
-              {/* Bank Card */}
-              <BankCard onCopy={copyAccount} copied={copied} />
             </div>
           </div>
         </div>
@@ -317,77 +359,3 @@ export default function ContactPage() {
   );
 }
 
-// ── Premium Bank Card ──────────────────────────────────────────────
-function BankCard({ onCopy, copied }: { onCopy: () => void; copied: boolean }) {
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-shamaal-gold/20 bg-gradient-to-br from-[#0d1a33] via-[#1a3663] to-[#0d1a33] p-6">
-      {/* Top gold line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-shamaal-gold/60 to-transparent" />
-      {/* Glow */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-shamaal-gold/10 blur-3xl rounded-full -mr-8 -mt-8 pointer-events-none" />
-
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-shamaal-gold/15 border border-shamaal-gold/25 flex items-center justify-center">
-              <Building2 className="w-4 h-4 text-shamaal-gold" />
-            </div>
-            <div>
-              <p className="text-shamaal-gold text-[9px] font-black tracking-[0.25em] uppercase">Bank Transfer</p>
-              <p className="text-shamaal-navy dark:text-white font-bold text-sm">Faisal Bank Ltd</p>
-            </div>
-          </div>
-          <span className="text-[9px] bg-green-500/15 border border-green-500/25 text-green-400 px-2.5 py-1 rounded-full font-bold">
-            ✓ Verified
-          </span>
-        </div>
-
-        {/* Account Details */}
-        <div className="space-y-2.5 mb-4">
-          <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-            <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Account Title</p>
-            <p className="text-shamaal-navy dark:text-white font-bold text-sm">Shamaal Tourism Pakistan (Pvt) Ltd</p>
-          </div>
-          <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-            <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-1">Account Number</p>
-            <div className="flex items-center justify-between">
-              <p className="text-shamaal-gold font-black text-lg tracking-wider">3300499000007541</p>
-              <button
-                onClick={onCopy}
-                type="button"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all duration-300 ${
-                  copied
-                    ? "bg-green-500/15 text-green-400 border border-green-500/25"
-                    : "bg-shamaal-gold/15 hover:bg-shamaal-gold/25 text-shamaal-gold border border-shamaal-gold/25"
-                }`}
-              >
-                {copied ? <><CheckCheck className="w-3 h-3" /> Copied!</> : <><Copy className="w-3 h-3" /> Copy</>}
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2.5">
-            <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-              <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">IBAN</p>
-              <p className="text-shamaal-navy dark:text-white font-bold text-xs">PK95FAYS3300499000007541</p>
-            </div>
-            <div className="rounded-xl p-3.5 bg-white/[0.04] border border-white/[0.06]">
-              <p className="text-gray-500 dark:text-white/30 text-[9px] font-black tracking-widest uppercase mb-0.5">Bank</p>
-              <p className="text-shamaal-navy dark:text-white font-bold text-sm">Faisal Bank</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Instructions */}
-        <div className="rounded-xl p-4 bg-shamaal-gold/[0.07] border border-shamaal-gold/15">
-          <p className="text-shamaal-gold text-[9px] font-black tracking-wider uppercase mb-2">📋 After Transfer:</p>
-          <ul className="space-y-1.5 text-gray-600 dark:text-white/50 text-[11px]">
-            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">1.</span> Transfer the full amount above</li>
-            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">2.</span> Send receipt to WhatsApp <span className="text-shamaal-gold font-bold">0318-0425044</span></li>
-            <li className="flex items-start gap-2"><span className="text-shamaal-gold font-bold">3.</span> Confirmation within 24 hours</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}

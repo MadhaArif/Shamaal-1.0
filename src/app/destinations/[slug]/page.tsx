@@ -4,7 +4,7 @@ import TourCard from "@/components/tours/TourCard";
 import DestinationHero from "@/components/destinations/DestinationHero";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Sun, Thermometer, Clock, Camera, CheckCircle } from "lucide-react";
+import { MapPin, Sun, Thermometer, Clock, Camera, CheckCircle, ExternalLink, Navigation } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -322,6 +322,54 @@ export default async function DestinationDetailPage({ params }: { params: Promis
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Location Google Map Card */}
+              <div className="bg-white dark:bg-shamaal-navy/30 rounded-2xl p-6 shadow-md border border-gray-100 dark:border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-shamaal-navy dark:text-white flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-shamaal-gold" />
+                    Location Map
+                  </h3>
+                  <span className="text-xs text-shamaal-gold font-bold bg-shamaal-gold/10 px-2.5 py-1 rounded-full border border-shamaal-gold/20">
+                    {dest.name}
+                  </span>
+                </div>
+
+                <div className="relative h-48 rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 mb-4">
+                  <iframe
+                    title={`${dest.name} Google Map`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(dest.name + " " + dest.region + " Pakistan")}&t=&z=10&ie=UTF8&iwloc=&output=embed`}
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.name + " " + dest.region + " Pakistan")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-[11px] uppercase tracking-wider hover:bg-yellow-400 transition-all text-center"
+                  >
+                    <span>Open Map</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest.name + " " + dest.region + " Pakistan")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-gray-100 dark:bg-white/10 text-shamaal-navy dark:text-white font-bold text-[11px] hover:bg-gray-200 dark:hover:bg-white/20 transition-all text-center"
+                  >
+                    <Navigation className="w-3.5 h-3.5 text-shamaal-gold" />
+                    <span>Directions</span>
+                  </a>
+                </div>
               </div>
 
               <div className="bg-shamaal-navy rounded-2xl p-8 text-center">

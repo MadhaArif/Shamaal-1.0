@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import StatsBanner from "@/components/home/StatsBanner";
 import VibeFinder from "@/components/home/VibeFinder";
+import InteractiveMap from "@/components/home/InteractiveMap";
 import TourCard from "@/components/tours/TourCard";
 import Image from "next/image";
 import Link from "next/link";
@@ -185,6 +186,9 @@ export default async function Home() {
 
         {/* Stats Banner */}
         <StatsBanner />
+
+        {/* Interactive Google Map Section */}
+        <InteractiveMap />
 
         {/* Popular Tours */}
         <section className="relative py-28 bg-shamaal-cream overflow-hidden">
