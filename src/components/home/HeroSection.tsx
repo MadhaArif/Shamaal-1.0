@@ -163,12 +163,12 @@ export default function HeroSection() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Search & Action - reduced size */}
+          {/* Search & Action - reduced size, adjusted max width to avoid overlap with thumbnails */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-2xl"
+            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-xl xl:max-w-lg"
           >
             <div className="relative group w-full flex-1">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 group-focus-within:text-shamaal-gold transition-colors duration-300" />
@@ -192,9 +192,9 @@ export default function HeroSection() {
 
       </div>
 
-      {/* Modern Interactive Thumbnails Overlay - reduced size */}
-      <div className="absolute bottom-12 right-6 md:right-16 lg:right-24 z-20 hidden lg:flex items-end gap-5">
-        {getVisibleThumbnails().map((dest, idx) => {
+      {/* Modern Interactive Thumbnails Overlay - further reduced size & moved up */}
+      <div className="absolute bottom-16 right-6 md:right-12 lg:right-16 z-20 hidden lg:flex items-end gap-4">
+        {getVisibleThumbnails().slice(0, 3).map((dest, idx) => {
           const actualIndex = DESTINATIONS.findIndex(d => d.title === dest.title);
           
           return (
@@ -204,7 +204,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.12, duration: 0.6 }}
               onClick={() => handleThumbnailClick(actualIndex)}
-              className={`group relative w-32 h-44 rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-500 hover:-translate-y-3 ${
+              className={`group relative w-28 h-40 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-500 hover:-translate-y-2 ${
                 idx === 0 
                   ? "border-shamaal-gold shadow-[0_20px_60px_rgba(255,182,4,0.5)] scale-110" 
                   : "border-white/15 hover:border-white/40 shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
@@ -218,13 +218,13 @@ export default function HeroSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300" />
               
-              <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-white text-xs font-bold tracking-[0.15em] uppercase mb-1">
+              <div className="absolute bottom-3 left-3 right-3">
+                <p className="text-white text-[10px] font-bold tracking-[0.12em] uppercase mb-0.5">
                   {dest.title}
                 </p>
-                <div className="flex items-center gap-1.5 text-shamaal-gold/90">
-                  <MapPin className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase tracking-widest">PAKISTAN</span>
+                <div className="flex items-center gap-1 text-shamaal-gold/90">
+                  <MapPin className="w-2.5 h-2.5" />
+                  <span className="text-[8px] font-bold uppercase tracking-widest">PAKISTAN</span>
                 </div>
               </div>
             </motion.div>
