@@ -118,7 +118,7 @@ export default function HeroSection() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Cinematic Film Grain Noise Overlay to mask pixelation */}
-          <div className="absolute inset-0 z-[1] opacity-[0.05] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
+          <div className="absolute inset-0 z-[1] opacity-[0.05] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('/noise.svg')" }} />
           {/* Elegant Overlay gradients for readability - enhanced for drama */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
