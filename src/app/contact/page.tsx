@@ -66,12 +66,6 @@ export default function ContactPage() {
     }
   };
 
-  const copyAccount = async () => {
-    await navigator.clipboard.writeText("3300499000007541");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
-
   return (
     <>
       <Navbar />
