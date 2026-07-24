@@ -161,20 +161,20 @@ export default function InteractiveMap() {
               <button
                 key={loc.id}
                 onClick={() => setActiveLoc(loc)}
-                className={`group flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-black transition-all duration-300 ${
+                className={`group flex items-center gap-1.5 px-3 py-2 rounded-full text-[11px] font-bold transition-all duration-300 ${
                   isActive
                     ? "bg-shamaal-gold text-shamaal-navy shadow-[0_0_25px_rgba(255,182,4,0.4)] scale-105"
                     : "bg-white/[0.04] text-white/70 border border-white/10 hover:border-shamaal-gold/40 hover:text-white hover:bg-white/[0.08]"
                 }`}
               >
                 {loc.type === "office" ? (
-                  <Building2 className={`w-3.5 h-3.5 ${isActive ? "text-shamaal-navy" : "text-shamaal-gold"}`} />
+                  <Building2 className={`w-3 h-3 ${isActive ? "text-shamaal-navy" : "text-shamaal-gold"}`} />
                 ) : (
-                  <Mountain className={`w-3.5 h-3.5 ${isActive ? "text-shamaal-navy" : "text-shamaal-gold"}`} />
+                  <Mountain className={`w-3 h-3 ${isActive ? "text-shamaal-navy" : "text-shamaal-gold"}`} />
                 )}
-                <span>{loc.name}</span>
+                <span className="truncate max-w-[120px]">{loc.name}</span>
                 {loc.type === "office" && (
-                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase ${isActive ? "bg-shamaal-navy/20 text-shamaal-navy" : "bg-shamaal-gold/20 text-shamaal-gold"}`}>
+                  <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-bold uppercase ${isActive ? "bg-shamaal-navy/20 text-shamaal-navy" : "bg-shamaal-gold/20 text-shamaal-gold"}`}>
                     Office
                   </span>
                 )}
@@ -207,20 +207,20 @@ export default function InteractiveMap() {
                 href={activeLoc.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-xs tracking-wider uppercase shadow-[0_0_30px_rgba(255,182,4,0.5)] hover:bg-yellow-400 hover:scale-105 transition-all duration-300"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-shamaal-gold text-shamaal-navy font-bold text-[11px] tracking-wider uppercase shadow-[0_0_30px_rgba(255,182,4,0.5)] hover:bg-yellow-400 hover:scale-105 transition-all duration-300"
               >
-                <MapPin className="w-4 h-4" />
+                <MapPin className="w-3.5 h-3.5" />
                 Open in Google Maps
-                <ExternalLink className="w-3.5 h-3.5" />
+                <ExternalLink className="w-3 h-3" />
               </a>
 
               <a
                 href={activeLoc.directionsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black/70 backdrop-blur-md border border-white/20 text-white font-bold text-xs hover:bg-black/90 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/20 text-white font-bold text-[11px] hover:bg-black/90 transition-all duration-300"
               >
-                <Navigation className="w-4 h-4 text-shamaal-gold" />
+                <Navigation className="w-3.5 h-3.5 text-shamaal-gold" />
                 Get Directions
               </a>
             </div>
@@ -274,10 +274,10 @@ export default function InteractiveMap() {
                   href={activeLoc.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-shamaal-gold text-shamaal-navy font-black text-xs uppercase tracking-wider hover:bg-yellow-400 transition-all duration-300"
+                  className="group shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-shamaal-gold text-shamaal-navy font-bold text-[11px] uppercase tracking-wider hover:bg-yellow-400 transition-all duration-300"
                 >
                   <span>Google Maps</span>
-                  <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               </div>
             </div>

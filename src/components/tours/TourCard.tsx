@@ -89,7 +89,7 @@ export default function TourCard({
               <p className="text-gray-400 dark:text-white/30 text-[9px] font-bold tracking-[0.2em] uppercase mb-0.5">Starting from</p>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-gray-500 dark:text-white/50 text-xs font-bold">PKR</span>
-                <span className="text-shamaal-gold text-2xl font-black">{price.toLocaleString()}</span>
+                <span className="text-shamaal-gold text-2xl font-black">{price.toLocaleString('en-IN')}</span>
                 <span className="text-gray-400 dark:text-white/30 text-[10px]">/person</span>
               </div>
             </div>

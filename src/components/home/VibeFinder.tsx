@@ -101,10 +101,10 @@ export default function VibeFinder() {
                   <motion.button
                     key={vibe.id}
                     onClick={() => setActive(vibe)}
-                    whileHover={{ y: -3 }}
+                    whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                    className={`relative group p-5 md:p-6 rounded-2xl border text-left transition-all duration-500 overflow-hidden ${
+                    className={`relative group p-4 md:p-4 rounded-xl border text-left transition-all duration-500 overflow-hidden ${
                       isActive
                         ? "border-shamaal-navy/20 bg-shamaal-cream shadow-[0_4px_30px_rgba(27,47,90,0.06)]"
                         : "border-shamaal-navy/[0.05] bg-shamaal-cream/30 hover:border-shamaal-navy/10 hover:bg-shamaal-cream/60"
@@ -114,7 +114,7 @@ export default function VibeFinder() {
                     {isActive && (
                       <motion.div
                         layoutId="vibe-glow"
-                        className="absolute inset-0 rounded-2xl"
+                        className="absolute inset-0 rounded-xl"
                         style={{ background: vibe.accent, opacity: 0.08 }}
                         transition={{ type: "spring", stiffness: 200, damping: 25 }}
                       />
@@ -122,26 +122,26 @@ export default function VibeFinder() {
 
                     {/* Icon */}
                     <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-all duration-400"
+                      className="w-9 h-9 rounded-lg flex items-center justify-center mb-3 transition-all duration-400"
                       style={{
                         background: isActive ? `${vibe.accent}20` : "rgba(27,47,90,0.06)",
                         border: `1px solid ${isActive ? vibe.accent + "40" : "rgba(27,47,90,0.08)"}`,
                       }}
                     >
                       <vibe.icon
-                        className="w-5 h-5 transition-colors duration-400"
+                        className="w-4 h-4 transition-colors duration-400"
                         style={{ color: isActive ? vibe.accent : "rgba(27,47,90,0.4)" }}
                       />
                     </div>
 
                     {/* Text */}
                     <p
-                      className="text-[9px] font-black tracking-[0.2em] uppercase mb-1 transition-colors duration-400"
+                      className="text-[8px] font-bold tracking-[0.18em] uppercase mb-1 transition-colors duration-400"
                       style={{ color: isActive ? vibe.accent : "rgba(27,47,90,0.4)" }}
                     >
                       {vibe.label}
                     </p>
-                    <h3 className={`text-base font-black transition-colors duration-400 ${isActive ? "text-shamaal-navy" : "text-shamaal-navy/50"}`}>
+                    <h3 className={`text-sm font-bold transition-colors duration-400 ${isActive ? "text-shamaal-navy" : "text-shamaal-navy/50"}`}>
                       {vibe.title}
                     </h3>
 
@@ -173,7 +173,7 @@ export default function VibeFinder() {
                 </p>
                 <Link
                   href={active.link}
-                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,182,4,0.35)] hover:scale-105"
+                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-[11px] tracking-[0.18em] uppercase transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,182,4,0.35)] hover:scale-105"
                   style={{
                     background: active.accent,
                     color: "#1b2f5a",
@@ -181,7 +181,7 @@ export default function VibeFinder() {
                   }}
                 >
                   Explore {active.title} Tours
-                  <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform duration-300" />
                 </Link>
               </motion.div>
             </AnimatePresence>

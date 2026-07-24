@@ -213,7 +213,7 @@ export default function DashboardPage() {
                               <span className="text-xs font-bold text-shamaal-navy dark:text-white">{booking.id}</span>
                             </div>
                             <div className="flex items-center space-x-4">
-                              <span className="font-bold text-shamaal-navy dark:text-white">PKR {booking.totalPrice.toLocaleString()}</span>
+                              <span className="font-bold text-shamaal-navy dark:text-white">PKR {booking.totalPrice.toLocaleString('en-IN')}</span>
                               {booking.status === "COMPLETED" && (
                                 <button className="text-xs font-semibold text-shamaal-sky hover:text-shamaal-gold border border-shamaal-sky/30 hover:border-shamaal-gold px-3 py-1.5 rounded-lg transition-all flex items-center space-x-1">
                                   <Star className="w-3.5 h-3.5" />

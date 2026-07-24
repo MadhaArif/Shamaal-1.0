@@ -715,7 +715,7 @@ export default function MemoriesPage() {
               transition={{ duration: 0.8, delay: 0.35 }}
               className="text-gray-600 dark:text-white/50 text-lg md:text-xl max-w-xl leading-relaxed mb-10"
             >
-              {memories.length.toLocaleString()}+ breathtaking moments captured by real explorers
+              {memories.length.toLocaleString('en-IN')}+ breathtaking moments captured by real explorers
               across Pakistan's magnificent Great North.
             </motion.p>
 

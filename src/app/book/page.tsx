@@ -302,7 +302,7 @@ function BookingContent() {
                   <div>
                     <h3 className="font-bold text-shamaal-navy dark:text-white mb-1">{selectedTour.title}</h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{selectedTour.location} · {selectedTour.duration} Days</p>
-                    <p className="text-shamaal-gold font-bold">PKR {selectedTour.price.toLocaleString()} <span className="text-gray-400 font-normal text-xs">/ person</span></p>
+                    <p className="text-shamaal-gold font-bold">PKR {selectedTour.price.toLocaleString('en-IN')} <span className="text-gray-400 font-normal text-xs">/ person</span></p>
                   </div>
                   <Check className="text-shamaal-gold w-6 h-6 ml-auto shrink-0" />
                 </div>
@@ -359,7 +359,7 @@ function BookingContent() {
                   <div className="flex items-center justify-between p-6 border border-gray-200 dark:border-white/20 rounded-xl">
                     <div>
                       <p className="font-bold text-shamaal-navy dark:text-white">Adults</p>
-                      <p className="text-sm text-gray-500">PKR {selectedTour.price.toLocaleString()} per person</p>
+                      <p className="text-sm text-gray-500">PKR {selectedTour.price.toLocaleString('en-IN')} per person</p>
                     </div>
                     <div className="flex items-center space-x-4">
                       <button onClick={() => setForm({ ...form, travelers: Math.max(1, form.travelers - 1) })} className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-white/20 flex items-center justify-center font-bold text-lg hover:border-shamaal-gold hover:text-shamaal-gold transition-colors text-gray-600 dark:text-gray-300">−</button>
@@ -460,7 +460,7 @@ function BookingContent() {
                   className="px-8 py-3 bg-shamaal-gold hover:bg-yellow-500 text-shamaal-navy font-bold rounded-xl transition-all flex items-center space-x-2 shadow-md shadow-shamaal-gold/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <CreditCard className="w-5 h-5" />
-                  <span>{loading ? "Processing..." : `Confirm & Pay PKR ${totalPrice.toLocaleString()}`}</span>
+                  <span>{loading ? "Processing..." : `Confirm & Pay PKR ${totalPrice.toLocaleString('en-IN')}`}</span>
                 </button>
               )}
             </div>
@@ -492,11 +492,11 @@ function BookingContent() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500 dark:text-gray-400">Price/person</span>
-                <span className="font-semibold text-shamaal-navy dark:text-white">PKR {selectedTour.price.toLocaleString()}</span>
+                <span className="font-semibold text-shamaal-navy dark:text-white">PKR {selectedTour.price.toLocaleString('en-IN')}</span>
               </div>
               <div className="pt-4 border-t border-gray-100 dark:border-white/10 flex justify-between text-base">
                 <span className="font-bold text-shamaal-navy dark:text-white">Total</span>
-                <span className="font-bold text-shamaal-gold text-lg">PKR {totalPrice.toLocaleString()}</span>
+                <span className="font-bold text-shamaal-gold text-lg">PKR {totalPrice.toLocaleString('en-IN')}</span>
               </div>
             </div>
             <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-500/20">

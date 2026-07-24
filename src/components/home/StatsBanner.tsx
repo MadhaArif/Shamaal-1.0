@@ -22,7 +22,7 @@ function Counter({
 
   const springValue = useSpring(0, { stiffness: 100, damping: 20 });
   const displayValue = useTransform(springValue, (v) =>
-    label.includes("Rating") ? v.toFixed(1) : Math.floor(v).toLocaleString()
+    label.includes("Rating") ? v.toFixed(1) : Math.floor(v).toLocaleString('en-IN')
   );
 
   useEffect(() => {

@@ -97,7 +97,7 @@ export default function AdminDashboard() {
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
-              { label: "Total Revenue", value: `Rs. ${stats.revenue.toLocaleString()}`, icon: BarChart3, color: "text-blue-500", bg: "bg-blue-500/10" },
+              { label: "Total Revenue", value: `Rs. ${stats.revenue.toLocaleString('en-IN')}`, icon: BarChart3, color: "text-blue-500", bg: "bg-blue-500/10" },
               { label: "Total Bookings", value: stats.totalBookings, icon: CheckCircle, color: "text-green-500", bg: "bg-green-500/10" },
               { label: "New Leads", value: stats.totalLeads, icon: Mail, color: "text-shamaal-gold", bg: "bg-shamaal-gold/10" },
               { label: "Shared Memories", value: stats.totalMemories, icon: Camera, color: "text-purple-500", bg: "bg-purple-500/10" },
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                             {b.travelers} Travelers
                           </div>
                         </td>
-                        <td className="p-6 font-bold text-shamaal-navy dark:text-white">Rs. {b.totalPrice.toLocaleString()}</td>
+                        <td className="p-6 font-bold text-shamaal-navy dark:text-white">Rs. {b.totalPrice.toLocaleString('en-IN')}</td>
                         <td className="p-6">
                           <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
                             b.status === "CONFIRMED" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"

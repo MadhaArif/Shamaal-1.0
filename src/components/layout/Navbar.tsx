@@ -35,12 +35,12 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed z-50 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
+        className={`fixed z-50 transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] left-0 right-0 ${
           isScrolled
-            ? "top-6 mx-4 lg:mx-auto lg:max-w-6xl rounded-full py-3 px-6 md:px-10 bg-[#060d1a]/60 backdrop-blur-[40px] border border-white/[0.08]"
+            ? "top-4 mx-4 lg:mx-auto lg:max-w-7xl rounded-full py-3 px-6 md:px-10 bg-[#060d1a]/70 backdrop-blur-[50px] border border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
             : isHome
-            ? "top-0 max-w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent py-10 px-6 sm:px-14 lg:px-20"
-            : "top-0 max-w-full bg-[#060d1a]/80 backdrop-blur-[40px] py-6 px-6 sm:px-14 lg:px-20"
+            ? "top-0 max-w-full bg-gradient-to-b from-black/85 via-black/50 to-transparent py-6 px-6 sm:px-12 lg:px-16"
+            : "top-0 max-w-full bg-[#060d1a]/85 backdrop-blur-[50px] py-4 px-6 sm:px-12 lg:px-16"
         }`}
       >
         <div className="flex justify-between items-center">
@@ -48,8 +48,8 @@ export default function Navbar() {
           {/* ── Logo ──────────────────────────────── */}
           <Link href="/" className="flex items-center group shrink-0">
             <div
-              className={`relative transition-all duration-1000 group-hover:brightness-125 group-hover:scale-105 origin-left ${
-                isScrolled ? "h-12 w-40 md:h-14 md:w-48" : "h-16 w-48 md:h-20 md:w-64"
+              className={`relative transition-all duration-800 group-hover:brightness-130 group-hover:scale-105 origin-left ${
+                isScrolled ? "h-8 w-28 md:h-10 md:w-36" : "h-12 w-36 md:h-14 md:w-44"
               }`}
             >
               <Image
@@ -64,27 +64,27 @@ export default function Navbar() {
           </Link>
 
           {/* ── Desktop Nav ────────────────────────── */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-10">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {NAV_LINKS.map((link) => {
               const isActive = link.path === "/" ? pathname === "/" : pathname.startsWith(link.path);
               return (
                 <Link
                   key={link.name}
                   href={link.path}
-                  className={`relative text-[11px] font-medium tracking-[0.2em] transition-all duration-500 group py-2 ${
-                    isActive ? "text-shamaal-gold drop-shadow-[0_0_8px_rgba(255,182,4,0.5)]" : "text-white/70 hover:text-white"
+                  className={`relative text-[11px] font-bold tracking-[0.2em] transition-all duration-500 group py-1 ${
+                    isActive ? "text-shamaal-gold drop-shadow-[0_0_12px_rgba(255,182,4,0.7)]" : "text-white/80 hover:text-white"
                   }`}
                 >
                   {link.name}
-                  {/* Active / hover line */}
+                  {/* Active / hover line - enhanced */}
                   <span
-                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] bg-gradient-to-r from-transparent via-shamaal-gold to-transparent transition-all duration-500 ${
+                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-shamaal-gold to-transparent transition-all duration-500 ${
                       isActive ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
                     }`}
                   />
-                  {/* Elegant dot */}
+                  {/* Elegant dot - enhanced */}
                   <span 
-                    className={`absolute -bottom-[2px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-shamaal-gold transition-all duration-500 ${
+                    className={`absolute -bottom-[3px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-shamaal-gold transition-all duration-500 shadow-[0_0_10px_rgba(255,182,4,0.8)] ${
                       isActive ? "opacity-100 scale-100" : "opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100"
                     }`}
                   />
@@ -92,14 +92,14 @@ export default function Navbar() {
               );
             })}
 
-            {/* Book Now CTA */}
+            {/* Book Now CTA - enhanced */}
             <Link
               href="/book"
-              className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-full overflow-hidden text-[11px] font-semibold tracking-[0.25em] uppercase transition-all duration-700 border border-shamaal-gold/30 text-shamaal-gold hover:text-[#060d1a] hover:border-shamaal-gold hover:shadow-[0_0_40px_rgba(255,182,4,0.4)]"
+              className="group relative inline-flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-700 border border-shamaal-gold/40 text-shamaal-gold hover:text-[#060d1a] hover:border-shamaal-gold hover:shadow-[0_0_60px_rgba(255,182,4,0.6)] hover:-translate-y-0.5"
             >
-              {/* Elegant glow inside */}
-              <span className="absolute inset-0 bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
-              <Compass className="w-4 h-4 relative z-10 group-hover:rotate-90 transition-transform duration-700" />
+              {/* Elegant glow inside - enhanced */}
+              <span className="absolute inset-0 bg-gradient-to-r from-shamaal-gold via-yellow-300 to-shamaal-gold opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
+              <Compass className="w-4.5 h-4.5 relative z-10 group-hover:rotate-90 transition-transform duration-500" />
               <span className="relative z-10">Book Now</span>
             </Link>
           </div>

@@ -105,10 +105,10 @@ export default function HeroSection() {
       <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0"
         >
           <img
@@ -118,79 +118,81 @@ export default function HeroSection() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Cinematic Film Grain Noise Overlay to mask pixelation */}
-          <div className="absolute inset-0 z-[1] opacity-[0.04] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
-          {/* Elegant Overlay gradients for readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 z-[1] opacity-[0.05] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
+          {/* Elegant Overlay gradients for readability - enhanced for drama */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
+          {/* Radial glow for depth */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,182,4,0.1),transparent_60%)]" />
         </motion.div>
       </AnimatePresence>
 
       {/* Main Content */}
       <div className="relative z-10 h-full w-full max-w-[1536px] mx-auto px-6 md:px-16 lg:px-24 flex flex-col justify-center pb-32 md:pb-20">
         
-        <div className="max-w-3xl mt-20 md:mt-0">
+        <div className="max-w-4xl mt-24 md:mt-16">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-[1px] bg-shamaal-gold" />
-                <Compass className="w-4 h-4 text-shamaal-gold animate-spin-slow" style={{ animationDuration: '4s' }} />
-                <span className="text-shamaal-gold font-semibold tracking-[0.3em] text-xs uppercase">
-                  Discover Pakistan
+                <div className="w-10 h-[2px] bg-gradient-to-r from-shamaal-gold to-transparent" />
+                <Compass className="w-4 h-4 text-shamaal-gold animate-spin-slow" style={{ animationDuration: '6s' }} />
+                <span className="text-shamaal-gold font-bold tracking-[0.3em] text-[10px] uppercase">
+                  EXPLORE PAKISTAN
                 </span>
               </div>
               
-              {/* Massive Modern Typography */}
-              <h1 className="text-[5rem] sm:text-[7rem] lg:text-[9rem] font-black leading-[0.85] text-white tracking-tighter mb-8 drop-shadow-2xl uppercase">
+              {/* Reduced Typography Size */}
+              <h1 className="text-[3.5rem] sm:text-[5rem] lg:text-[7rem] font-black leading-[0.85] text-white tracking-tighter mb-8 drop-shadow-[0_20px_60px_rgba(0,0,0,0.6)] uppercase">
                 {DESTINATIONS[currentIndex].title}
               </h1>
               
-              <div className="pl-6 border-l-2 border-shamaal-gold mb-12">
-                <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
+              <div className="pl-6 border-l-2 border-shamaal-gold mb-10">
+                <h3 className="text-xl md:text-3xl font-semibold text-white mb-3">
                   {DESTINATIONS[currentIndex].sub}
                 </h3>
-                <p className="text-white/70 text-base md:text-lg max-w-lg font-light leading-relaxed">
+                <p className="text-white/80 text-sm md:text-lg max-w-2xl font-light leading-relaxed">
                   {DESTINATIONS[currentIndex].tagline}
                 </p>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Search & Action */}
+          {/* Search & Action - reduced size */}
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 items-start sm:items-center max-w-2xl"
           >
             <div className="relative group w-full flex-1">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 group-focus-within:text-shamaal-gold transition-colors" />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 group-focus-within:text-shamaal-gold transition-colors duration-300" />
               <input 
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && router.push(`/tours?query=${query}`)}
                 placeholder="Where to next?"
-                className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-full py-4 pl-14 pr-6 outline-none focus:border-shamaal-gold focus:bg-white/20 transition-all text-sm font-medium text-white placeholder:text-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.12)]"
+                className="w-full bg-white/10 backdrop-blur-xl border-2 border-white/15 rounded-full py-3.5 pl-14 pr-6 outline-none focus:border-shamaal-gold focus:bg-white/15 transition-all duration-300 text-sm font-medium text-white placeholder:text-white/50 shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
               />
             </div>
             <button 
               onClick={() => router.push('/tours')}
-              className="group flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-shamaal-gold text-black font-bold tracking-[0.15em] uppercase hover:bg-white transition-colors shrink-0 w-full sm:w-auto shadow-[0_0_30px_rgba(255,182,4,0.3)]"
+              className="group flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold text-black font-bold tracking-[0.18em] uppercase hover:from-white hover:via-shamaal-gold hover:to-white transition-all duration-500 shrink-0 w-full sm:w-auto shadow-[0_0_60px_rgba(255,182,4,0.5)] hover:shadow-[0_0_80px_rgba(255,182,4,0.7)] hover:-translate-y-1 text-sm"
             >
-              Explore <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+              Explore <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
             </button>
           </motion.div>
         </div>
 
       </div>
 
-      {/* Modern Interactive Thumbnails Overlay - The "Outstanding" Factor */}
+      {/* Modern Interactive Thumbnails Overlay - reduced size */}
       <div className="absolute bottom-12 right-6 md:right-16 lg:right-24 z-20 hidden lg:flex items-end gap-5">
         {getVisibleThumbnails().map((dest, idx) => {
           const actualIndex = DESTINATIONS.findIndex(d => d.title === dest.title);
@@ -198,31 +200,31 @@ export default function HeroSection() {
           return (
             <motion.div
               key={`${dest.title}-${actualIndex}`}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.12, duration: 0.6 }}
               onClick={() => handleThumbnailClick(actualIndex)}
-              className={`group relative w-36 h-48 rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-500 hover:-translate-y-2 ${
+              className={`group relative w-32 h-44 rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-500 hover:-translate-y-3 ${
                 idx === 0 
-                  ? "border-shamaal-gold shadow-[0_15px_40px_rgba(255,182,4,0.3)] scale-105" 
-                  : "border-white/20 hover:border-white/50 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                  ? "border-shamaal-gold shadow-[0_20px_60px_rgba(255,182,4,0.5)] scale-110" 
+                  : "border-white/15 hover:border-white/40 shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
               }`}
             >
               <img
                 src={dest.url}
                 alt={dest.title}
                 referrerPolicy="no-referrer"
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-125 transition-transform duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300" />
               
-              <div className="absolute bottom-5 left-4 right-4">
+              <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-white text-xs font-bold tracking-[0.15em] uppercase mb-1">
                   {dest.title}
                 </p>
-                <div className="flex items-center gap-1.5 text-shamaal-gold/80">
+                <div className="flex items-center gap-1.5 text-shamaal-gold/90">
                   <MapPin className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase tracking-widest">Pakistan</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest">PAKISTAN</span>
                 </div>
               </div>
             </motion.div>
@@ -230,24 +232,24 @@ export default function HeroSection() {
         })}
       </div>
 
-      {/* Mobile Slide Indicator */}
-      <div className="absolute bottom-6 left-6 right-6 lg:hidden flex gap-2 z-20">
+      {/* Mobile Slide Indicator - enhanced */}
+      <div className="absolute bottom-8 left-6 right-6 lg:hidden flex gap-3 z-20 items-center">
         {DESTINATIONS.map((_, idx) => (
           <div 
             key={idx} 
-            className={`h-1 rounded-full transition-all duration-500 ${idx === currentIndex ? "w-8 bg-shamaal-gold" : "w-2 bg-white/30"}`}
+            className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIndex ? "w-12 bg-shamaal-gold shadow-[0_0_15px_rgba(255,182,4,0.8)]" : "w-3 bg-white/30"}`}
           />
         ))}
       </div>
 
-      {/* Elegant Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/5 z-20 backdrop-blur-sm">
+      {/* Elegant Progress Bar - enhanced */}
+      <div className="absolute bottom-0 left-0 right-0 h-2 bg-white/5 z-20 backdrop-blur-sm">
         <motion.div
           key={currentIndex}
           initial={{ width: "0%" }}
           animate={{ width: "100%" }}
           transition={{ duration: 6, ease: "linear" }}
-          className="h-full bg-shamaal-gold shadow-[0_0_20px_rgba(255,182,4,0.8)]"
+          className="h-full bg-gradient-to-r from-shamaal-gold via-yellow-400 to-shamaal-gold shadow-[0_0_30px_rgba(255,182,4,1)]"
         />
       </div>
 

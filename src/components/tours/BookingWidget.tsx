@@ -26,7 +26,7 @@ export default function BookingWidget({ tourId, price }: BookingWidgetProps) {
         <span className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider block mb-1">Price per person</span>
         <div className="flex items-end text-shamaal-navy dark:text-white">
           <span className="text-xl font-medium mr-1 mb-1">PKR</span>
-          <span className="text-4xl font-bold">{price.toLocaleString()}</span>
+          <span className="text-4xl font-bold">{price.toLocaleString('en-IN')}</span>
         </div>
       </div>
       
